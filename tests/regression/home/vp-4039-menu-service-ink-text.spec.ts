@@ -157,11 +157,12 @@ describe('VP-4039 — Menu service text in ink like the staff name', () => {
     expect(colors.services.filter((t) => t.background === '' || t.background === WHITE_HEX).length).toBe(0);
   });
 
-  it(
-    title(
-      'TC-VP4039-08: Settings/Employees remembers the Active filter — PENDING ' +
-        '(request 2 struck from the ticket, not in PR #3133)',
-      Tag.REGRESSION,
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'TC-VP4039-08: Settings/Employees remembers the Active filter — PENDING ' +
+  //       '(request 2 struck from the ticket, not in PR #3133)',
+  //     Tag.REGRESSION,
+  //   ),
+  // );
 });

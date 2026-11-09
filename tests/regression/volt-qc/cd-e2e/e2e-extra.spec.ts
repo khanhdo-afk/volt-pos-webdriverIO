@@ -24,6 +24,7 @@ import { app, field, moneyField } from '../../../../src/pages/voltqc/cd-e2e/cdAp
 import { cust } from '../../../../src/pages/voltqc/cd-e2e/customerScreen.js';
 import { Tag, title } from '../../../../src/types/testTags.js';
 import { ensure, expectCents, note, resetTill, track, untrack, usd } from './cd-e2e.helpers.js';
+import { requireStore } from '../../../../src/support/portal/storeSettings.js';
 
 const GIFT_CARD = (process.env.VOLT_TEST_GIFT_CARD ?? '').trim();
 
@@ -45,6 +46,12 @@ async function waitStatus(code: string, re: RegExp, timeout = 60_000): Promise<s
 }
 
 describe('volt-qc 14 E2E — catalogue rows without a volt-qc spec', () => {
+  before(async function () {
+    this.timeout(5 * 60_000);
+    // Store set-up this file needs — Portal-adjusted if the till differs, restored after the file.
+    await requireStore({ tipActive: true, tipTiming: 'after_payment' });
+  });
+
   before(async () => {
     await returnToHome();
   });
@@ -170,119 +177,122 @@ describe('volt-qc 14 E2E — catalogue rows without a volt-qc spec', () => {
     },
   );
 
-  // PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bỏ .skip để chạy lại.
-  it.skip(
-    title(
-      'Action bar by status: Successful - Unsettled → Receipt + Re-Open + Cancel, no Refund; Canceled → Receipt only (E2E-024)',
-      Tag.REGRESSION,
-      Tag.WRITE,
-    ),
-    async function () {
-      this.timeout(6 * 60_000);
-      const { code } = await app.createPaidOrder({ method: 'Cash' });
-      await app.openHistoryOrder(code);
-      await step('Unsettled', async () => {
-        expect(await app.has([{ css: 'main' }, { role: 'button', name: 'Receipt', nth: 0 }])).toBe(true);
-        expect(await app.has(CdMain.reopenOrder)).toBe(true);
-        expect(await app.has(CdMain.cancelOrder)).toBe(true);
-        expect(await app.has([{ css: 'main' }, { role: 'button', nameRe: 'Refund', nth: 0 }])).toBe(false);
-      });
-      await step('Canceled', async () => {
-        await app.cancelOrder(0);
-        expect(await waitStatus(code, /^Canceled$/)).toBe('Canceled');
-        expect(await app.has([{ css: 'main' }, { role: 'button', name: 'Receipt', nth: 0 }])).toBe(true);
-        for (const b of [CdMain.reopenOrder, CdMain.cancelOrder]) expect(await app.has(b)).toBe(false);
-        expect(await app.has([{ css: 'main' }, { role: 'button', nameRe: 'Refund', nth: 0 }])).toBe(false);
-      });
-      note(
-        'E2E-024: Settled / Settled-with-Gift-Card / Refunded / Card-not-batched rows need overnight-settled data — manual file',
-      );
-    },
-  );
+  // [TẮT 2026-11-08] Tạm không test (đã đánh dấu skip/MANUAL: cần thiết bị/điều kiện không tự động được, hoặc Re-Open tạm dừng theo yêu cầu) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // // PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bỏ .skip để chạy lại.
+  // it.skip(
+  //   title(
+  //     'Action bar by status: Successful - Unsettled → Receipt + Re-Open + Cancel, no Refund; Canceled → Receipt only (E2E-024)',
+  //     Tag.REGRESSION,
+  //     Tag.WRITE,
+  //   ),
+  //   async function () {
+  //     this.timeout(6 * 60_000);
+  //     const { code } = await app.createPaidOrder({ method: 'Cash' });
+  //     await app.openHistoryOrder(code);
+  //     await step('Unsettled', async () => {
+  //       expect(await app.has([{ css: 'main' }, { role: 'button', name: 'Receipt', nth: 0 }])).toBe(true);
+  //       expect(await app.has(CdMain.reopenOrder)).toBe(true);
+  //       expect(await app.has(CdMain.cancelOrder)).toBe(true);
+  //       expect(await app.has([{ css: 'main' }, { role: 'button', nameRe: 'Refund', nth: 0 }])).toBe(false);
+  //     });
+  //     await step('Canceled', async () => {
+  //       await app.cancelOrder(0);
+  //       expect(await waitStatus(code, /^Canceled$/)).toBe('Canceled');
+  //       expect(await app.has([{ css: 'main' }, { role: 'button', name: 'Receipt', nth: 0 }])).toBe(true);
+  //       for (const b of [CdMain.reopenOrder, CdMain.cancelOrder]) expect(await app.has(b)).toBe(false);
+  //       expect(await app.has([{ css: 'main' }, { role: 'button', nameRe: 'Refund', nth: 0 }])).toBe(false);
+  //     });
+  //     note(
+  //       'E2E-024: Settled / Settled-with-Gift-Card / Refunded / Card-not-batched rows need overnight-settled data — manual file',
+  //     );
+  //   },
+  // );
 
-  // PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bỏ .skip để chạy lại.
-  it.skip(
-    title(
-      'Re-open to change the staff (restricted mode): line price unchanged, every tender owes $0.00, Re-Open Done → Unsettled, same Total, Service Details and tip on the new staff (E2E-026)',
-      Tag.REGRESSION,
-      Tag.WRITE,
-      Tag.SLOW,
-    ),
-    async function () {
-      this.timeout(8 * 60_000);
-      const d = await app.testData();
-      if (!d.staff2) this.skip();
-      const code = track(await app.createOrder());
-      await app.pay();
-      await app.selectMethod('Cash');
-      await app.cashierTip('200');
-      await app.completePayment('none');
-      await app.successText();
-      await app.noReceipt();
-      untrack(code);
-      await app.openHistoryOrder(code);
-      const total0 = moneyField(await app.historyDetail(code), 'Total');
+  // [TẮT 2026-11-08] Tạm không test (đã đánh dấu skip/MANUAL: cần thiết bị/điều kiện không tự động được, hoặc Re-Open tạm dừng theo yêu cầu) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // // PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bỏ .skip để chạy lại.
+  // it.skip(
+  //   title(
+  //     'Re-open to change the staff (restricted mode): line price unchanged, every tender owes $0.00, Re-Open Done → Unsettled, same Total, Service Details and tip on the new staff (E2E-026)',
+  //     Tag.REGRESSION,
+  //     Tag.WRITE,
+  //     Tag.SLOW,
+  //   ),
+  //   async function () {
+  //     this.timeout(8 * 60_000);
+  //     const d = await app.testData();
+  //     if (!d.staff2) this.skip();
+  //     const code = track(await app.createOrder());
+  //     await app.pay();
+  //     await app.selectMethod('Cash');
+  //     await app.cashierTip('200');
+  //     await app.completePayment('none');
+  //     await app.successText();
+  //     await app.noReceipt();
+  //     untrack(code);
+  //     await app.openHistoryOrder(code);
+  //     const total0 = moneyField(await app.historyDetail(code), 'Total');
 
-      await app.reopenOrder(code);
-      const price = async (): Promise<string> =>
-        /\$[\d,]+\.\d{2}/.exec(await app.itemRowText(d.service))?.[0] ?? '';
-      const line0 = await price();
-      await app.changeStaff(d.staff2);
-      expect(await app.has([{ css: 'main' }, { textRe: d.staff2, nth: 0 }])).toBe(true);
-      expect(await price()).toBe(line0);
-      await app.click([{ css: 'main' }, CdMain.pay]);
-      await app.waitPath(/checkout/, 15_000);
-      for (const m of ['Card', 'Cash', 'Other'] as const) expect(await app.methodCents(m)).toBe(0);
-      expect(await app.has(CdMain.reopenDone)).toBe(true);
-      await app.reopenDone();
-      await app.openHistoryOrder(code);
-      const dump = await app.historyDetail(code);
-      expect(field(dump, 'Status')).toBe('Successful - Unsettled');
-      expectCents(moneyField(dump, 'Total'), total0, 'Total unchanged');
-      expect(dump).toContain(`Staff: ${d.staff2}`);
-      expect(dump).toContain(`${d.staff2} - $2.00`);
-      expect(dump).not.toContain(`Staff: ${d.staff}`);
-    },
-  );
+  //     await app.reopenOrder(code);
+  //     const price = async (): Promise<string> =>
+  //       /\$[\d,]+\.\d{2}/.exec(await app.itemRowText(d.service))?.[0] ?? '';
+  //     const line0 = await price();
+  //     await app.changeStaff(d.staff2);
+  //     expect(await app.has([{ css: 'main' }, { textRe: d.staff2, nth: 0 }])).toBe(true);
+  //     expect(await price()).toBe(line0);
+  //     await app.click([{ css: 'main' }, CdMain.pay]);
+  //     await app.waitPath(/checkout/, 15_000);
+  //     for (const m of ['Card', 'Cash', 'Other'] as const) expect(await app.methodCents(m)).toBe(0);
+  //     expect(await app.has(CdMain.reopenDone)).toBe(true);
+  //     await app.reopenDone();
+  //     await app.openHistoryOrder(code);
+  //     const dump = await app.historyDetail(code);
+  //     expect(field(dump, 'Status')).toBe('Successful - Unsettled');
+  //     expectCents(moneyField(dump, 'Total'), total0, 'Total unchanged');
+  //     expect(dump).toContain(`Staff: ${d.staff2}`);
+  //     expect(dump).toContain(`${d.staff2} - $2.00`);
+  //     expect(dump).not.toContain(`Staff: ${d.staff}`);
+  //   },
+  // );
 
-  // PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bỏ .skip để chạy lại.
-  it.skip(
-    title(
-      'Re-Open availability: Successful - Unsettled shows Re-Open Order; a Re-open order shows Continue Re-open; Canceled shows none (E2E-030)',
-      Tag.REGRESSION,
-      Tag.WRITE,
-      Tag.SLOW,
-    ),
-    async function () {
-      this.timeout(8 * 60_000);
-      const a = await app.createPaidOrder({ method: 'Cash' });
-      await app.openHistoryOrder(a.code);
-      expect(await app.has(CdMain.reopenOrder)).toBe(true);
-      await step('Re-open in progress → Continue Re-open', async () => {
-        await app.reopenOrder(a.code, { edit: false });
-        await app.routerGoRaw('/order-pending');
-        await app.passcodeIfAsked(2_000);
-        await app.openHistoryOrder(a.code);
-        expect(await app.has(CdMain.continueReopen)).toBe(true);
-        expect(await app.has(CdMain.reopenOrder)).toBe(false);
-        await app.click(CdMain.continueReopen);
-        if (await app.waitFor(CdMain.reopenConfirmDialog, 5_000))
-          await app.click([CdMain.reopenConfirmDialog, { role: 'button', name: 'Confirm', nth: 0 }]);
-        await app.passcodeIfAsked(2_500);
-        await app.waitPath(/checkout|\/home/, 20_000);
-        await app.reopenDone();
-      });
-      await step('Canceled → no Re-Open', async () => {
-        const b = await app.createPaidOrder({ method: 'Cash' });
-        await app.openHistoryOrder(b.code);
-        await app.cancelOrder(0);
-        expect(await waitStatus(b.code, /^Canceled$/)).toBe('Canceled');
-        expect(await app.has(CdMain.reopenOrder)).toBe(false);
-        expect(await app.has(CdMain.continueReopen)).toBe(false);
-      });
-      note('E2E-030: Settled / previous-day / Refunded rows need overnight-settled data — manual file');
-    },
-  );
+  // [TẮT 2026-11-08] Tạm không test (đã đánh dấu skip/MANUAL: cần thiết bị/điều kiện không tự động được, hoặc Re-Open tạm dừng theo yêu cầu) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // // PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bỏ .skip để chạy lại.
+  // it.skip(
+  //   title(
+  //     'Re-Open availability: Successful - Unsettled shows Re-Open Order; a Re-open order shows Continue Re-open; Canceled shows none (E2E-030)',
+  //     Tag.REGRESSION,
+  //     Tag.WRITE,
+  //     Tag.SLOW,
+  //   ),
+  //   async function () {
+  //     this.timeout(8 * 60_000);
+  //     const a = await app.createPaidOrder({ method: 'Cash' });
+  //     await app.openHistoryOrder(a.code);
+  //     expect(await app.has(CdMain.reopenOrder)).toBe(true);
+  //     await step('Re-open in progress → Continue Re-open', async () => {
+  //       await app.reopenOrder(a.code, { edit: false });
+  //       await app.routerGoRaw('/order-pending');
+  //       await app.passcodeIfAsked(2_000);
+  //       await app.openHistoryOrder(a.code);
+  //       expect(await app.has(CdMain.continueReopen)).toBe(true);
+  //       expect(await app.has(CdMain.reopenOrder)).toBe(false);
+  //       await app.click(CdMain.continueReopen);
+  //       if (await app.waitFor(CdMain.reopenConfirmDialog, 5_000))
+  //         await app.click([CdMain.reopenConfirmDialog, { role: 'button', name: 'Confirm', nth: 0 }]);
+  //       await app.passcodeIfAsked(2_500);
+  //       await app.waitPath(/checkout|\/home/, 20_000);
+  //       await app.reopenDone();
+  //     });
+  //     await step('Canceled → no Re-Open', async () => {
+  //       const b = await app.createPaidOrder({ method: 'Cash' });
+  //       await app.openHistoryOrder(b.code);
+  //       await app.cancelOrder(0);
+  //       expect(await waitStatus(b.code, /^Canceled$/)).toBe('Canceled');
+  //       expect(await app.has(CdMain.reopenOrder)).toBe(false);
+  //       expect(await app.has(CdMain.continueReopen)).toBe(false);
+  //     });
+  //     note('E2E-030: Settled / previous-day / Refunded rows need overnight-settled data — manual file');
+  //   },
+  // );
 
   it(
     title(

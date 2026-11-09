@@ -72,13 +72,11 @@ import {
 } from '../../../../src/pages/voltqc/promo-split/promoDeepExtra.js';
 import {
   applyPromo,
-  attachExistingCustomer,
   checkoutBack,
   closeDialogX,
   createQuickPayOrder,
   customChecked,
   customDiscountSplit,
-  customerEarnedPoints,
   fillCustom,
   giftCardCooldown,
   itemDialog,
@@ -92,7 +90,6 @@ import {
   promoDlg,
   promoInput,
   promoSplitInputs,
-  readCustomerStats,
   setItemDiscountFields,
   settledGiftCardBalance,
   staffDiscountCharge,
@@ -104,8 +101,6 @@ import {
   field,
   money,
   pick,
-  randomPhone,
-  uniqueName,
   usd,
   vqEnv,
   waitUntil,
@@ -380,99 +375,100 @@ describe('volt-qc 04 PROMO — deep: discounts, points, gift cards', () => {
     },
   );
 
-  // PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bỏ .skip để chạy lại.
-  it.skip(
-    title(
-      'PROMO-D04 Points on cancel / re-open: new customer K pays Other → cancel keeps points (never negative); 2nd order Cash adds on; re-open finish again changes neither points nor visits (PROMO-098, PROMO-099)',
-      Tag.REGRESSION,
-      Tag.WRITE,
-      Tag.DUAL_WINDOW,
-      Tag.SLOW,
-    ),
-    async function () {
-      this.timeout(10 * 60_000);
-      const phone = randomPhone();
-      let id1 = '';
-      let e1 = Number.NaN;
-      let c1 = Number.NaN;
+  // [TẮT 2026-11-08] Tạm không test (đã đánh dấu skip/MANUAL: cần thiết bị/điều kiện không tự động được, hoặc Re-Open tạm dừng theo yêu cầu) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // // PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bỏ .skip để chạy lại.
+  // it.skip(
+  //   title(
+  //     'PROMO-D04 Points on cancel / re-open: new customer K pays Other → cancel keeps points (never negative); 2nd order Cash adds on; re-open finish again changes neither points nor visits (PROMO-098, PROMO-099)',
+  //     Tag.REGRESSION,
+  //     Tag.WRITE,
+  //     Tag.DUAL_WINDOW,
+  //     Tag.SLOW,
+  //   ),
+  //   async function () {
+  //     this.timeout(10 * 60_000);
+  //     const phone = randomPhone();
+  //     let id1 = '';
+  //     let e1 = Number.NaN;
+  //     let c1 = Number.NaN;
 
-      await step(
-        'Order 1: new customer K + test service → Other → customer display "You\'ve earned N points", current = N',
-        async () => {
-          id1 = await app.createOrder();
-          await app.attachNewCustomer(phone, uniqueName('QC E2E'));
-          await app.customerConfirmPhone().catch(() => undefined);
-          await payHere(id1, 'Other');
-          const p = await customerEarnedPoints();
-          e1 = p.earned;
-          c1 = p.current;
-          expect(e1).toBeGreaterThan(0); // an order with a customer earns points
-          expect(c1).toBe(e1); // new customer: current = just earned
-          await app.noReceipt();
-        },
-      );
+  //     await step(
+  //       'Order 1: new customer K + test service → Other → customer display "You\'ve earned N points", current = N',
+  //       async () => {
+  //         id1 = await app.createOrder();
+  //         await app.attachNewCustomer(phone, uniqueName('QC E2E'));
+  //         await app.customerConfirmPhone().catch(() => undefined);
+  //         await payHere(id1, 'Other');
+  //         const p = await customerEarnedPoints();
+  //         e1 = p.earned;
+  //         c1 = p.current;
+  //         expect(e1).toBeGreaterThan(0); // an order with a customer earns points
+  //         expect(c1).toBe(e1); // new customer: current = just earned
+  //         await app.noReceipt();
+  //       },
+  //     );
 
-      // Local points sync periodically → wait until they match (≤ 40 s). Bug #39: points may NOT persist to the profile ("Point: 0").
-      const s1 = await readCustomerStats(phone, c1, 40_000);
-      const persisted = s1.points === c1;
-      note(
-        `K ***${phone.slice(-4)}: after order 1 POS Points ${String(s1.points)} / visits ${String(s1.visits)} (display ${String(c1)})`,
-      );
-      if (!persisted)
-        note(
-          `Bug #39: earned points (${String(c1)}) not saved to the profile (POS ${String(s1.points)}) — compare "unchanged" after cancel only`,
-          'observation',
-        );
+  //     // Local points sync periodically → wait until they match (≤ 40 s). Bug #39: points may NOT persist to the profile ("Point: 0").
+  //     const s1 = await readCustomerStats(phone, c1, 40_000);
+  //     const persisted = s1.points === c1;
+  //     note(
+  //       `K ***${phone.slice(-4)}: after order 1 POS Points ${String(s1.points)} / visits ${String(s1.visits)} (display ${String(c1)})`,
+  //     );
+  //     if (!persisted)
+  //       note(
+  //         `Bug #39: earned points (${String(c1)}) not saved to the profile (POS ${String(s1.points)}) — compare "unchanged" after cancel only`,
+  //         'observation',
+  //       );
 
-      await step('PROMO-099 cancel order 1 (Cancel Order → reason → Confirm Cancel) → Canceled', async () => {
-        await cancelFromHistory(id1);
-      });
+  //     await step('PROMO-099 cancel order 1 (Cancel Order → reason → Confirm Cancel) → Canceled', async () => {
+  //       await cancelFromHistory(id1);
+  //     });
 
-      await step('PROMO-099 K points unchanged, not negative (read twice)', async () => {
-        for (let i = 0; i < 2; i += 1) {
-          const s = await readCustomerStats(phone);
-          expect(s.points).toBe(s1.points);
-          expect(s.points).toBeGreaterThanOrEqual(0);
-        }
-      });
+  //     await step('PROMO-099 K points unchanged, not negative (read twice)', async () => {
+  //       for (let i = 0; i < 2; i += 1) {
+  //         const s = await readCustomerStats(phone);
+  //         expect(s.points).toBe(s1.points);
+  //         expect(s.points).toBeGreaterThanOrEqual(0);
+  //       }
+  //     });
 
-      let id2 = '';
-      let s2 = { points: Number.NaN, visits: Number.NaN };
-      await step(
-        'Order 2 Cash for K: current = previous + new (cancelling order 1 deducts nothing later)',
-        async () => {
-          id2 = await app.createOrder();
-          await attachExistingCustomer(phone);
-          await payHere(id2, 'Cash');
-          const p = await customerEarnedPoints();
-          expect(p.earned).toBeGreaterThan(0);
-          if (persisted) expect(p.current).toBe(s1.points + p.earned);
-          else
-            note(
-              `Order 2: earned ${String(p.earned)}, current ${String(p.current)} (bug #39 — no add-up check)`,
-              'observation',
-            );
-          await app.noReceipt();
-          s2 = await readCustomerStats(phone, persisted ? s1.points + p.earned : undefined, 40_000);
-          if (persisted) expect(s2.points).toBe(s1.points + p.earned);
-        },
-      );
+  //     let id2 = '';
+  //     let s2 = { points: Number.NaN, visits: Number.NaN };
+  //     await step(
+  //       'Order 2 Cash for K: current = previous + new (cancelling order 1 deducts nothing later)',
+  //       async () => {
+  //         id2 = await app.createOrder();
+  //         await attachExistingCustomer(phone);
+  //         await payHere(id2, 'Cash');
+  //         const p = await customerEarnedPoints();
+  //         expect(p.earned).toBeGreaterThan(0);
+  //         if (persisted) expect(p.current).toBe(s1.points + p.earned);
+  //         else
+  //           note(
+  //             `Order 2: earned ${String(p.earned)}, current ${String(p.current)} (bug #39 — no add-up check)`,
+  //             'observation',
+  //           );
+  //         await app.noReceipt();
+  //         s2 = await readCustomerStats(phone, persisted ? s1.points + p.earned : undefined, 40_000);
+  //         if (persisted) expect(s2.points).toBe(s1.points + p.earned);
+  //       },
+  //     );
 
-      await step(
-        'PROMO-098 re-open order 2 → Re-Open Done (no change): K points and visits unchanged',
-        async () => {
-          await app.reopenOrder(id2);
-          await app.finishReopen();
-          const s3 = await readCustomerStats(phone);
-          note(
-            `After re-open: points ${String(s2.points)} → ${String(s3.points)}, visits ${String(s2.visits)} → ${String(s3.visits)}`,
-          );
-          expect(s3.visits).toBe(s2.visits);
-          expect(s3.points).toBe(s2.points);
-        },
-      );
-    },
-  );
+  //     await step(
+  //       'PROMO-098 re-open order 2 → Re-Open Done (no change): K points and visits unchanged',
+  //       async () => {
+  //         await app.reopenOrder(id2);
+  //         await app.finishReopen();
+  //         const s3 = await readCustomerStats(phone);
+  //         note(
+  //           `After re-open: points ${String(s2.points)} → ${String(s3.points)}, visits ${String(s2.visits)} → ${String(s3.visits)}`,
+  //         );
+  //         expect(s3.visits).toBe(s2.visits);
+  //         expect(s3.points).toBe(s2.points);
+  //       },
+  //     );
+  //   },
+  // );
 
   // Bug #6: the card verdict / Sell Gift Card sometimes shows the OLD balance right after a top-up → Current Balance step fails on the bug.
   it(

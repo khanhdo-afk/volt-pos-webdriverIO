@@ -79,9 +79,11 @@ describe('Order flow — Split Order (multi-line)', () => {
     },
   );
 
-  // TC-ORDERFLOW-29 / 30 (By Amount) moved to split-order.spec.ts — they need no
-  // second line, so they run on the always-available single-line order.
-  it(title('TC-ORDERFLOW-31: each check pays independently — PENDING (heavy multi-tender settle)'));
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // // TC-ORDERFLOW-29 / 30 (By Amount) moved to split-order.spec.ts — they need no
+  // // second line, so they run on the always-available single-line order.
+  // it(title('TC-ORDERFLOW-31: each check pays independently — PENDING (heavy multi-tender settle)'));
 
-  it(title('TC-ORDERFLOW-33: By Items assigns each line to a check — PENDING (no row-assignment driver)'));
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(title('TC-ORDERFLOW-33: By Items assigns each line to a check — PENDING (no row-assignment driver)'));
 });

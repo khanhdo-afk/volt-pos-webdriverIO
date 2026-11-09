@@ -98,19 +98,23 @@ describe('Portal — VP-5627 custom promotion split', () => {
     },
   );
 
-  it.skip(title('Portal: total other than 100 is not saved (TC-VP5627-03)', Tag.REGRESSION), () => undefined); // PENDING: validation steps not coded; manual PASS 05/11.
-  it.skip(
-    title('Portal: value outside 0–100 shows an error (TC-VP5627-04)', Tag.REGRESSION),
-    () => undefined,
-  ); // PENDING: manual PASS 05/11.
-  it.skip(
-    title('Portal: 0/100 and 33.5/66.5 save and reload (TC-VP5627-05)', Tag.REGRESSION),
-    () => undefined,
-  ); // PENDING: manual PASS 05/11.
-  it.skip(
-    title('Portal: Discard returns to the saved value (TC-VP5627-07)', Tag.REGRESSION),
-    () => undefined,
-  ); // PENDING: manual PASS 05/11.
+  // [TẮT 2026-11-08] Tạm không test (đã đánh dấu skip/MANUAL: cần thiết bị/điều kiện không tự động được, hoặc Re-Open tạm dừng theo yêu cầu) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it.skip(title('Portal: total other than 100 is not saved (TC-VP5627-03)', Tag.REGRESSION), () => undefined); // PENDING: validation steps not coded; manual PASS 05/11.
+  // [TẮT 2026-11-08] Tạm không test (đã đánh dấu skip/MANUAL: cần thiết bị/điều kiện không tự động được, hoặc Re-Open tạm dừng theo yêu cầu) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it.skip(
+  //   title('Portal: value outside 0–100 shows an error (TC-VP5627-04)', Tag.REGRESSION),
+  //   () => undefined,
+  // ); // PENDING: manual PASS 05/11.
+  // [TẮT 2026-11-08] Tạm không test (đã đánh dấu skip/MANUAL: cần thiết bị/điều kiện không tự động được, hoặc Re-Open tạm dừng theo yêu cầu) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it.skip(
+  //   title('Portal: 0/100 and 33.5/66.5 save and reload (TC-VP5627-05)', Tag.REGRESSION),
+  //   () => undefined,
+  // ); // PENDING: manual PASS 05/11.
+  // [TẮT 2026-11-08] Tạm không test (đã đánh dấu skip/MANUAL: cần thiết bị/điều kiện không tự động được, hoặc Re-Open tạm dừng theo yêu cầu) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it.skip(
+  //   title('Portal: Discard returns to the saved value (TC-VP5627-07)', Tag.REGRESSION),
+  //   () => undefined,
+  // ); // PENDING: manual PASS 05/11.
 
   it(title('Portal: save the Custom split and reload (TC-VP5627-06)', Tag.REGRESSION), async () => {
     await openCard();

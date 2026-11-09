@@ -169,15 +169,18 @@ describe('Checkout Type — points on completion (VP-4591)', () => {
       },
     );
 
-    it(
-      title('CHK-POS-003: Portal change applies without restart — PENDING (needs a Portal change mid-test)'),
-    );
-    it(title('CHK-POS-004: setting is read at complete time — PENDING (needs a Portal change mid-test)'));
-    it(
-      title(
-        'CHK-POS-005: new Point Bonus applies to the next order — PENDING (needs a Portal change mid-test)',
-      ),
-    );
+    // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+    // it(
+    //   title('CHK-POS-003: Portal change applies without restart — PENDING (needs a Portal change mid-test)'),
+    // );
+    // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+    // it(title('CHK-POS-004: setting is read at complete time — PENDING (needs a Portal change mid-test)'));
+    // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+    // it(
+    //   title(
+    //     'CHK-POS-005: new Point Bonus applies to the next order — PENDING (needs a Portal change mid-test)',
+    //   ),
+    // );
   });
 
   describe('2. Manual', () => {
@@ -216,11 +219,12 @@ describe('Checkout Type — points on completion (VP-4591)', () => {
       },
     );
 
-    it(
-      title(
-        'CHK-POS-008: Manual split, gift-card part earns 0 — PENDING (no cash + gift-card split-tender flow)',
-      ),
-    );
+    // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+    // it(
+    //   title(
+    //     'CHK-POS-008: Manual split, gift-card part earns 0 — PENDING (no cash + gift-card split-tender flow)',
+    //   ),
+    // );
 
     it(
       title(
@@ -342,11 +346,12 @@ describe('Checkout Type — points on completion (VP-4591)', () => {
       },
     );
 
-    it(
-      title(
-        'CHK-POS-016: Auto split payment adds the bonus once — PENDING (no cash + card split-tender flow)',
-      ),
-    );
+    // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+    // it(
+    //   title(
+    //     'CHK-POS-016: Auto split payment adds the bonus once — PENDING (no cash + card split-tender flow)',
+    //   ),
+    // );
     it(
       title(
         'CHK-POS-017: Auto $0 order (full redeem) earns no bonus',
@@ -386,10 +391,12 @@ describe('Checkout Type — points on completion (VP-4591)', () => {
         expect(run.delta).toBe(0);
       },
     );
-    it(title('CHK-POS-019: Auto gift-card-only sale earns no bonus — PENDING (no sell-gift-card flow)'));
-    it(
-      title('CHK-POS-020: Auto service + gift-card sale earns the bonus — PENDING (no sell-gift-card flow)'),
-    );
+    // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+    // it(title('CHK-POS-019: Auto gift-card-only sale earns no bonus — PENDING (no sell-gift-card flow)'));
+    // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+    // it(
+    //   title('CHK-POS-020: Auto service + gift-card sale earns the bonus — PENDING (no sell-gift-card flow)'),
+    // );
 
     it(
       title(
@@ -447,20 +454,25 @@ describe('Checkout Type — points on completion (VP-4591)', () => {
       },
     );
 
-    it(title('CHK-POS-024: Hybrid end-of-day auto-checkout adds the bonus — PENDING (API job, not POS)'));
-    it(
-      title(
-        'CHK-POS-025: completing after the auto-checkout adds nothing, no error — PENDING (depends on 024)',
-      ),
-    );
-    it(title('CHK-POS-026: restored end-of-day order adds nothing — PENDING (depends on 024)'));
+    // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+    // it(title('CHK-POS-024: Hybrid end-of-day auto-checkout adds the bonus — PENDING (API job, not POS)'));
+    // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+    // it(
+    //   title(
+    //     'CHK-POS-025: completing after the auto-checkout adds nothing, no error — PENDING (depends on 024)',
+    //   ),
+    // );
+    // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+    // it(title('CHK-POS-026: restored end-of-day order adds nothing — PENDING (depends on 024)'));
   });
 
   describe('5. One checkout per check-in / Refund / Cancel', () => {
-    // CHK-POS-027..030 (Edit Order + re-complete, re-open to another customer) were dropped:
-    // Re-Open now only changes the staff — vp-4591-reopen-change-staff.spec.ts covers it.
-    it(title('CHK-POS-031: Refund after checkout keeps the points — PENDING (needs a settled order)'));
-    it(title('CHK-POS-032: Cancel/Void after checkout keeps the points — PENDING (needs a settled order)'));
+    // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+    // // CHK-POS-027..030 (Edit Order + re-complete, re-open to another customer) were dropped:
+    // // Re-Open now only changes the staff — vp-4591-reopen-change-staff.spec.ts covers it.
+    // it(title('CHK-POS-031: Refund after checkout keeps the points — PENDING (needs a settled order)'));
+    // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+    // it(title('CHK-POS-032: Cancel/Void after checkout keeps the points — PENDING (needs a settled order)'));
 
     it(
       title(
@@ -483,7 +495,9 @@ describe('Checkout Type — points on completion (VP-4591)', () => {
   });
 
   describe('6. Merge / Compatibility', () => {
-    it(title('CHK-POS-034: merge of checked-in orders keeps the merge flow — PENDING (needs 2 check-ins)'));
-    it(title('CHK-POS-037: a pre-#3031 build reads Auto as Manual — PENDING (needs the old build)'));
+    // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+    // it(title('CHK-POS-034: merge of checked-in orders keeps the merge flow — PENDING (needs 2 check-ins)'));
+    // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+    // it(title('CHK-POS-037: a pre-#3031 build reads Auto as Manual — PENDING (needs the old build)'));
   });
 });

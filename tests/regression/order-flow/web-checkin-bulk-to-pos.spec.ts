@@ -19,7 +19,8 @@
  */
 
 import { browser, expect } from '@wdio/globals';
-import { readCheckinBulk } from '../../../src/pages/web/checkinHandoff.js';
+import type { CheckinHandoff } from '../../../src/pages/web/CheckinKioskPage.js';
+import { freshCheckinBulk } from '../../../src/support/web/webLane.js';
 import { loadEnv } from '../../../configs/env/loadEnv.js';
 import { Timeouts } from '../../../configs/constants/timeouts.js';
 import { Routes } from '../../../src/constants/routes.js';
@@ -27,7 +28,7 @@ import { goTo } from '../../../src/helpers/navigate.js';
 import { settle } from '../../../src/helpers/wait.js';
 
 const env = loadEnv();
-const batch = readCheckinBulk();
+let batch: CheckinHandoff[] = [];
 
 /** Scroll every scrollable element top→bottom, collecting innerText at each step. */
 async function collectPendingText(): Promise<string> {
@@ -54,15 +55,12 @@ async function collectPendingText(): Promise<string> {
   return chunks.join('\n');
 }
 
-describe('WEB CHECK-IN BULK → POS sync', () => {
-  before(function () {
-    if (batch.length === 0) {
-      // eslint-disable-next-line no-console
-      console.log(
-        '[bulk-checkin] .tmp/web-checkin-bulk.json is empty — run `npm run web:checkin-bulk` first. Skipping.',
-      );
-      this.skip();
-    }
+describe('WEB CHECK-IN BULK → POS sync', function () {
+  this.timeout(45 * 60_000); // suite-level: the before() below may build 18 GAP check-ins
+  before(async function () {
+    // Pending lists today's check-ins only: make today's batch on the GAP kiosk when
+    // the saved one is older or missing (same batch VP-4823 uses).
+    batch = await freshCheckinBulk(18);
     if (env.MERCHANT_ID !== env.WEB_MERCHANT_ID) {
       // eslint-disable-next-line no-console
       console.log(

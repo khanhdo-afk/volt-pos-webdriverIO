@@ -1,3 +1,4 @@
+import { unlockSellGiftCardGate } from '../pos/giftCardProbe.js';
 import { $, browser } from '@wdio/globals';
 import { env } from '../../../../configs/env/loadEnv.js';
 import {
@@ -17,6 +18,7 @@ import {
   VqpsPromo,
   VqpsSuccess,
 } from '../../../constants/testids.voltqc-promo-split.js';
+import { learnFromVerdict } from '../../../data/static/giftCardRotation.js';
 import { settle } from '../../../helpers/wait.js';
 import { withCustomerWindow } from '../../../helpers/window.js';
 import { quickCheckout as probeQuickCheckout } from '../pos/homeProbe.js';
@@ -797,6 +799,7 @@ class VqApp {
 
   async openSellGiftCard(): Promise<void> {
     await P.clickQ(VqcHome.giftCardTile);
+    await unlockSellGiftCardGate(); // VP-4815 gate on 1.1.109
     await P.waitFor({ role: 'dialog', name: 'Sell Gift Card', nth: -1 }, 10_000, 'Sell Gift Card');
   }
 
@@ -872,7 +875,10 @@ class VqApp {
     }
     await P.clickQ(confirm);
     await P.waitFor(VqpsCheckout.gcResultDialog, 15_000, 'gift card verdict');
-    return { info: ((await P.rawText(VqpsCheckout.gcResultDialog)) ?? '').replace(/\s*\n+\s*/g, ' | ') };
+    const info = ((await P.rawText(VqpsCheckout.gcResultDialog)) ?? '').replace(/\s*\n+\s*/g, ' | ');
+    // Remember the live balance so the next run skips a card this one found drained.
+    learnFromVerdict(code, info);
+    return { info };
   }
 
   /* ------------------------------ Order History ----------------------------- */

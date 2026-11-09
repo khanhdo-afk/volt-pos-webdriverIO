@@ -211,7 +211,9 @@ describe('VP-1048 IS — Income Summary', () => {
       const rows = await incomeSummaryPage.tableRows();
       expect(rows.length).toBeGreaterThan(0);
       for (const r of rows)
-        expect(r.date).toMatch(/\d{2}\/\d{2}\/\d{4}\s*[-–]\s*\d{2}\/\d{2}\/\d{4}|\w+ \d{1,2}.*[-–]/);
+        expect(r.date).toMatch(
+          /\d{2}\/\d{2}\/\d{4}\s*[-–]\s*\d{2}\/\d{2}\/\d{4}|\w+ \d{1,2}.*[-–]|Week \d+ \(\w{3} \d{1,2}, \d{4}\)/,
+        ); // a 1-day week (Monday) prints just that day
     });
 
     it(

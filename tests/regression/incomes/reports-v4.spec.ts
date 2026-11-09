@@ -213,7 +213,8 @@ describe('Reports V4', () => {
       },
     );
 
-    it(title('TC-RV4-18: Print the DSR V4 — PENDING (needs a printer)'));
+    // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+    // it(title('TC-RV4-18: Print the DSR V4 — PENDING (needs a printer)'));
   });
 
   /* ------------------------------------------------------------------ *
@@ -460,9 +461,10 @@ describe('Reports V4', () => {
     );
   });
 
-  it(
-    title(
-      'TC-RV4-17: a date range longer than 1 year is blocked or rejected clearly (VP-4883 / VP-4927) — PENDING (date picker not scanned yet)',
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'TC-RV4-17: a date range longer than 1 year is blocked or rejected clearly (VP-4883 / VP-4927) — PENDING (date picker not scanned yet)',
+  //   ),
+  // );
 });

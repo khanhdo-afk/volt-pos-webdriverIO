@@ -1,3 +1,4 @@
+import { requireGate } from '../../../support/portal/storeSettings.js';
 import { browser } from '@wdio/globals';
 import { Key } from 'webdriverio';
 import { Timeouts } from '../../../../configs/constants/timeouts.js';
@@ -106,6 +107,15 @@ export class GateProbe extends UiObject {
         timeoutMsg: 'openGate(): router never reached /home',
       });
     }
+    await this.routerNavigate(route);
+    if (await this.waitOpen(waitMs)) return true;
+    // Gate OFF on the merchant: turn it ON on the Portal (restored after the spec
+    // file — tests/setup/rootHooks.ts) and try once more, instead of skipping.
+    if (!(await requireGate(route.split('?')[0] ?? route))) return false;
+    await this.dismiss();
+    await clearPasscodeGrant();
+    await this.routerNavigate(Routes.HOME);
+    await settle(800);
     await this.routerNavigate(route);
     return this.waitOpen(waitMs);
   }

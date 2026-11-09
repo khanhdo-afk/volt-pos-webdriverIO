@@ -51,7 +51,10 @@ export async function priceModel(opts: { refresh?: boolean } = {}): Promise<Pric
   app.createdOrders.delete(id);
   cached = {
     fee: Number.isFinite(line / base) ? r2(line / base - 1) : 0,
-    tax: Number.isFinite(taxAmt) && subtotal > 0 ? Math.round((taxAmt / subtotal) * 10_000) / 10_000 : 0,
+    // Tax / Subtotal of a 2-decimal amount is only approximate (1.55 / 30.90 = 5.016 %),
+    // and that 0.016 % turns $27 into $28.36 instead of $28.35. Store rates are set in
+    // quarter-percent steps (5 %, 8.25 %…): snap to the nearest 0.25 %.
+    tax: Number.isFinite(taxAmt) && subtotal > 0 ? Math.round((taxAmt / subtotal) * 400) / 400 : 0,
     measuredAt: new Date().toISOString(),
   };
   return cached;

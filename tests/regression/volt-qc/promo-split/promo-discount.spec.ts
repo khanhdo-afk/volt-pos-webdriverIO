@@ -539,7 +539,7 @@ describe('volt-qc 04 PROMO — Custom Discount, Promo & Rewards, item discount',
 
   it(
     title(
-      'PROMO-K Owner/Staff split: locked without a discount, auto-complement to 100, out of 0–100 and decimals blocked (PROMO-049, PROMO-050, PROMO-051, PROMO-052, PROMO-053)',
+      'PROMO-K Owner/Staff split: locked without a discount, auto-complement to 100, out of 0–100 blocked, decimals complement to 100 (PROMO-049, PROMO-050, PROMO-051, PROMO-052, PROMO-053)',
       Tag.REGRESSION,
       Tag.WRITE,
     ),
@@ -576,7 +576,14 @@ describe('volt-qc 04 PROMO — Custom Discount, Promo & Rewards, item discount',
       }
       await P.fillQ(owner, '50.5');
       if (await visible(splitErr)) expect(await P.isDisabled(promoApply)).toBe(true);
-      else expect(await P.inputValue(owner)).toMatch(/^\d+$/);
+      else {
+        // 1.1.109 takes decimal shares (the split fields are inputmode="decimal", like
+        // Charge & Fee's Discount Setting): 50.5 / 49.5 is a valid split now.
+        const o = Number(await P.inputValue(owner));
+        const st = Number(await P.inputValue(staff));
+        expect(Number.isFinite(o) && Number.isFinite(st)).toBe(true);
+        expect(Math.round((o + st) * 100) / 100).toBe(100);
+      }
       await closeDialogX();
     },
   );

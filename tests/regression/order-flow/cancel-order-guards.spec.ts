@@ -74,29 +74,34 @@ describe('Payment flows — Cancel Order', () => {
     },
   );
 
-  it(
-    title(
-      'CAN-02: Gift Card cancel auto-restores balance — PENDING 💳 (needs a gift-card settle + real cancel)',
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'CAN-02: Gift Card cancel auto-restores balance — PENDING 💳 (needs a gift-card settle + real cancel)',
+  //   ),
+  // );
 
-  it(title('CAN-03: 1 payment cancel fails → Cancel Issue — PENDING 🔌 OUT OF SCOPE (fault-injection, §9a)'));
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(title('CAN-03: 1 payment cancel fails → Cancel Issue — PENDING 🔌 OUT OF SCOPE (fault-injection, §9a)'));
 
-  it(
-    title(
-      'CAN-R1 (VP-3727): multi gift-card cancel restores wrong balance — PENDING 💳 (multi-gift-card settled order)',
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'CAN-R1 (VP-3727): multi gift-card cancel restores wrong balance — PENDING 💳 (multi-gift-card settled order)',
+  //   ),
+  // );
 
-  it(
-    title(
-      'CAN-R3 (VP-3278): order stuck Canceling on batch-close race, income still counts — PENDING 🌙 (batch-close race + income read)',
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'CAN-R3 (VP-3278): order stuck Canceling on batch-close race, income still counts — PENDING 🌙 (batch-close race + income read)',
+  //   ),
+  // );
 
-  it(
-    title(
-      'CAN-R4 (VP-4037): Edit Order still allowed while Cancel — PENDING 🌙 (needs Canceled order + Edit-Order locator)',
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'CAN-R4 (VP-4037): Edit Order still allowed while Cancel — PENDING 🌙 (needs Canceled order + Edit-Order locator)',
+  //   ),
+  // );
 });

@@ -61,41 +61,42 @@ describe('Payment flows — Refund gating (unsettled)', () => {
 // RFD-02 (All = full amount, locked) and RFD-EXEC (full refund completes) run as
 // volt-qc/oh-reopen/oh-refund OH-131 / OH-140.
 describe('Payment flows — Refund on a settled order', () => {
-  it(
-    title(
-      'RFD-03: refund on the discounted price, promotion preserved — PENDING 🌙 (needs a discounted settled order)',
-    ),
-  );
-
-  it(
-    title(
-      'RFD-04: Auth+Tip refunds base only; Sale refunds Amount+Tip — PENDING 🌙💳 (needs card Auth / Sale orders)',
-    ),
-  );
-
-  it(title('RFD-05: Gift Card is never a refund method — PENDING 💳 (needs a settled gift-card order)'));
-
-  it(
-    title(
-      'RFD-06: multi-partial → Refunded; card fail → Refund Issue — PENDING 🔌 OUT OF SCOPE (fault-injection, §9a)',
-    ),
-  );
-
-  it(
-    title(
-      'RFD-R1 (VP-4051): a refunded service is still editable — PENDING 🌙 (needs a partially-refunded order)',
-    ),
-  );
-
-  it(
-    title(
-      'RFD-R3 (VP-3342): refund appears in Order History on its refund day — PENDING 🌙 (needs date-range nav, no locator yet)',
-    ),
-  );
-
-  it(
-    title(
-      'RFD-R4 (VP-3335): service tax correct in cancel/refund/history/receipt — PENDING 🌙 (needs a refunded order + receipt read)',
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'RFD-03: refund on the discounted price, promotion preserved — PENDING 🌙 (needs a discounted settled order)',
+  //   ),
+  // );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'RFD-04: Auth+Tip refunds base only; Sale refunds Amount+Tip — PENDING 🌙💳 (needs card Auth / Sale orders)',
+  //   ),
+  // );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(title('RFD-05: Gift Card is never a refund method — PENDING 💳 (needs a settled gift-card order)'));
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'RFD-06: multi-partial → Refunded; card fail → Refund Issue — PENDING 🔌 OUT OF SCOPE (fault-injection, §9a)',
+  //   ),
+  // );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'RFD-R1 (VP-4051): a refunded service is still editable — PENDING 🌙 (needs a partially-refunded order)',
+  //   ),
+  // );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'RFD-R3 (VP-3342): refund appears in Order History on its refund day — PENDING 🌙 (needs date-range nav, no locator yet)',
+  //   ),
+  // );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'RFD-R4 (VP-3335): service tax correct in cancel/refund/history/receipt — PENDING 🌙 (needs a refunded order + receipt read)',
+  //   ),
+  // );
 });

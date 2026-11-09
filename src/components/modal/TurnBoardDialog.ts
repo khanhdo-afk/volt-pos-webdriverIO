@@ -222,7 +222,9 @@ export class TurnBoardDialog extends BaseComponent {
       return Array.from(document.querySelectorAll('[role="dialog"],[role="alertdialog"]')).filter(
         function (el) {
           const state = el.getAttribute('data-state');
-          return state === null || state === 'open';
+          // 1.1.109 keeps closed dialogs mounted (display:none) — only count shown ones.
+          const shown = (el as HTMLElement).getClientRects().length > 0;
+          return shown && (state === null || state === 'open');
         },
       ).length;
     });
@@ -550,7 +552,9 @@ export class TurnBoardDialog extends BaseComponent {
             return {
               staff: (ps[0]?.textContent ?? '').trim(),
               currentText: (ps[1]?.textContent ?? '').trim(),
-              valueText: (d.querySelector(':scope > span')?.textContent ?? '').trim(),
+              valueText: (
+                d.querySelector(':scope > span:not([data-slot="avatar"])')?.textContent ?? ''
+              ).trim(),
               decreaseEnabled: dec ? !dec.disabled : false,
               increaseEnabled: inc ? !inc.disabled : false,
               saveEnabled: rest[0] ? !rest[0].disabled : false,
@@ -575,8 +579,12 @@ export class TurnBoardDialog extends BaseComponent {
     return this;
   }
 
+  /** Press − up to `times`; stops once − is disabled (the stepper clamps at 0). */
   async adjustDecrease(staffName: string, times = 1): Promise<this> {
-    for (let i = 0; i < times; i += 1) await this.clickInAdjustRow(staffName, TurnAdjustIds.rowDecrease);
+    for (let i = 0; i < times; i += 1) {
+      if (i > 0 && (await this.adjustRowFor(staffName))?.decreaseEnabled === false) break;
+      await this.clickInAdjustRow(staffName, TurnAdjustIds.rowDecrease);
+    }
     return this;
   }
 

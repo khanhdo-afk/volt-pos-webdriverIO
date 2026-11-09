@@ -110,22 +110,25 @@ describe('Order flow — Checkout tenders', () => {
     },
   );
 
-  it(
-    title(
-      'TC-ORDERFLOW-47: Tip is pressable once a tender is chosen — PENDING ' +
-        '(the Tip button renders but reads `disabled` on EVERY tender on this device — verified ' +
-        'card/cash/gift-card/other — because enabling it needs the customer-display tip handoff / ' +
-        'tip-after-payment merchant config, which merchant 20258 does not have set up)',
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'TC-ORDERFLOW-47: Tip is pressable once a tender is chosen — PENDING ' +
+  //       '(the Tip button renders but reads `disabled` on EVERY tender on this device — verified ' +
+  //       'card/cash/gift-card/other — because enabling it needs the customer-display tip handoff / ' +
+  //       'tip-after-payment merchant config, which merchant 20258 does not have set up)',
+  //   ),
+  // );
 
-  it(title('TC-ORDERFLOW-43: partial pay across several tenders — PENDING (multi-settle sequence)'));
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(title('TC-ORDERFLOW-43: partial pay across several tenders — PENDING (multi-settle sequence)'));
 
-  it(
-    title(
-      'TC-ORDERFLOW-48: Print omits the payment method from the preview — PENDING (no receipt-preview reader)',
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'TC-ORDERFLOW-48: Print omits the payment method from the preview — PENDING (no receipt-preview reader)',
+  //   ),
+  // );
 
   it(
     title(

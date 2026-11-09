@@ -272,7 +272,9 @@ describe('VP-1761 — Turn suggestion', () => {
       const staff = roster[0] ?? '';
       const row = await turnBoardDialog.adjustRowFor(staff);
       const start = row?.current ?? 0;
-      await turnBoardDialog.adjustDecrease(staff, Math.ceil(start) + 2);
+      // On 1.1.x the − button DISABLES at 0, so the extra presses cannot land; stop
+      // there and let the assertion name the gap instead of a click timeout.
+      await turnBoardDialog.adjustDecrease(staff, Math.ceil(start) + 2).catch(() => undefined);
       const after = await turnBoardDialog.adjustRowFor(staff);
       await turnBoardDialog.adjustReset(staff);
       // Sheet: negative allowed. 1.1.x clamps at 0 (TC-TURN-41) — a failure here is that gap.

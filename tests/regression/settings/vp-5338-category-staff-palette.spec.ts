@@ -334,12 +334,13 @@ describe('VP-5338 — Category palette = Staff palette (+ VP-5483)', () => {
       },
     );
 
-    it(
-      title(
-        'TC-VP5338-19: BE command re-run cleans categories re-created by old POS — PENDING (BE-only)',
-        Tag.REGRESSION,
-      ),
-    );
+    // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+    // it(
+    //   title(
+    //     'TC-VP5338-19: BE command re-run cleans categories re-created by old POS — PENDING (BE-only)',
+    //     Tag.REGRESSION,
+    //   ),
+    // );
     // TC-VP5338-20 runs on the Portal web lane: tests/web/portal-vp-5338-category-palette.spec.ts.
   });
 });

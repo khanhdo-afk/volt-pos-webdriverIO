@@ -106,11 +106,12 @@ describe('Settings — Accessibility (Passcode Setting)', () => {
     await ensurePasscodeGrant();
   });
 
-  it(
-    title(
-      'Default passcode verification is ON (TC-PASSCODE-01) — PENDING (factory default needs a merchant that never touched the setting; the single switch is now a per-action gate list)',
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'Default passcode verification is ON (TC-PASSCODE-01) — PENDING (factory default needs a merchant that never touched the setting; the single switch is now a per-action gate list)',
+  //   ),
+  // );
 
   it(
     title(
@@ -204,11 +205,12 @@ describe('Settings — Accessibility (Passcode Setting)', () => {
     },
   );
 
-  it(
-    title(
-      'Known bug VP-2586: the setting does not sync to a second till without a reload (TC-PASSCODE-06) — PENDING (needs a second till / session of the same merchant)',
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'Known bug VP-2586: the setting does not sync to a second till without a reload (TC-PASSCODE-06) — PENDING (needs a second till / session of the same merchant)',
+  //   ),
+  // );
 
   it(
     title(

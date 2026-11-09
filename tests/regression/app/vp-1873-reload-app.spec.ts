@@ -97,9 +97,11 @@ describe('VP-1873 — Reload App', () => {
     },
   );
 
-  it(title('TC-07: reload pulls the latest backend data — PENDING (needs a second writer)'));
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(title('TC-07: reload pulls the latest backend data — PENDING (needs a second writer)'));
 
-  it(title('TC-08: only the current device reloads — PENDING (needs a second till)'));
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(title('TC-08: only the current device reloads — PENDING (needs a second till)'));
 
   it(
     title('TC-09 Reload from Order History still lands on Home', Tag.REGRESSION, Tag.SLOW),

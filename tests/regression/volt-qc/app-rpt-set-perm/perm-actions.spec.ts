@@ -20,6 +20,7 @@
  * `_manual/app-rpt-set-perm-devm.manual.spec.ts`.
  */
 
+import { setGates, storedGates } from '../../settings/vp-4815.helpers.js';
 import { expect } from '@wdio/globals';
 import { Timeouts } from '../../../../configs/constants/timeouts.js';
 import { assertWritesAllowed } from '../../../../configs/env/loadEnv.js';
@@ -217,7 +218,11 @@ describe('volt-qc PERM — action gates, skip, phone, matrix (mutation)', () => 
       Tag.WRITE,
     ),
     async function (this: Mocha.Context): Promise<void> {
-      this.timeout(Timeouts.MOCHA_HOOK);
+      this.timeout(Timeouts.MOCHA_HOOK * 2);
+      // 1.1.109 (VP-4815) gates Calendar and starting a new order (Quick Checkout)
+      // too — switch those two off for this case; restored at the end.
+      const gatesBefore = await storedGates();
+      await setGates({ calendar: false, quick_checkout: false });
       await cleanTill();
       await clearPasscodeGrant();
       await gateProbe.watchGates();
@@ -231,7 +236,12 @@ describe('volt-qc PERM — action gates, skip, phone, matrix (mutation)', () => 
       await homePage.selectStaffByIndex(0);
       await homePage.addServiceByIndex(0);
       await settle(1_500);
-      expect(await gateProbe.gatesSeen()).toEqual([]);
+      const seen = await gateProbe.gatesSeen();
+      await setGates({
+        calendar: gatesBefore['calendar'] ?? true,
+        quick_checkout: gatesBefore['quick_checkout'] ?? true,
+      });
+      expect(seen).toEqual([]);
       await ensurePasscodeGrant();
       await cleanTill();
     },

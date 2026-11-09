@@ -1,3 +1,4 @@
+import { showCalendarDay } from '../../../helpers/calendar.js';
 import { browser } from '@wdio/globals';
 import { Key } from 'webdriverio';
 import { Timeouts } from '../../../../configs/constants/timeouts.js';
@@ -282,6 +283,7 @@ export async function calendarDayDisabled(d: Date): Promise<boolean> {
 }
 
 export async function clickCalendarDay(d: Date): Promise<void> {
+  await showCalendarDay(d); // one-month picker on 1.1.109: page to the day's month first
   await clickIn(RptCss.popper, calendarDaySelector(d));
   await settle(250);
 }

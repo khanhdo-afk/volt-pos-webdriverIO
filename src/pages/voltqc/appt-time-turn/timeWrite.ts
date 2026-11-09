@@ -739,6 +739,20 @@ export async function pickWheelTime(hour12: number, minute: number, meridiem: 'A
   await wheelTo(0, hour12 - 1, 12, true);
   await wheelTo(1, minute, 60, true);
   await wheelTo(2, meridiem === 'AM' ? 0 : 1, 2, false);
+  // The 2-item AM/PM wheel barely scrolls on 1.1.109 (the wheel step lands back on
+  // AM): tap the wanted label itself as well — a tap on a wheel item selects it.
+  await browser.execute((want: string) => {
+    const pops = Array.from(document.querySelectorAll('[data-radix-popper-content-wrapper]')).filter(
+      (p) => p.getClientRects().length > 0,
+    );
+    const pop = pops[pops.length - 1];
+    const el = Array.from(pop?.querySelectorAll<HTMLElement>('*') ?? []).find(
+      (e) =>
+        e.children.length === 0 && (e.textContent ?? '').trim() === want && e.getClientRects().length > 0,
+    );
+    el?.click();
+  }, meridiem);
+  await settle(400);
 }
 
 /* ------------------------------------------------------------------------- *

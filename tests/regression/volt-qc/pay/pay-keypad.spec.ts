@@ -39,6 +39,7 @@ import {
 } from '../../../../src/pages/voltqc/pay/payProbe.js';
 import { Tag, title } from '../../../../src/types/testTags.js';
 import { buildDraft } from '../../order-flow/charge-matrix.helpers.js';
+import { requireStore, TIP_FULL } from '../../../../src/support/portal/storeSettings.js';
 
 const PRESET_CENTS: Record<(typeof QUICK_CASH)[number], number> = {
   $5: 500,
@@ -62,6 +63,12 @@ async function refillCash(): Promise<void> {
 }
 
 describe('volt-qc 03 PAY — keypad & quick cash (drafts)', function () {
+  before(async function () {
+    this.timeout(5 * 60_000);
+    // Store set-up this file needs — Portal-adjusted if the till differs, restored after the file.
+    await requireStore(TIP_FULL);
+  });
+
   this.timeout(Timeouts.MOCHA_TEST * 2);
 
   afterEach(async () => {

@@ -20,15 +20,14 @@
  *   - TC-ORDERFLOW-68  Discount/Tax stay locked; Service fee/Cashback recompute
  */
 
-import { title } from '../../../src/types/testTags.js';
+// [TẮT 2026-11-08] Tạm không test (đã đánh dấu skip/MANUAL: cần thiết bị/điều kiện không tự động được, hoặc Re-Open tạm dừng theo yêu cầu) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+// // PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bỏ .skip để chạy lại.
+// describe.skip('Order flow — Re-open Order', () => {
+//   it(title('TC-ORDERFLOW-65: re-open allowed only once — PENDING (LINEAR-ONLY, mutating)'));
 
-// PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bỏ .skip để chạy lại.
-describe.skip('Order flow — Re-open Order', () => {
-  it(title('TC-ORDERFLOW-65: re-open allowed only once — PENDING (LINEAR-ONLY, mutating)'));
+//   it(title('TC-ORDERFLOW-66: button reads "Continue Re-open" mid-flow — PENDING (LINEAR-ONLY, mutating)'));
 
-  it(title('TC-ORDERFLOW-66: button reads "Continue Re-open" mid-flow — PENDING (LINEAR-ONLY, mutating)'));
+//   it(title('TC-ORDERFLOW-67: "Void all" replaces per-transaction voids — PENDING (LINEAR-ONLY, mutating)'));
 
-  it(title('TC-ORDERFLOW-67: "Void all" replaces per-transaction voids — PENDING (LINEAR-ONLY, mutating)'));
-
-  it(title('TC-ORDERFLOW-68: Discount/Tax locked, fee/cashback recompute — PENDING (LINEAR-ONLY, mutating)'));
-});
+//   it(title('TC-ORDERFLOW-68: Discount/Tax locked, fee/cashback recompute — PENDING (LINEAR-ONLY, mutating)'));
+// });

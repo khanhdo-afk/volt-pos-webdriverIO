@@ -1,3 +1,4 @@
+import { browser } from '@wdio/globals';
 /**
  * Shared scaffolding for the volt-qc per-ticket specs
  * (`docs/qc/volt-qc/vp-tickets/*.md` → `tests/regression/volt-qc/vp-tickets/*.spec.ts`).
@@ -194,13 +195,19 @@ export async function findStaffWithSalaryKind(kind: SalaryKind, max = 15): Promi
     .map((r) => r.name)
     .slice(0, max);
   for (const name of names) {
+    await dropUnsavedStaffEdit();
     await openStaffsSettings();
+    await dropUnsavedStaffEdit();
     await staffsSettingsPage.openStaff(name);
     await staffsSettingsPage.openTab(1);
     if (!(await staffsSettingsPage.ensureSalaryControls())) continue;
     const states = await staffsSettingsPage.salaryTypeStates();
     if (!states[kind]) continue;
     const values = await staffsSettingsPage.compensationValues();
+    // ensureSalaryControls() may have ticked a section open → the form is dirty and
+    // the next tab / staff change raises "Are you sure you want to change tab?".
+    await openStaffsSettings().catch(() => undefined);
+    await dropUnsavedStaffEdit();
     return {
       name,
       kind,
@@ -209,4 +216,19 @@ export async function findStaffWithSalaryKind(kind: SalaryKind, max = 15): Promi
     };
   }
   return null;
+}
+
+/** Answer a "change tab / leave with unsaved changes" confirm by DISCARDING (no-op when none). */
+export async function dropUnsavedStaffEdit(): Promise<void> {
+  await browser.execute(() => {
+    const d = Array.from(document.querySelectorAll('[role="alertdialog"]')).find(
+      (e) => e.getClientRects().length > 0,
+    );
+    if (!d || !/unsaved|change tab|leave/i.test(d.textContent ?? '')) return;
+    const b = Array.from(d.querySelectorAll<HTMLButtonElement>('button')).find((x) =>
+      /^(yes|discard|leave|confirm|change|ok|đồng ý|rời)/i.test((x.textContent ?? '').trim()),
+    );
+    b?.click();
+  });
+  await new Promise((r) => setTimeout(r, 400));
 }

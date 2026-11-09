@@ -50,15 +50,16 @@ import {
 // volt-qc/oh-reopen/oh-tip OH-185/OH-186: the build shows the current tip, and the
 // first digit REPLACES it, so a new tip can never be added on top of the old one.
 describe('Payment flows — Adjust Tip', () => {
-  it(title('TIP-02: multi-tender order forces a tender choice — PENDING 🌙 (two-settle order)'));
-
-  it(
-    title(
-      'TIP-R2 (VP-3935): tip ≤ original is rejected on entry — PENDING 🌙 (needs an order with an existing tip + validation signal)',
-    ),
-  );
-
-  it(title('TIP-R4 (VP-4167): point calculation includes the tip — PENDING 🌙 (needs a point/report read)'));
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(title('TIP-02: multi-tender order forces a tender choice — PENDING 🌙 (two-settle order)'));
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'TIP-R2 (VP-3935): tip ≤ original is rejected on entry — PENDING 🌙 (needs an order with an existing tip + validation signal)',
+  //   ),
+  // );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(title('TIP-R4 (VP-4167): point calculation includes the tip — PENDING 🌙 (needs a point/report read)'));
 });
 
 describe('Payment flows — Split Tip', () => {
@@ -115,11 +116,12 @@ describe('Payment flows — Split Tip', () => {
     },
   );
 
-  it(
-    title(
-      'TIP-R5 (VP-4192): Split Evenly shows the wrong initial value — PENDING 🌙 (needs a split-tip per-staff amount reader)',
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'TIP-R5 (VP-4192): Split Evenly shows the wrong initial value — PENDING 🌙 (needs a split-tip per-staff amount reader)',
+  //   ),
+  // );
 });
 
 describe('Payment flows — Adjust Tip on a card order', () => {

@@ -30,7 +30,7 @@ import { goToSettings } from '../../../src/flows/index.js';
 import paymentGatewayPage from '../../../src/pages/settings/PaymentGatewayPage.js';
 import { Tag, title } from '../../../src/types/testTags.js';
 
-const PENDING = 'PENDING (no sidebar entry; route renders "Not Found" on build 1.1.56)';
+// const PENDING = 'PENDING (no sidebar entry; route renders "Not Found" on build 1.1.56)';
 
 describe('Settings — Payment Gateway', () => {
   before(async function (this: Mocha.Context): Promise<void> {
@@ -46,15 +46,26 @@ describe('Settings — Payment Gateway', () => {
     },
   );
 
-  it(title(`Screen renders its heading and description (TC-PGW-01) — ${PENDING}`));
-  it(title(`No passcode gate on entry (TC-PGW-02) — ${PENDING}`));
-  it(title(`The switch has the right accessible name and id (TC-PGW-03) — ${PENDING}`));
-  it(title(`The switch defaults to ON (TC-PGW-04) — ${PENDING}`));
-  it(title(`Turning it off applies at once, no Save on screen (TC-PGW-05) — ${PENDING}`));
-  it(title(`Turning it off shows no success toast (TC-PGW-06) — ${PENDING}`));
-  it(title(`The value is written to the tauri store (TC-PGW-07) — ${PENDING}`));
-  it(title(`OFF survives a reload (TC-PGW-08) — ${PENDING}`));
-  it(title(`Turning it back on stores ON (TC-PGW-09) — ${PENDING}`));
-  it(title(`Clicking the label toggles the switch (TC-PGW-10) — ${PENDING}`));
-  it(title(`Cleanup: the switch is restored to ON (TC-PGW-11) — ${PENDING}`));
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(title(`Screen renders its heading and description (TC-PGW-01) — ${PENDING}`));
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(title(`No passcode gate on entry (TC-PGW-02) — ${PENDING}`));
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(title(`The switch has the right accessible name and id (TC-PGW-03) — ${PENDING}`));
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(title(`The switch defaults to ON (TC-PGW-04) — ${PENDING}`));
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(title(`Turning it off applies at once, no Save on screen (TC-PGW-05) — ${PENDING}`));
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(title(`Turning it off shows no success toast (TC-PGW-06) — ${PENDING}`));
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(title(`The value is written to the tauri store (TC-PGW-07) — ${PENDING}`));
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(title(`OFF survives a reload (TC-PGW-08) — ${PENDING}`));
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(title(`Turning it back on stores ON (TC-PGW-09) — ${PENDING}`));
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(title(`Clicking the label toggles the switch (TC-PGW-10) — ${PENDING}`));
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(title(`Cleanup: the switch is restored to ON (TC-PGW-11) — ${PENDING}`));
 });

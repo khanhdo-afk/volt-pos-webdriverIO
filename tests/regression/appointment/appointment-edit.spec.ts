@@ -25,10 +25,10 @@ import { Timeouts } from '../../../configs/constants/timeouts.js';
 import { returnToHome } from '../../../src/flows/index.js';
 import { appointmentPage } from '../../../src/pages/index.js';
 import { Tag, title } from '../../../src/types/testTags.js';
-import { NO_FORM_REASON, openOverview, skipBecause } from './appointment.helpers.js';
+import { openOverview, skipBecause } from './appointment.helpers.js';
 
-const NO_FORM = NO_FORM_REASON;
-const OWN_ONLY = 'mutates an appointment — allowed only on a QA-SCAN-20261025 appointment this suite books';
+// const NO_FORM = NO_FORM_REASON;
+// const OWN_ONLY = 'mutates an appointment — allowed only on a QA-SCAN-20261025 appointment this suite books';
 
 /** Open an existing appointment of `status` (today..+6 days) or skip the test. */
 async function openOrSkip(
@@ -99,42 +99,50 @@ describe('Appointment — Edit / Confirm / Cancel (VP-1615)', () => {
     },
   );
 
-  it(
-    title(
-      'A Done appointment offers no action except Checkout (TC-EDIT-04) — PENDING: NEEDS CONFIRM; Done is set by the Checkout task (separate ticket), no linked fixture',
-    ),
-  );
-  it(
-    title(
-      `Editing fields → "send a message to [Customer]?" popup; status unchanged (TC-EDIT-05) — PENDING: ${NO_FORM}; ${OWN_ONLY}`,
-    ),
-  );
-  it(
-    title(
-      `Edit → Send sends the SMS and updates the appointment (TC-EDIT-06) — PENDING: ${NO_FORM}; ${OWN_ONLY}; SMS verification needs a log/mock`,
-    ),
-  );
-  it(title(`Edit → Don't Send updates without SMS (TC-EDIT-07) — PENDING: ${NO_FORM}; ${OWN_ONLY}`));
-  it(
-    title(
-      `Edit that creates an overlap re-runs validation? (TC-EDIT-08) — PENDING: NEEDS CONFIRM + ${NO_FORM}`,
-    ),
-  );
-  it(
-    title(
-      `Edit of a Repeat occurrence — one or the whole series? (TC-EDIT-09) — PENDING: NEEDS CONFIRM + Repeat setting + ${NO_FORM}`,
-    ),
-  );
-  it(
-    title(
-      `Edit a line's Staff/Service shows the new values (child replaced) (TC-EDIT-10) — PENDING: ${NO_FORM}; ${OWN_ONLY}`,
-    ),
-  );
-  it(
-    title(
-      `Confirm a Scheduled appointment → popup, SMS, notification, Confirmed (TC-CONFIRM-01) — PENDING: ${OWN_ONLY}; no form on 1.1.56 to book a Scheduled one`,
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'A Done appointment offers no action except Checkout (TC-EDIT-04) — PENDING: NEEDS CONFIRM; Done is set by the Checkout task (separate ticket), no linked fixture',
+  //   ),
+  // );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     `Editing fields → "send a message to [Customer]?" popup; status unchanged (TC-EDIT-05) — PENDING: ${NO_FORM}; ${OWN_ONLY}`,
+  //   ),
+  // );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     `Edit → Send sends the SMS and updates the appointment (TC-EDIT-06) — PENDING: ${NO_FORM}; ${OWN_ONLY}; SMS verification needs a log/mock`,
+  //   ),
+  // );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(title(`Edit → Don't Send updates without SMS (TC-EDIT-07) — PENDING: ${NO_FORM}; ${OWN_ONLY}`));
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     `Edit that creates an overlap re-runs validation? (TC-EDIT-08) — PENDING: NEEDS CONFIRM + ${NO_FORM}`,
+  //   ),
+  // );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     `Edit of a Repeat occurrence — one or the whole series? (TC-EDIT-09) — PENDING: NEEDS CONFIRM + Repeat setting + ${NO_FORM}`,
+  //   ),
+  // );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     `Edit a line's Staff/Service shows the new values (child replaced) (TC-EDIT-10) — PENDING: ${NO_FORM}; ${OWN_ONLY}`,
+  //   ),
+  // );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     `Confirm a Scheduled appointment → popup, SMS, notification, Confirmed (TC-CONFIRM-01) — PENDING: ${OWN_ONLY}; no form on 1.1.56 to book a Scheduled one`,
+  //   ),
+  // );
 
   it(
     title('Confirm is not offered on a non-Scheduled appointment (TC-CONFIRM-02)', Tag.REGRESSION),
@@ -152,24 +160,28 @@ describe('Appointment — Edit / Confirm / Cancel (VP-1615)', () => {
     },
   );
 
-  it(
-    title(
-      `Cancel a Scheduled appointment → popup, SMS, notification, Canceled (TC-CANCEL-01) — PENDING: ${OWN_ONLY}; no form on 1.1.56 to book one`,
-    ),
-  );
-  it(
-    title(
-      `Cancel a Confirmed appointment (TC-CANCEL-02) — PENDING: ${OWN_ONLY}; no form on 1.1.56 to book one`,
-    ),
-  );
-  it(
-    title(
-      `Dismissing the Cancel confirm keeps the status (TC-CANCEL-03) — PENDING: ${OWN_ONLY} (a mis-click would cancel a real appointment); no form on 1.1.56 to book one`,
-    ),
-  );
-  it(
-    title(
-      'Passcode / staff-code guard on Edit / Confirm / Cancel (TC-GUARD-01) — PENDING: NEEDS CONFIRM; guard source task not linked + needs an own appointment to act on',
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     `Cancel a Scheduled appointment → popup, SMS, notification, Canceled (TC-CANCEL-01) — PENDING: ${OWN_ONLY}; no form on 1.1.56 to book one`,
+  //   ),
+  // );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     `Cancel a Confirmed appointment (TC-CANCEL-02) — PENDING: ${OWN_ONLY}; no form on 1.1.56 to book one`,
+  //   ),
+  // );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     `Dismissing the Cancel confirm keeps the status (TC-CANCEL-03) — PENDING: ${OWN_ONLY} (a mis-click would cancel a real appointment); no form on 1.1.56 to book one`,
+  //   ),
+  // );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'Passcode / staff-code guard on Edit / Confirm / Cancel (TC-GUARD-01) — PENDING: NEEDS CONFIRM; guard source task not linked + needs an own appointment to act on',
+  //   ),
+  // );
 });

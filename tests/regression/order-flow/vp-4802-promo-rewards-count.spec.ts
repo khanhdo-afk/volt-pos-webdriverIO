@@ -324,28 +324,29 @@ describe('VP-4802 — Promo & Rewards shows the number of available promotions +
 
   /* ----------------------------------------------------------------------- */
   describe('5. Not automatable here / documentation', () => {
-    it(
-      title(
-        'TC-VP4802-11: more than 99 offers shows "99+" — PENDING 🧱 (no customer with ≥ 100 offers on dev)',
-      ),
-    );
-
-    it(
-      title(
-        'TC-VP4802-12: a promotion assigned on Portal / another POS updates the badge live — PENDING 🧱 (Portal needs Google 2FA)',
-      ),
-    );
-
-    it(
-      title(
-        'TC-VP4802-13: inactive / not-yet-started promotion is (not) counted — PENDING 🧱 (needs Portal set-up + PO decision)',
-      ),
-    );
-
-    it(
-      title(
-        'TC-VP4802-14: the badge never shows half the sum while loading — PENDING 📄 (code review of isCountReady)',
-      ),
-    );
+    // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+    // it(
+    //   title(
+    //     'TC-VP4802-11: more than 99 offers shows "99+" — PENDING 🧱 (no customer with ≥ 100 offers on dev)',
+    //   ),
+    // );
+    // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+    // it(
+    //   title(
+    //     'TC-VP4802-12: a promotion assigned on Portal / another POS updates the badge live — PENDING 🧱 (Portal needs Google 2FA)',
+    //   ),
+    // );
+    // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+    // it(
+    //   title(
+    //     'TC-VP4802-13: inactive / not-yet-started promotion is (not) counted — PENDING 🧱 (needs Portal set-up + PO decision)',
+    //   ),
+    // );
+    // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+    // it(
+    //   title(
+    //     'TC-VP4802-14: the badge never shows half the sum while loading — PENDING 📄 (code review of isCountReady)',
+    //   ),
+    // );
   });
 });

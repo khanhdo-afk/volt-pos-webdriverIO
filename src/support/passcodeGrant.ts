@@ -156,6 +156,14 @@ export async function ensurePasscodeGrant(): Promise<boolean> {
   return true;
 }
 
+/** Re-stamp the grant when it is still present but has under `minLeftMs` left. */
+export async function topUpPasscodeGrant(minLeftMs = 10 * 60_000): Promise<boolean> {
+  const current = await readPasscodeGrant();
+  if (!current || current.expiresAt - Date.now() > minLeftMs) return false;
+  await seedPasscodeGrant(current.staffId);
+  return true;
+}
+
 /** Re-stamp an existing grant. For a lane long enough to outlive 30 minutes. */
 export async function refreshGrant(): Promise<boolean> {
   const staffId = (await readPasscodeGrant())?.staffId ?? cachedGrantStaffId();

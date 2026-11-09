@@ -59,15 +59,19 @@ describe('Order flow — Customer entry', () => {
     },
   );
 
-  it(
-    title('TC-ORDERFLOW-07: existing customer → "Customers Found" list — PENDING (needs a customer fixture)'),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title('TC-ORDERFLOW-07: existing customer → "Customers Found" list — PENDING (needs a customer fixture)'),
+  // );
 
-  it(
-    title('TC-ORDERFLOW-08: duplicate phone → Done attaches the first — PENDING (needs a customer fixture)'),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title('TC-ORDERFLOW-08: duplicate phone → Done attaches the first — PENDING (needs a customer fixture)'),
+  // );
 
-  it(title('TC-ORDERFLOW-09: Skip → "Unknown" customer — PENDING (no reviewed locator for Skip)'));
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(title('TC-ORDERFLOW-09: Skip → "Unknown" customer — PENDING (no reviewed locator for Skip)'));
 
-  it(title('TC-ORDERFLOW-10: customer with a saved note → note popup — PENDING (needs a customer fixture)'));
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(title('TC-ORDERFLOW-10: customer with a saved note → note popup — PENDING (needs a customer fixture)'));
 });

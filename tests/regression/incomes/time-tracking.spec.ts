@@ -311,9 +311,10 @@ describe('Time Tracking', () => {
     expect(await timeTrackingPage.isAddDialogOpen()).toBe(false);
   });
 
-  it(
-    title(
-      'TC-TT-12: a record inside a locked payroll cannot be deleted — PENDING (needs a seeded time record inside a LOCKED payroll period; build 1.1.56 disables the Delete button for it instead of showing the Linear message)',
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'TC-TT-12: a record inside a locked payroll cannot be deleted — PENDING (needs a seeded time record inside a LOCKED payroll period; build 1.1.56 disables the Delete button for it instead of showing the Linear message)',
+  //   ),
+  // );
 });

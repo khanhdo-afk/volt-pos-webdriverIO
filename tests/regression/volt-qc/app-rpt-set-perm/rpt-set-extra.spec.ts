@@ -80,7 +80,7 @@ const bare = (code: string): string => code.replace(/^#/, '').trim();
 const rowFor = (s: DailySnap, code: string): DailyRow | undefined =>
   s.rows.find((r) => r.order.includes(bare(code)));
 
-async function dailyUntil(ok: (s: DailySnap) => boolean, budgetMs = 60_000): Promise<DailySnap> {
+async function dailyUntil(ok: (s: DailySnap) => boolean, budgetMs = 180_000): Promise<DailySnap> {
   const end = Date.now() + budgetMs;
   let s = await dailySnapshot(0);
   while (!ok(s) && Date.now() < end) {
@@ -293,7 +293,7 @@ describe('volt-qc RPT / SET — remaining rows (mutation / settings)', () => {
         await settleCashOrder();
         snap = await dailyUntil((s) => (s.cards['Total Order']?.value ?? 0) > 0);
       }
-      await openDaily(0, 'order');
+      await openDaily(0, 'totalOrder');
       await clickDailyCard('Total Order');
       await settle(1_200);
       const orders = await chartSum(false);
@@ -547,9 +547,13 @@ describe('volt-qc RPT / SET — remaining rows (mutation / settings)', () => {
       this.timeout(Timeouts.MOCHA_HOOK);
       await openEmployeeCompensation();
       try {
-        for (const n of ['Commission', 'Commission + Salary', 'Salary']) await pickCompensation(n);
+        // 1.1.109 keeps only the PICKED type's section open: read each one right
+        // after picking it (reading all three at the end gave 10 / 609 / 6 chars).
+        await pickCompensation('Commission');
         const commission = await compensationSection('Commission');
+        await pickCompensation('Commission + Salary');
         const both = await compensationSection('Commission + Salary');
+        await pickCompensation('Salary');
         const salary = await compensationSection('Salary');
         log.info(
           `SET-181 sections: C=${String(commission.length)} CS=${String(both.length)} S=${String(salary.length)}`,

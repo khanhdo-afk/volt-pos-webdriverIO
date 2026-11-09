@@ -127,28 +127,31 @@ describe('Order flow — Card payment', () => {
     },
   );
 
-  it(
-    title(
-      'TC-ORDERFLOW-85: the charging dialog shows the amount and counts down — PENDING ' +
-        '(assert cardChargeAmount / cardCountdown during a CARD_SETTLE=1 run)',
-      Tag.PAYMENT,
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'TC-ORDERFLOW-85: the charging dialog shows the amount and counts down — PENDING ' +
+  //       '(assert cardChargeAmount / cardCountdown during a CARD_SETTLE=1 run)',
+  //     Tag.PAYMENT,
+  //   ),
+  // );
 
-  it(
-    title(
-      'TC-ORDERFLOW-86: a failed / timed-out charge offers Try Again — PENDING ' +
-        '(needs a terminal driven to decline / time out)',
-      Tag.PAYMENT,
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'TC-ORDERFLOW-86: a failed / timed-out charge offers Try Again — PENDING ' +
+  //       '(needs a terminal driven to decline / time out)',
+  //     Tag.PAYMENT,
+  //   ),
+  // );
 
-  it(
-    title(
-      'TC-ORDERFLOW-87: card routes the tip prompt to the customer display — PENDING ' +
-        '(needs the launch lane + a tip-after-payment merchant)',
-      Tag.PAYMENT,
-      Tag.DUAL_WINDOW,
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'TC-ORDERFLOW-87: card routes the tip prompt to the customer display — PENDING ' +
+  //       '(needs the launch lane + a tip-after-payment merchant)',
+  //     Tag.PAYMENT,
+  //     Tag.DUAL_WINDOW,
+  //   ),
+  // );
 });

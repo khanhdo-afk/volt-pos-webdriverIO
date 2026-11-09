@@ -232,7 +232,7 @@ describe('Turn board — Adjust Manual Turn', () => {
 
     const after = await turnBoardDialog.adjustRowFor(row.staff);
     expect(after?.value).toBe(r2(start - 1));
-    await turnBoardDialog.adjustReset(row.staff);
+    if (after?.resetEnabled) await turnBoardDialog.adjustReset(row.staff); // back at Current = clean row, Reset disabled
   });
 
   it(title('Decrease clamps at 0 — never negative (TC-TURN-41)', Tag.REGRESSION), async () => {
@@ -358,19 +358,21 @@ describe('Turn board — Adjust Manual Turn', () => {
     },
   );
 
-  it(
-    title(
-      'TC-TURN-47: Save on a PAST day lands on today (bug) — PENDING (writes an un-revertable delta: the past ' +
-        "day's staff are not on today's board, so the stray +1 cannot be taken back through the UI on a shared merchant)",
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'TC-TURN-47: Save on a PAST day lands on today (bug) — PENDING (writes an un-revertable delta: the past ' +
+  //       "day's staff are not on today's board, so the stray +1 cannot be taken back through the UI on a shared merchant)",
+  //   ),
+  // );
 
-  it(
-    title(
-      'TC-TURN-48: float dust keeps Save enabled at 1.02 − 1 (bug) — PENDING (needs a staff whose Current is ' +
-        'fractional today, which only real service sales under decimal mode produce)',
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'TC-TURN-48: float dust keeps Save enabled at 1.02 − 1 (bug) — PENDING (needs a staff whose Current is ' +
+  //       'fractional today, which only real service sales under decimal mode produce)',
+  //   ),
+  // );
 });
 
 /* ======================================================================= *
@@ -618,13 +620,14 @@ describe('Turn board — Turn Settings (merchant-global)', () => {
     },
   );
 
-  it(
-    title(
-      'TC-TURN-34: only SUCCESSFUL orders count toward turns — PENDING (needs a clocked-in staff with a ' +
-        'successful + pending + canceled order on one day and their per-order service totals to compute ' +
-        'the expected value; the board shows only the sum)',
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'TC-TURN-34: only SUCCESSFUL orders count toward turns — PENDING (needs a clocked-in staff with a ' +
+  //       'successful + pending + canceled order on one day and their per-order service totals to compute ' +
+  //       'the expected value; the board shows only the sum)',
+  //   ),
+  // );
 
   it(
     title('Empty Turn value saves as $0.00 and zeroes every row (TC-TURN-35)', Tag.REGRESSION, Tag.EXCLUSIVE),

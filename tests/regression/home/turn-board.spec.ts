@@ -18,7 +18,7 @@
  * WRITES ATTENDANCE (check in/out). dev / staging only.
  */
 
-import { expect } from '@wdio/globals';
+import { browser, expect } from '@wdio/globals';
 import { Timeouts } from '../../../configs/constants/timeouts.js';
 import { env } from '../../../configs/env/loadEnv.js';
 import { appNav } from '../../../src/components/nav/AppNav.js';
@@ -117,7 +117,11 @@ describe('Turn board — dialog, roster, sort, date, quick view', () => {
     await turnBoardDialog.pressSidebarEntry();
     await turnBoardDialog.waitOpen();
 
-    expect(await appNav.isSidebarOpen()).toBe(false);
+    // The drawer slides shut AFTER the board mounts (1.1.109): give it its animation.
+    const shut = await browser
+      .waitUntil(async () => !(await appNav.isSidebarOpen()), { timeout: 3_000, interval: 200 })
+      .catch(() => false);
+    expect(shut).toBe(true);
     expect(await currentRoutePath()).toBe(Routes.HOME);
     expect(await turnBoardDialog.currentDialogParam()).toBe('turn-board');
     expect(TURN_TITLES).toContain(await turnBoardDialog.titleText());
@@ -299,7 +303,9 @@ describe('Turn board — dialog, roster, sort, date, quick view', () => {
 
       await turnBoardDialog.clickRow(0);
 
-      expect(await turnBoardDialog.openDialogCount()).toBe(dialogsBefore);
+      // Nothing NEW opens (a click on the board may dismiss a lingering quick-view panel).
+      expect(await turnBoardDialog.openDialogCount()).toBeLessThanOrEqual(dialogsBefore);
+      expect(await turnBoardDialog.isOpen()).toBe(true);
       expect(await currentRoutePath()).toBe(pathBefore);
       expect(await turnBoardDialog.currentDialogParam()).toBe('turn-board');
     });
@@ -467,7 +473,14 @@ describe('Turn board — dialog, roster, sort, date, quick view', () => {
 
         expect(await turnBoardDialog.currentDialogParam()).toBe('turn-board');
         expect(await turnBoardDialog.isOpen()).toBe(true);
-        expect(await turnBoardDialog.isQuickViewPanelOpen()).toBe(false);
+        // The panel collapses with an animation after the board opens.
+        const collapsed = await browser
+          .waitUntil(async () => !(await turnBoardDialog.isQuickViewPanelOpen()), {
+            timeout: 3_000,
+            interval: 200,
+          })
+          .catch(() => false);
+        expect(collapsed).toBe(true);
         expect(await turnBoardDialog.quickViewExpanded()).toBe(false);
       },
     );

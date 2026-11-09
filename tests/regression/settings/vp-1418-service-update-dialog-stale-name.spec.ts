@@ -267,10 +267,11 @@ describe('VP-1418 — Update Service dialog shows the saved values after an upda
     },
   );
 
-  it(
-    title(
-      'TC-VP1418-08: the service keeps its saved values across a POS reinstall / Version Update — PENDING ' +
-        '(installs another POS build and restarts the app, ending the WebDriver session; manual)',
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'TC-VP1418-08: the service keeps its saved values across a POS reinstall / Version Update — PENDING ' +
+  //       '(installs another POS build and restarts the app, ending the WebDriver session; manual)',
+  //   ),
+  // );
 });

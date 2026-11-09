@@ -136,7 +136,9 @@ describe('Settings — Receipt', () => {
       expect(await receiptSettingsPage.hasToggle(id)).toBe(true);
       if (!(await receiptSettingsPage.isToggleOn(id))) off.push(id);
     }
-    expect(off).toEqual([]);
+    // "Group items by staff or guest" (new on 1.1.x) is a layout choice the merchant
+    // makes, OFF on a fresh store — every other Display Option defaults ON.
+    expect(off.filter((id) => id !== 'group-items-by-staff-or-guest')).toEqual([]);
   });
 
   it(title('The preview shows the store block (TC-RCP-08)', Tag.REGRESSION), async () => {
@@ -149,7 +151,8 @@ describe('Settings — Receipt', () => {
     expect(lines[0]).toBe('Receipt Preview');
     expect(lines[1]?.length ?? 0).toBeGreaterThan(0);
     expect(lines[2]?.length ?? 0).toBeGreaterThan(0);
-    expect(lines.some((l) => /^\*{3}-\*{3}-\d{4}$/.test(l))).toBe(true);
+    // The business phone: masked "***-***-1234" on older builds, "(888) 887-6789" since 1.1.x.
+    expect(lines.some((l) => /^\*{3}-\*{3}-\d{4}$|^\(\d{3}\) \d{3}-\d{4}$/.test(l))).toBe(true);
   });
 
   /* ------------------------------------------------------------------ *
@@ -238,11 +241,18 @@ describe('Settings — Receipt', () => {
     },
   );
 
-  it(title('🐞 The preview doubles the "Staff:" label (TC-RCP-16)', Tag.REGRESSION), async () => {
-    // Documented defect — expected once fixed: 0 occurrences.
-    const text = await receiptSettingsPage.previewText();
-    expect(text.match(/Staff: Staff:/g)?.length ?? 0).toBe(2);
-  });
+  it(
+    title('The preview shows the "Staff:" label once per group, never doubled (TC-RCP-16)', Tag.REGRESSION),
+    async () => {
+      // The "Staff:" group lines only render while "Group items by staff or guest" is
+      // ON; switch it on in the form (never saved — beforeEach discards) to look.
+      if (!(await receiptSettingsPage.isToggleOn('group-items-by-staff-or-guest')))
+        await receiptSettingsPage.toggle('group-items-by-staff-or-guest');
+      const text = await receiptSettingsPage.previewText();
+      // Documented defect (bug: the label printed twice, "Staff: Staff:") — a FAIL here is that bug.
+      expect(text.match(/Staff: Staff:/g)?.length ?? 0).toBe(0);
+    },
+  );
 
   /* ------------------------------------------------------------------ *
    * Collapse / expand
@@ -293,9 +303,10 @@ describe('Settings — Receipt', () => {
    * Sync window
    * ------------------------------------------------------------------ */
 
-  it(
-    title(
-      'TC-RCP-20: route right after an app restart may hit the "Unknown type Setting" error boundary — PENDING (needs an app restart inside the spec; the root hook owns the app lifecycle, and the window closes once sync finishes)',
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'TC-RCP-20: route right after an app restart may hit the "Unknown type Setting" error boundary — PENDING (needs an app restart inside the spec; the root hook owns the app lifecycle, and the window closes once sync finishes)',
+  //   ),
+  // );
 });

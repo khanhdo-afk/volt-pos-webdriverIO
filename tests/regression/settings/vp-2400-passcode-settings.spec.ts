@@ -95,7 +95,8 @@ describe('VP-2400 — Passcode Settings', () => {
     },
   );
 
-  it(title('TC-02: default value is ON — PENDING (needs a merchant that never touched the setting)'));
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(title('TC-02: default value is ON — PENDING (needs a merchant that never touched the setting)'));
 
   it(
     title(
@@ -213,8 +214,12 @@ describe('VP-2400 — Passcode Settings', () => {
     },
   );
 
-  it(title('TC-08: change applies to every till of the merchant — PENDING (needs a second till)'));
-  it(title('TC-09: setting is per merchant — PENDING (needs a second merchant)'));
-  it(title('TC-10/11/17: permissions are unaffected — PENDING (needs a staff login without the permission)'));
-  it(title('TC-14: global OFF wins after the 30-minute window — PENDING (waits out 30 minutes)'));
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(title('TC-08: change applies to every till of the merchant — PENDING (needs a second till)'));
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(title('TC-09: setting is per merchant — PENDING (needs a second merchant)'));
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(title('TC-10/11/17: permissions are unaffected — PENDING (needs a staff login without the permission)'));
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(title('TC-14: global OFF wins after the 30-minute window — PENDING (waits out 30 minutes)'));
 });

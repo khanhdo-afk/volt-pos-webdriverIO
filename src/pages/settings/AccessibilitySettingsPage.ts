@@ -32,6 +32,8 @@ export const PASSCODE_GATES = [
   'view_order_history',
   // Added in build 1.1.x, between Order History and Open Cash Drawer.
   'quick_pay',
+  // 1.1.109: Apply Discount (Promo & Rewards) between Quick Pay and Quick Checkout.
+  'apply_discount',
   // VP-4815 (build 1.1.99): Quick Checkout, Sell Gift Card, Edit Service Price, Calendar.
   'quick_checkout',
   'gift_card_sale',

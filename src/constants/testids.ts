@@ -782,6 +782,8 @@ export const CheckoutIds = {
     'checkout keypad backspace',
     'checkout-keypad-backspace',
     '[data-testid="checkout-keypad-back"]',
+    // 1.1.109 dropped the testid: the icon-only key right after "0".
+    '//button[normalize-space()="0"]/following-sibling::button[1][not(normalize-space())]',
   ),
 
   /* --- Order detail column (`-order-checkout-detail/`) ------------------ */
@@ -1802,7 +1804,12 @@ export const adjustTipPaymentItem = (index: number): Locator =>
 
 /** The "Adjust Tip" button on one tender row of the picker. */
 export const adjustTipPaymentItemBtn = (index: number): Locator =>
-  locator(`adjust tip tender button ${index}`, `adjust-tip-payment-item-btn-${index}`);
+  locator(
+    `adjust tip tender button ${index}`,
+    `adjust-tip-payment-item-btn-${index}`,
+    // testids are stripped on 1.1.x: the picker's per-tender "Adjust Tip" buttons, in order.
+    `(//*[@role="dialog"]//button[normalize-space()="Adjust Tip"])[${String(index + 1)}]`,
+  );
 
 /** The method label on one tender row of the picker. */
 export const adjustTipPaymentItemLabel = (index: number): Locator =>

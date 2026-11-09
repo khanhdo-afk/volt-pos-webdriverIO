@@ -159,7 +159,7 @@ if (!window.__vqc || window.__vqc.v !== 3) {
       el.scrollIntoView({ block: 'nearest', inline: 'nearest' });
       return true;
     },
-    jsClick: function (chain) { var el = resolve(chain)[0]; if (!el) return false; el.click(); return true; },
+    jsClick: function (chain) { var el = resolve(chain)[0]; if (!el) return false; el.click(); if (typeof el.focus === 'function') el.focus(); return true; },
     fill: function (chain, value) {
       var el = resolve(chain)[0];
       if (!el) return null;
@@ -318,7 +318,13 @@ export class VoltQcProbe extends UiObject {
 
   /** Focus the hit and type key by key (Playwright `pressSequentially`). */
   async typeQ(chain: VqcChain, value: string): Promise<void> {
-    await this.clickQ(chain);
+    // The 1.1.109 gift-card code box is an opacity-0 <input> under a fake caret
+    // <span> — a real click lands on the caret ("click intercepted"): focus it in
+    // the page instead, then type.
+    await this.clickQ(chain).catch(async (error: unknown) => {
+      if (!/click intercepted/i.test(String(error))) throw error;
+      await this.jsClickQ(chain);
+    });
     await browser.keys([...value]);
     await settle(200);
   }

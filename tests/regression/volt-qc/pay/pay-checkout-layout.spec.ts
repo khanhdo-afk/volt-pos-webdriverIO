@@ -47,6 +47,7 @@ import {
 import { Tag, title } from '../../../../src/types/testTags.js';
 import { buildDraft, voidAnyDraft } from '../../order-flow/charge-matrix.helpers.js';
 import { buildTwoStaffDraftOrSkip } from '../../order-flow/payment-flows.helpers.js';
+import { requireStore, TIP_FULL } from '../../../../src/support/portal/storeSettings.js';
 
 /** Build a one-line draft, read the Home total (Card price), press Pay. */
 async function draftAtCheckout(): Promise<{ homeTotal: number; orderId: string }> {
@@ -60,6 +61,12 @@ async function draftAtCheckout(): Promise<{ homeTotal: number; orderId: string }
 const randomPhone = (): string => `832${String(Math.floor(1_000_000 + Math.random() * 8_000_000))}`;
 
 describe('volt-qc 03 PAY — checkout layout & tenders (drafts)', function () {
+  before(async function () {
+    this.timeout(5 * 60_000);
+    // Store set-up this file needs — Portal-adjusted if the till differs, restored after the file.
+    await requireStore(TIP_FULL);
+  });
+
   this.timeout(Timeouts.MOCHA_TEST * 2);
 
   afterEach(async () => {

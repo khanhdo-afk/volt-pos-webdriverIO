@@ -6848,7 +6848,7 @@
         }
       },
       "lastStatus": "RECOVERED",
-      "lastRun": "2026-11-07T09:00:00.883Z",
+      "lastRun": "2026-11-07T09:17:31.268Z",
       "heuristic": "APP_BUG?",
       "verdict": {
         "category": "UI_CHANGE",
@@ -6873,7 +6873,7 @@
         "expect(received).toEqual(expected) // deep equality": {
           "count": 6,
           "first": "2026-10-30T23:02:51.985Z",
-          "last": "2026-11-07T09:00:00.883Z"
+          "last": "2026-11-07T09:17:31.268Z"
         },
         "Never appeared: {\"role\":\"button\",\"name\":\"Quick Checkout\",\"nth\":#}": {
           "count": 2,
@@ -6882,7 +6882,7 @@
         }
       },
       "lastStatus": "OPEN",
-      "lastRun": "2026-11-07T09:00:00.883Z",
+      "lastRun": "2026-11-07T09:17:31.268Z",
       "heuristic": "APP_BUG?",
       "verdict": {
         "category": "APP_BUG",
@@ -9921,7 +9921,7 @@
       },
       "lastStatus": "RECOVERED",
       "lastRun": "2026-11-07T08:33:39.722Z",
-      "heuristic": "FLAKY",
+      "heuristic": "APP_BUG?",
       "verdict": {
         "category": "UI_CHANGE",
         "cause": "Build 1.1.10x: (1) sidebar Pending Orders đóng sẵn; (2) tiệm 14 bật passcode 'Enter staff code to access Quick Checkout' → dialog che till, mọi click sau bị intercepted / không mở được đơn; (3) thanh khách đổi class h-24→min-h-24 (+badge Booking); (4) mã unknown 9137 nay là thợ Inactive; (5) click lặp cùng service tile bị chính <li> chặn; (6) kéo carousel bắt đầu ngoài khung",
@@ -9974,7 +9974,7 @@
       },
       "lastStatus": "RECOVERED",
       "lastRun": "2026-11-07T08:33:39.722Z",
-      "heuristic": "FLAKY",
+      "heuristic": "APP_BUG?",
       "verdict": {
         "category": "UI_CHANGE",
         "cause": "Build 1.1.10x: (1) sidebar Pending Orders đóng sẵn; (2) tiệm 14 bật passcode 'Enter staff code to access Quick Checkout' → dialog che till, mọi click sau bị intercepted / không mở được đơn; (3) thanh khách đổi class h-24→min-h-24 (+badge Booking); (4) mã unknown 9137 nay là thợ Inactive; (5) click lặp cùng service tile bị chính <li> chặn; (6) kéo carousel bắt đầu ngoài khung",
@@ -10027,7 +10027,7 @@
       },
       "lastStatus": "RECOVERED",
       "lastRun": "2026-11-07T08:33:39.722Z",
-      "heuristic": "FLAKY",
+      "heuristic": "APP_BUG?",
       "verdict": {
         "category": "UI_CHANGE",
         "cause": "Build 1.1.10x: (1) sidebar Pending Orders đóng sẵn; (2) tiệm 14 bật passcode 'Enter staff code to access Quick Checkout' → dialog che till, mọi click sau bị intercepted / không mở được đơn; (3) thanh khách đổi class h-24→min-h-24 (+badge Booking); (4) mã unknown 9137 nay là thợ Inactive; (5) click lặp cùng service tile bị chính <li> chặn; (6) kéo carousel bắt đầu ngoài khung",
@@ -10160,7 +10160,7 @@
       },
       "lastStatus": "RECOVERED",
       "lastRun": "2026-11-07T08:33:39.722Z",
-      "heuristic": "FLAKY",
+      "heuristic": "UI_CHANGE",
       "verdict": {
         "category": "UI_CHANGE",
         "cause": "Build 1.1.10x: (1) sidebar Pending Orders đóng sẵn; (2) tiệm 14 bật passcode 'Enter staff code to access Quick Checkout' → dialog che till, mọi click sau bị intercepted / không mở được đơn; (3) thanh khách đổi class h-24→min-h-24 (+badge Booking); (4) mã unknown 9137 nay là thợ Inactive; (5) click lặp cùng service tile bị chính <li> chặn; (6) kéo carousel bắt đầu ngoài khung",
@@ -10524,7 +10524,7 @@
       },
       "lastStatus": "RECOVERED",
       "lastRun": "2026-11-07T08:51:58.324Z",
-      "heuristic": "FLAKY",
+      "heuristic": "APP_BUG?",
       "verdict": {
         "category": "UI_CHANGE",
         "cause": "Build 1.1.10x: (1) sidebar Pending Orders đóng sẵn; (2) tiệm 14 bật passcode 'Enter staff code to access Quick Checkout' → dialog che till, mọi click sau bị intercepted / không mở được đơn; (3) thanh khách đổi class h-24→min-h-24 (+badge Booking); (4) mã unknown 9137 nay là thợ Inactive; (5) click lặp cùng service tile bị chính <li> chặn; (6) kéo carousel bắt đầu ngoài khung",
@@ -10908,7 +10908,7 @@
       },
       "lastStatus": "RECOVERED",
       "lastRun": "2026-11-07T08:43:07.056Z",
-      "heuristic": "FLAKY",
+      "heuristic": "UNKNOWN",
       "verdict": {
         "category": "UI_CHANGE",
         "cause": "Build 1.1.10x: (1) sidebar Pending Orders đóng sẵn; (2) tiệm 14 bật passcode 'Enter staff code to access Quick Checkout' → dialog che till, mọi click sau bị intercepted / không mở được đơn; (3) thanh khách đổi class h-24→min-h-24 (+badge Booking); (4) mã unknown 9137 nay là thợ Inactive; (5) click lặp cùng service tile bị chính <li> chặn; (6) kéo carousel bắt đầu ngoài khung",
@@ -10937,7 +10937,7 @@
       },
       "lastStatus": "RECOVERED",
       "lastRun": "2026-11-07T08:43:07.056Z",
-      "heuristic": "FLAKY",
+      "heuristic": "UNKNOWN",
       "verdict": {
         "category": "UI_CHANGE",
         "cause": "Build 1.1.10x: (1) sidebar Pending Orders đóng sẵn; (2) tiệm 14 bật passcode 'Enter staff code to access Quick Checkout' → dialog che till, mọi click sau bị intercepted / không mở được đơn; (3) thanh khách đổi class h-24→min-h-24 (+badge Booking); (4) mã unknown 9137 nay là thợ Inactive; (5) click lặp cùng service tile bị chính <li> chặn; (6) kéo carousel bắt đầu ngoài khung",
@@ -12075,13 +12075,13 @@
       "title": "TC-VP4402-12: VP-5481 — no column is grey; a no-colour staff is #5669FF like GAP @regression @broken",
       "seen": {
         "expect(received).toEqual(expected) // deep equality": {
-          "count": 2,
+          "count": 3,
           "first": "2026-11-07T04:22:20.434Z",
-          "last": "2026-11-07T04:25:50.471Z"
+          "last": "2026-11-07T09:18:52.985Z"
         }
       },
       "lastStatus": "OPEN",
-      "lastRun": "2026-11-07T04:25:50.471Z",
+      "lastRun": "2026-11-07T09:18:52.985Z",
       "heuristic": "APP_BUG?",
       "verdict": {
         "category": "APP_BUG",
@@ -12099,13 +12099,13 @@
       "title": "TC-VP4402-13: VP-5481 — the Unassigned column is blue #5669FF like GAP @regression @broken",
       "seen": {
         "expect(received).toBe(expected) // Object.is equality": {
-          "count": 2,
+          "count": 3,
           "first": "2026-11-07T04:22:20.434Z",
-          "last": "2026-11-07T04:25:50.471Z"
+          "last": "2026-11-07T09:18:52.985Z"
         }
       },
       "lastStatus": "OPEN",
-      "lastRun": "2026-11-07T04:25:50.471Z",
+      "lastRun": "2026-11-07T09:18:52.985Z",
       "heuristic": "APP_BUG?",
       "verdict": {
         "category": "APP_BUG",
@@ -12130,7 +12130,7 @@
       },
       "lastStatus": "RECOVERED",
       "lastRun": "2026-11-07T08:47:44.107Z",
-      "heuristic": "FLAKY"
+      "heuristic": "APP_BUG?"
     },
     "tests/regression/volt-qc/home-pend/home-items.spec.ts › volt-qc 02 HOME — services & line editor (write).Line editor: title, base price + Reset amount, note 0/80, Apply Discount, Save disabled, numeric inputmode; Close discards (HOME-063, HOME-069, HOME-076) @regression @write": {
       "spec": "tests/regression/volt-qc/home-pend/home-items.spec.ts",
@@ -12144,7 +12144,7 @@
       },
       "lastStatus": "RECOVERED",
       "lastRun": "2026-11-07T08:47:44.107Z",
-      "heuristic": "FLAKY"
+      "heuristic": "UNKNOWN"
     },
     "tests/regression/volt-qc/home-pend/home-items.spec.ts › volt-qc 02 HOME — services & line editor (write).Line price stops at $10,000.00 and drops a \"-\" sign (HOME-066) @regression @write": {
       "spec": "tests/regression/volt-qc/home-pend/home-items.spec.ts",
@@ -12158,7 +12158,7 @@
       },
       "lastStatus": "RECOVERED",
       "lastRun": "2026-11-07T08:47:44.107Z",
-      "heuristic": "FLAKY"
+      "heuristic": "UNKNOWN"
     },
     "tests/regression/volt-qc/home-pend/home-items.spec.ts › volt-qc 02 HOME — services & line editor (write).Line note: 50 chars saves and shows under the name; 81 chars keeps 80 or errors (HOME-067, HOME-068) @regression @write": {
       "spec": "tests/regression/volt-qc/home-pend/home-items.spec.ts",
@@ -12172,7 +12172,7 @@
       },
       "lastStatus": "RECOVERED",
       "lastRun": "2026-11-07T08:47:44.107Z",
-      "heuristic": "FLAKY"
+      "heuristic": "UNKNOWN"
     },
     "tests/regression/volt-qc/home-pend/home-items.spec.ts › volt-qc 02 HOME — services & line editor (write).Item discount $5.00 → \"$5.00 OFF -$5.00\", Item Discount -$5.00 (HOME-071) @regression @write": {
       "spec": "tests/regression/volt-qc/home-pend/home-items.spec.ts",
@@ -12200,7 +12200,7 @@
       },
       "lastStatus": "RECOVERED",
       "lastRun": "2026-11-07T08:47:44.107Z",
-      "heuristic": "FLAKY"
+      "heuristic": "UNKNOWN"
     },
     "tests/regression/volt-qc/home-pend/home-items.spec.ts › volt-qc 02 HOME — services & line editor (write).% typed 150 stops at 100; $ above the item price stops at the price (HOME-073) @regression @write": {
       "spec": "tests/regression/volt-qc/home-pend/home-items.spec.ts",
@@ -12214,7 +12214,7 @@
       },
       "lastStatus": "RECOVERED",
       "lastRun": "2026-11-07T08:47:44.107Z",
-      "heuristic": "FLAKY"
+      "heuristic": "UNKNOWN"
     },
     "tests/regression/volt-qc/home-pend/home-items.spec.ts › volt-qc 02 HOME — services & line editor (write).100% off → \"100% OFF -<base>\"; switching Apply Discount off clears it and the Item Discount row (HOME-074) @regression @write": {
       "spec": "tests/regression/volt-qc/home-pend/home-items.spec.ts",
@@ -12228,7 +12228,7 @@
       },
       "lastStatus": "RECOVERED",
       "lastRun": "2026-11-07T08:47:44.107Z",
-      "heuristic": "FLAKY"
+      "heuristic": "UNKNOWN"
     },
     "tests/regression/volt-qc/home-pend/home-items.spec.ts › volt-qc 02 HOME — services & line editor (write).Lowering the price under an existing $ discount clamps the discount to the new price (HOME-075) @regression @write": {
       "spec": "tests/regression/volt-qc/home-pend/home-items.spec.ts",
@@ -12256,7 +12256,7 @@
       },
       "lastStatus": "RECOVERED",
       "lastRun": "2026-11-07T08:47:44.107Z",
-      "heuristic": "FLAKY"
+      "heuristic": "UI_CHANGE"
     },
     "tests/regression/volt-qc/home-pend/home-panels.spec.ts › volt-qc 02 HOME — panels (write).Staff search is case-insensitive with an x; junk empties the grid; x restores it; picking after a search opens an order (HOME-019, HOME-020, HOME-021) @regression @write": {
       "spec": "tests/regression/volt-qc/home-pend/home-panels.spec.ts",
@@ -12270,7 +12270,7 @@
       },
       "lastStatus": "RECOVERED",
       "lastRun": "2026-11-07T08:43:07.056Z",
-      "heuristic": "FLAKY"
+      "heuristic": "TEST_CODE?"
     },
     "tests/regression/volt-qc/home-pend/home-panels.spec.ts › volt-qc 02 HOME — panels (write).Order Note dialog (Save disabled), max 80 chars; save shows \"Order Note:\" + x; x clears it (HOME-119, HOME-120, HOME-121, HOME-122) @regression @write": {
       "spec": "tests/regression/volt-qc/home-pend/home-panels.spec.ts",
@@ -12284,7 +12284,7 @@
       },
       "lastStatus": "RECOVERED",
       "lastRun": "2026-11-07T08:43:07.056Z",
-      "heuristic": "FLAKY"
+      "heuristic": "UNKNOWN"
     },
     "tests/regression/volt-qc/home-pend/home-panels.spec.ts › volt-qc 02 HOME — panels (write).Note \"A\" → edit to \"B\" then close X: still \"A\"; Pay → checkout shows \"Order Note: A\" (HOME-123, HOME-124) @regression @write": {
       "spec": "tests/regression/volt-qc/home-pend/home-panels.spec.ts",
@@ -12298,7 +12298,7 @@
       },
       "lastStatus": "RECOVERED",
       "lastRun": "2026-11-07T08:43:07.056Z",
-      "heuristic": "FLAKY"
+      "heuristic": "UNKNOWN"
     },
     "tests/regression/volt-qc/home-pend/home-customer.spec.ts › volt-qc 02 HOME — customer (write).Picking an existing customer from the suggestions (masked phone + name) opens an order with that customer, Point/Visit (HOME-093) @regression @write": {
       "spec": "tests/regression/volt-qc/home-pend/home-customer.spec.ts",
@@ -12312,7 +12312,7 @@
       },
       "lastStatus": "RECOVERED",
       "lastRun": "2026-11-07T08:33:39.722Z",
-      "heuristic": "FLAKY"
+      "heuristic": "APP_BUG?"
     },
     "tests/regression/volt-qc/home-pend/home-customer.spec.ts › volt-qc 02 HOME — customer (write).Order with a line but no customer: the bar opens the keypad, Back closes it; an existing phone + Done attaches to THIS order (HOME-114) @regression @write": {
       "spec": "tests/regression/volt-qc/home-pend/home-customer.spec.ts",
@@ -12326,7 +12326,7 @@
       },
       "lastStatus": "RECOVERED",
       "lastRun": "2026-11-07T08:33:39.722Z",
-      "heuristic": "FLAKY"
+      "heuristic": "APP_BUG?"
     },
     "tests/regression/volt-qc/home-pend/home-customer.spec.ts › volt-qc 02 HOME — customer (write).New customer via keypad: phone formatted (xxx) xxx-xxxx, quick-add Save attaches, bar shows the masked phone (HOME-090, HOME-096) @regression @write": {
       "spec": "tests/regression/volt-qc/home-pend/home-customer.spec.ts",
@@ -12340,7 +12340,7 @@
       },
       "lastStatus": "RECOVERED",
       "lastRun": "2026-11-07T08:33:39.722Z",
-      "heuristic": "FLAKY"
+      "heuristic": "APP_BUG?"
     },
     "tests/regression/volt-qc/home-pend/home-customer.spec.ts › volt-qc 02 HOME — customer (write).Red x → \"Remove Customer Phone\": Cancel keeps the customer; Remove returns to the customer field and keeps the lines (HOME-112, HOME-113) @regression @write": {
       "spec": "tests/regression/volt-qc/home-pend/home-customer.spec.ts",
@@ -12354,7 +12354,7 @@
       },
       "lastStatus": "RECOVERED",
       "lastRun": "2026-11-07T08:33:39.722Z",
-      "heuristic": "FLAKY"
+      "heuristic": "UI_CHANGE"
     },
     "tests/regression/volt-qc/home-pend/home-customer.spec.ts › volt-qc 02 HOME — customer (write).Tapping the masked phone asks \"Enter staff code to continue\" (+ 30-minute box) and then shows the full phone (HOME-109) @regression @write": {
       "spec": "tests/regression/volt-qc/home-pend/home-customer.spec.ts",
@@ -12368,7 +12368,7 @@
       },
       "lastStatus": "RECOVERED",
       "lastRun": "2026-11-07T08:33:39.722Z",
-      "heuristic": "FLAKY"
+      "heuristic": "UI_CHANGE"
     },
     "tests/regression/volt-qc/home-pend/home-customer.spec.ts › volt-qc 02 HOME — customer (write).Edit icon → \"Customer Information\" (phone read-only) → new name → Save: the bar shows it (HOME-111) @regression @write": {
       "spec": "tests/regression/volt-qc/home-pend/home-customer.spec.ts",
@@ -12382,8 +12382,36 @@
       },
       "lastStatus": "RECOVERED",
       "lastRun": "2026-11-07T08:33:39.722Z",
-      "heuristic": "FLAKY"
+      "heuristic": "UI_CHANGE"
+    },
+    "tests/regression/checkout-type/vp-5293-reopen-recomplete-points.spec.ts › VP-5293 — Re-Open re-complete revokes the old earn (no double points).Hybrid: re-open thêm dịch vụ → thu hồi −N rồi cộng +M (TC-VP5293-09) @regression @write @payment @exclusive": {
+      "spec": "tests/regression/checkout-type/vp-5293-reopen-recomplete-points.spec.ts",
+      "title": "Hybrid: re-open thêm dịch vụ → thu hồi −N rồi cộng +M (TC-VP5293-09) @regression @write @payment @exclusive",
+      "seen": {
+        "Timeout of #ms exceeded. The execution in the test \"VP-# — Re-Open re-complete revokes the old earn (no double points) Hybrid: re-open thêm dịch vụ → thu hồi −N": {
+          "count": 1,
+          "first": "2026-11-07T18:47:44.053Z",
+          "last": "2026-11-07T18:47:44.053Z"
+        }
+      },
+      "lastStatus": "RECOVERED",
+      "lastRun": "2026-11-07T18:54:12.835Z",
+      "heuristic": "TEST_CODE?"
+    },
+    "tests/regression/checkout-type/vp-5293-reopen-recomplete-points.spec.ts › VP-5293 — Re-Open re-complete revokes the old earn (no double points).Auto: re-open thêm dịch vụ → điểm cố định, không cộng chồng (TC-VP5293-12) @regression @write @payment @exclusive": {
+      "spec": "tests/regression/checkout-type/vp-5293-reopen-recomplete-points.spec.ts",
+      "title": "Auto: re-open thêm dịch vụ → điểm cố định, không cộng chồng (TC-VP5293-12) @regression @write @payment @exclusive",
+      "seen": {
+        "Timeout of #ms exceeded. The execution in the test \"VP-# — Re-Open re-complete revokes the old earn (no double points) Auto: re-open thêm dịch vụ → điểm cố định": {
+          "count": 1,
+          "first": "2026-11-07T18:47:44.053Z",
+          "last": "2026-11-07T18:47:44.053Z"
+        }
+      },
+      "lastStatus": "RECOVERED",
+      "lastRun": "2026-11-07T18:54:12.835Z",
+      "heuristic": "TEST_CODE?"
     }
   },
-  "updatedAt": "2026-11-07T09:15:28.908Z"
+  "updatedAt": "2026-11-07T19:06:29.009Z"
 }

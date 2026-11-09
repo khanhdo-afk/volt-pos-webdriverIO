@@ -1,3 +1,4 @@
+import { unlockSellGiftCardGate } from '../pos/giftCardProbe.js';
 import { btn, inMain, type VqcChain, type VqcQuery } from '../../../constants/testids.voltqc-pos.js';
 import { VqpsCheckout, VqpsHome, VqpsPromo } from '../../../constants/testids.voltqc-promo-split.js';
 import { settle } from '../../../helpers/wait.js';
@@ -35,6 +36,7 @@ const QP = VqpsHome.quickPayDialog;
 /** Quick Pay tile → dialog. */
 export async function openQuickPay(): Promise<void> {
   await P.clickQ(VqpsHome.quickPayTile);
+  await unlockSellGiftCardGate(); // Quick Pay is gated the same way on 1.1.109 (VP-4815)
   await P.waitFor(QP, 8_000, 'Quick Pay dialog');
 }
 

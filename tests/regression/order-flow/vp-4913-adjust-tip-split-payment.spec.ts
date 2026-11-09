@@ -259,12 +259,14 @@ describe('VP-4913 — Adjust Tip after a split payment picks the payment', () =>
       },
     );
 
-    it(title('TC-VP4913-09: POS version recorded (Menu › Version Update) — PENDING (doc-only)'));
+    // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+    // it(title('TC-VP4913-09: POS version recorded (Menu › Version Update) — PENDING (doc-only)'));
 
-    it(
-      title(
-        'TC-VP4913-10: split with a Card payment → Card listed and tippable — PENDING (no card terminal: Card → Pay disabled)',
-      ),
-    );
+    // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+    // it(
+    //   title(
+    //     'TC-VP4913-10: split with a Card payment → Card listed and tippable — PENDING (no card terminal: Card → Pay disabled)',
+    //   ),
+    // );
   });
 });

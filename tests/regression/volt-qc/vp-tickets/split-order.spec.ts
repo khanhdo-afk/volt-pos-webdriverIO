@@ -20,6 +20,7 @@ import { expect } from '@wdio/globals';
 import { Timeouts } from '../../../../configs/constants/timeouts.js';
 import { assertWritesAllowed } from '../../../../configs/env/loadEnv.js';
 import { homePage, splitOrderPage } from '../../../../src/pages/index.js';
+import { requireStore, restoreStore } from '../../../../src/support/portal/storeSettings.js';
 import { Tag, title } from '../../../../src/types/testTags.js';
 import {
   draftWithPrice,
@@ -46,7 +47,11 @@ describe('Split-Order-test-cases — [POS] Split Order', () => {
   it(
     title('TC-01 Split is disabled for Total ≤ $5.00 and enabled for $5.01', Tag.REGRESSION, Tag.WRITE),
     async function (this: Mocha.Context): Promise<void> {
-      this.timeout(Timeouts.MOCHA_HOOK);
+      this.timeout(5 * 60_000);
+      // The rule is on the order TOTAL: with the store's 5 % tax a $5.00 line totals
+      // $5.25. Run it tax-free so the $5.00 / $5.01 lines ARE the totals (restored
+      // after the file by the root hook).
+      await requireStore({ serviceTaxPct: 0, productTaxPct: 0 });
       await draftWithPrice(500);
       expect(await homePage.isSplitOrderAvailable()).toBe(false);
 
@@ -54,6 +59,8 @@ describe('Split-Order-test-cases — [POS] Split Order', () => {
       await homePage.setServiceEditorPrice(501);
       await homePage.saveServiceEditor();
       expect(await homePage.isSplitOrderAvailable()).toBe(true);
+      await leaveSplitAndVoid();
+      await restoreStore(); // the other cases run on the store's normal tax
     },
   );
 

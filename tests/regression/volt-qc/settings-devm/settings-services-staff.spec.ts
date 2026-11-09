@@ -42,7 +42,8 @@ import {
 import { vqProbe } from '../../../../src/pages/voltqc/settings-devm/VqProbe.js';
 import { Tag, title } from '../../../../src/types/testTags.js';
 
-const SYSTEM_NAMES = ['Gift Card', 'Quick Pay'];
+// Reserved names ("Cannot use this category name"); "Product" joined them on 1.1.10x.
+const SYSTEM_NAMES = ['Gift Card', 'Quick Pay', 'Product'];
 
 /** Every category of the current tab, scrolling the virtualised list top to bottom. */
 async function collectCategories(): Promise<CategoryRow[]> {

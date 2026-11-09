@@ -1,3 +1,4 @@
+import { requireGate } from '../../../support/portal/storeSettings.js';
 import { $, browser } from '@wdio/globals';
 import { Key } from 'webdriverio';
 import { Timeouts } from '../../../../configs/constants/timeouts.js';
@@ -790,6 +791,11 @@ export async function gateElement(timeout: number = Timeouts.SHORT): Promise<El 
 export async function openGate(route: string, search?: SearchParams): Promise<boolean> {
   await navigateRaw(RptRoutes.home);
   await navigateRaw(route, search);
+  if ((await gateElement(4_000)) !== null) return true;
+  // Gate OFF on the merchant: turn it ON on the Portal (restored after the spec file).
+  if (!(await requireGate(route))) return false;
+  await navigateRaw(RptRoutes.home);
+  await navigateRaw(route, search);
   return (await gateElement(4_000)) !== null;
 }
 
@@ -949,5 +955,5 @@ export async function sidebarLinkState(
 }
 
 export async function clickSidebarLink(text: string): Promise<void> {
-  await clickIn(RptCss.sidebar, `.//a[normalize-space(.)="${text}"]`);
+  await clickIn(RptCss.sidebar, `.//*[self::a or self::button][normalize-space(.)="${text}"]`);
 }

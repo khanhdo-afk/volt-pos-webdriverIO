@@ -43,12 +43,11 @@ import { Timeouts } from '../../../configs/constants/timeouts.js';
 import { env } from '../../../configs/env/loadEnv.js';
 import { passcodeDialog } from '../../../src/components/index.js';
 import {
-  emptyActiveGiftCards,
   fundedActiveGiftCards,
   pickFundedActiveGiftCards,
   requireFundedActiveGiftCard,
 } from '../../../src/data/index.js';
-import type { GiftCardRecord } from '../../../src/data/index.js';
+
 import {
   completeCustomerTipIfPrompted,
   createOrder,
@@ -63,7 +62,7 @@ import { expectSettled, openCheckout, voidAnyDraft } from './charge-matrix.helpe
 const SETTLE_ENABLED = process.env.CHARGE_SETTLE === '1';
 
 /** How much each PENDING top-up case would add to its card, in cents ($25.00). */
-const TOP_UP_AMOUNT_CENTS = 2_500;
+// const TOP_UP_AMOUNT_CENTS = 2_500;
 
 /** How many funded cards Part B proves (bounds runtime; the catalog has ~30). */
 const CHARGE_SAMPLE = 4;
@@ -74,10 +73,10 @@ const CHARGE_SAMPLE = 4;
  * topping those up is the realistic flow, a card that is already rich needs no
  * refill. `fundedActiveGiftCards` is richest-first, so the lean tail is the end.
  */
-const TOP_UP_TARGETS: readonly GiftCardRecord[] = [
-  ...emptyActiveGiftCards,
-  ...fundedActiveGiftCards.slice(-2),
-];
+// const TOP_UP_TARGETS: readonly GiftCardRecord[] = [
+//   ...emptyActiveGiftCards,
+//   ...fundedActiveGiftCards.slice(-2),
+// ];
 
 /** Mask all but the last four digits — the number is account data, not for the log. */
 function masked(code: string): string {
@@ -93,27 +92,30 @@ describe('Order flow — Gift card top-up then charge (catalog-driven)', () => {
 
   afterEach(voidAnyDraft);
 
-  /* ------------------------------------------------------------------ *
-   * A. TOP UP (nạp tiền) — PENDING: the Add-Value dialog has no selector
-   * ------------------------------------------------------------------ */
-  describe('Nạp tiền (add value)', () => {
-    for (const card of TOP_UP_TARGETS) {
-      it(
-        title(
-          `Top up $${(TOP_UP_AMOUNT_CENTS / 100).toFixed(2)} into ${masked(card.code)} ` +
-            `(balance ${String(card.balance)}, ${card.status}) — PENDING ✅-blocked ` +
-            `(Add-Value dialog has no testid on the dev build)`,
-        ),
-      );
-    }
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // /* ------------------------------------------------------------------ *
+  //  * A. TOP UP (nạp tiền) — PENDING: the Add-Value dialog has no selector
+  //  * ------------------------------------------------------------------ */
+  // describe('Nạp tiền (add value)', () => {
+  //   for (const card of TOP_UP_TARGETS) {
+  //     // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  //     // it(
+  //     //   title(
+  //     //     `Top up $${(TOP_UP_AMOUNT_CENTS / 100).toFixed(2)} into ${masked(card.code)} ` +
+  //     //       `(balance ${String(card.balance)}, ${card.status}) — PENDING ✅-blocked ` +
+  //     //       `(Add-Value dialog has no testid on the dev build)`,
+  //     //   ),
+  //     // );
+  //   }
 
-    it(
-      title(
-        'GC-TOPUP cap: custom value is capped at $10,000; quick $25/$50/$100 — ' +
-          'PENDING ✅-blocked (sale dialog has no testid)',
-      ),
-    );
-  });
+  //   // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  //   // it(
+  //   //   title(
+  //   //     'GC-TOPUP cap: custom value is capped at $10,000; quick $25/$50/$100 — ' +
+  //   //       'PENDING ✅-blocked (sale dialog has no testid)',
+  //   //   ),
+  //   // );
+  // });
 
   /* ------------------------------------------------------------------ *
    * B. CHARGE precondition — RUNS: each funded card validates & accepts

@@ -1,5 +1,6 @@
 import { btn, inMain, type VqcQuery } from '../../../constants/testids.voltqc-pos.js';
 import { VqpsCheckout, VqpsSplit, VqpsSuccess } from '../../../constants/testids.voltqc-promo-split.js';
+import { giftCardsFor, learnFromVerdict } from '../../../data/static/giftCardRotation.js';
 import { settle } from '../../../helpers/wait.js';
 import { voltQcProbe as P } from '../pos/VoltQcProbe.js';
 import { cardTotalOf, priceModel, type PriceModel } from './price.js';
@@ -144,6 +145,8 @@ export interface PayCheckOpts {
   /** Customer-side Custom Tip (cents) when the display asks; default No Tip. */
   customerTipCents?: string;
   giftCard?: string;
+  /** Use exactly `giftCard` — no swap to another card when it falls short (cases that test the refusal itself). */
+  giftCardStrict?: boolean;
   next?: 'auto' | 'none';
   skipPasscode?: boolean;
 }
@@ -155,6 +158,11 @@ export async function drivePaid(n: number, method: CheckMethod, o: PayCheckOpts 
   let otherDone = false;
   let tipped = false;
   let gcStage = 0;
+  // Gift card rotation: a drained card is swapped for the next funded one, so the
+  // spec passes again on the next run instead of failing on "not Enough Balance".
+  let gcCode = o.giftCard ?? vqEnv.testGiftCard;
+  const gcTried = new Set<string>();
+  let gcSwaps = 0;
   while (Date.now() < deadline) {
     if (await visible(paidDialog(n)))
       return ((await P.rawText(paidDialog(n))) ?? '').replace(/\s*\n+\s*/g, ' | ');
@@ -187,18 +195,30 @@ export async function drivePaid(n: number, method: CheckMethod, o: PayCheckOpts 
     if (method === 'Gift Card') {
       if (gcStage === 0 && (await visible(VqpsCheckout.inputGiftCard))) {
         await P.clickQ(VqpsCheckout.inputGiftCard);
-        await P.fillQ(
-          [VqpsCheckout.gcCodeDialog, { role: 'textbox', nth: 0 }],
-          o.giftCard ?? vqEnv.testGiftCard,
-        );
+        if (!gcCode) gcCode = giftCardsFor()[0] ?? '';
+        gcTried.add(gcCode);
+        await P.fillQ([VqpsCheckout.gcCodeDialog, { role: 'textbox', nth: 0 }], gcCode);
         await P.clickQ([VqpsCheckout.gcCodeDialog, btn('Confirm')]);
         gcStage = 1;
         continue;
       }
       if (gcStage === 1 && (await visible(giftCardResultDialog))) {
-        const txt = (await P.rawText(giftCardResultDialog)) ?? '';
-        if (!/Gift Card Accepted/i.test(txt))
-          throw new Error(`Gift card not accepted: ${txt.replace(/\s*\n+\s*/g, ' | ')}`);
+        const txt = ((await P.rawText(giftCardResultDialog)) ?? '').replace(/\s*\n+\s*/g, ' | ');
+        const v = learnFromVerdict(gcCode, txt);
+        if (!v.accepted) {
+          const next =
+            o.giftCardStrict || gcSwaps >= 5
+              ? undefined
+              : giftCardsFor({ minCents: v.neededCents ?? 1, exclude: [...gcTried] })[0];
+          if (!next) throw new Error(`Gift card not accepted: ${txt}`);
+          console.warn(`drivePaid: gift card ${gcCode} not usable (${txt}) — retrying with ${next}`);
+          await backOutGiftCardDialogs();
+          await clickOrJs(payButton, 3_000);
+          gcCode = next;
+          gcSwaps += 1;
+          gcStage = 0;
+          continue;
+        }
         await P.clickQ([giftCardResultDialog, btn('Pay')]);
         gcStage = 2;
         continue;
@@ -207,6 +227,20 @@ export async function drivePaid(n: number, method: CheckMethod, o: PayCheckOpts 
     await settle(200);
   }
   throw new Error(`"Check ${String(n)} Paid Successfully" never showed (method ${method})`);
+}
+
+/** Close every gift-card dialog without paying (Cancel / Select Another Method / Close). */
+export async function backOutGiftCardDialogs(): Promise<void> {
+  for (let i = 0; i < 5; i += 1) {
+    if (!(await P.count({ role: 'dialog' }).catch(() => 0))) return;
+    const b = [
+      { role: 'dialog', nth: -1 },
+      { role: 'button', nameRe: '^(Cancel|Select Another Method|Close)$', nth: 0 },
+    ] as const;
+    if (await visible(b)) await P.clickQ(b).catch(() => undefined);
+    else await app.closeStrayDialogs();
+    await settle(400);
+  }
 }
 
 export async function closePaidDialog(n: number): Promise<void> {

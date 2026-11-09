@@ -194,12 +194,13 @@ describe('VP-4538 — campaigns Reminder / New Client / Birthday on POS', functi
       },
     );
 
-    it(
-      title(
-        'TC-VP4538-04: a customer created on DTS syncs down to POS — PENDING ' +
-          '(needs the DTS web UI to create the customer; not driven from POS)',
-      ),
-    );
+    // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+    // it(
+    //   title(
+    //     'TC-VP4538-04: a customer created on DTS syncs down to POS — PENDING ' +
+    //       '(needs the DTS web UI to create the customer; not driven from POS)',
+    //   ),
+    // );
 
     it(
       title(
@@ -273,19 +274,21 @@ describe('VP-4538 — campaigns Reminder / New Client / Birthday on POS', functi
       },
     );
 
-    it(
-      title(
-        "TC-VP4538-09: the Birthday SMS reaches the customer's phone — PENDING (SMS delivery, not observable from POS)",
-      ),
-    );
+    // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+    // it(
+    //   title(
+    //     "TC-VP4538-09: the Birthday SMS reaches the customer's phone — PENDING (SMS delivery, not observable from POS)",
+    //   ),
+    // );
   });
 
   describe('5. Not automatable here', () => {
-    it(
-      title(
-        'TC-VP4538-10: renaming a customer group to a duplicate name on DTS must not stall customer sync — PENDING ' +
-          '(DTS UI + BE sync; regression of the 22/10 incident)',
-      ),
-    );
+    // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+    // it(
+    //   title(
+    //     'TC-VP4538-10: renaming a customer group to a duplicate name on DTS must not stall customer sync — PENDING ' +
+    //       '(DTS UI + BE sync; regression of the 22/10 incident)',
+    //   ),
+    // );
   });
 });

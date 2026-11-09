@@ -36,6 +36,11 @@ import { goToOrderHistory, returnToHome } from '../../../src/flows/index.js';
 import { homePage, orderHistoryPage, accessibilitySettingsPage } from '../../../src/pages/index.js';
 import type { PasscodeGateState } from '../../../src/pages/index.js';
 import { clearPasscodeGrant, ensurePasscodeGrant } from '../../../src/support/passcodeGrant.js';
+import {
+  ensureRolePermissions,
+  restoreRolePermissions,
+  type RoleWant,
+} from '../../../src/support/rolePermissions.js';
 import { Tag, title } from '../../../src/types/testTags.js';
 import {
   ALL_OFF,
@@ -80,6 +85,8 @@ async function expectNoPrompt(): Promise<void> {
   expect(await passcodeDialog.isPrompting(Timeouts.SHORT)).toBe(false);
 }
 
+let roleBefore: RoleWant = {};
+
 describe('VP-4815 — passcode gates + customer status', () => {
   before(async function (this: Mocha.Context): Promise<void> {
     this.timeout(Timeouts.MOCHA_HOOK);
@@ -94,6 +101,20 @@ describe('VP-4815 — passcode gates + customer status', () => {
       }
     }
     await setGates(ALL_ON);
+    // The cases are written against these role permissions (helpers header): put
+    // them in place first instead of failing on whatever a previous run left.
+    const five = (on: boolean): Record<string, boolean> => ({
+      'Quick Pay': on,
+      'Quick Checkout': on,
+      'Sell Gift Card': on,
+      'Edit Service Price': on,
+      Calendar: on,
+    });
+    roleBefore = await ensureRolePermissions({
+      Manager: five(true),
+      Partner: { ...five(false), 'Quick Pay': true },
+      Staff: five(false),
+    });
   });
 
   /**
@@ -114,6 +135,7 @@ describe('VP-4815 — passcode gates + customer status', () => {
     await unlockIfPrompted().catch(() => undefined);
     await discardCreatedOrder().catch(() => undefined);
     if (snapshot) await setGates(snapshot);
+    await restoreRolePermissions(roleBefore).catch(() => undefined);
     await returnToHome();
     await ensurePasscodeGrant();
   });

@@ -19,16 +19,15 @@
  *   - TC-ORDERFLOW-38  the dialog shows Total Tip + three tabs + Confirm
  */
 
-import { title } from '../../../src/types/testTags.js';
-
 describe('Order flow — Split Tip', () => {
-  it(title('TC-ORDERFLOW-34: Split Tip hidden on a single-staff order — PENDING (needs 2-staff + tip)'));
-
-  it(title('TC-ORDERFLOW-35: Split Evenly divides equally — PENDING (needs 2-staff order + tip)'));
-
-  it(title('TC-ORDERFLOW-36: Proportion divides by service share — PENDING (needs 2-staff order + tip)'));
-
-  it(title('TC-ORDERFLOW-37: Manual makes each amount editable — PENDING (needs 2-staff order + tip)'));
-
-  it(title('TC-ORDERFLOW-38: dialog shows Total Tip + three tabs + Confirm — PENDING (needs the fixture)'));
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(title('TC-ORDERFLOW-34: Split Tip hidden on a single-staff order — PENDING (needs 2-staff + tip)'));
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(title('TC-ORDERFLOW-35: Split Evenly divides equally — PENDING (needs 2-staff order + tip)'));
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(title('TC-ORDERFLOW-36: Proportion divides by service share — PENDING (needs 2-staff order + tip)'));
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(title('TC-ORDERFLOW-37: Manual makes each amount editable — PENDING (needs 2-staff order + tip)'));
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(title('TC-ORDERFLOW-38: dialog shows Total Tip + three tabs + Confirm — PENDING (needs the fixture)'));
 });

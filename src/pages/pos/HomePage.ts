@@ -211,9 +211,13 @@ export class HomePage extends BasePage {
     let closed = 0;
     for (let i = 0; i < 3; i += 1) {
       const open = await browser.execute(function () {
-        return Array.from(document.querySelectorAll('[role="dialog"],[role="alertdialog"]')).some(
-          (el) => el.getClientRects().length > 0,
-        );
+        // An open overlay / popper also blocks every click, even when its dialog
+        // content carries no role (sheets, the gift-card verdict) — count it too.
+        return Array.from(
+          document.querySelectorAll(
+            '[role="dialog"],[role="alertdialog"],[data-slot="dialog-overlay"][data-state="open"],[data-radix-popper-content-wrapper]',
+          ),
+        ).some((el) => el.getClientRects().length > 0);
       });
       if (!open) break;
       if (i === 0) {
@@ -581,6 +585,27 @@ export class HomePage extends BasePage {
   /** Close the quick-add customer form with Escape, saving nothing. */
   async dismissNewCustomerForm(): Promise<this> {
     await browser.keys(['Escape']);
+    if (await this.isVisible(HomeIds.createCustomerNameInput, Timeouts.ANIMATION)) {
+      // 1.1.109 renders the quick-add form inline, where Escape does nothing: use
+      // the form's own Cancel / Close / back control.
+      const input = await this.find(HomeIds.createCustomerNameInput, { visible: true });
+      await browser.execute(
+        (el: HTMLElement) => {
+          for (let box = el.parentElement; box; box = box.parentElement) {
+            const b = Array.from(box.querySelectorAll<HTMLButtonElement>('button')).find((x) =>
+              /^(cancel|close|back|hủy|đóng|quay lại)$/i.test(
+                (x.getAttribute('aria-label') ?? x.textContent ?? '').trim(),
+              ),
+            );
+            if (b) {
+              b.click();
+              return;
+            }
+          }
+        },
+        input as unknown as HTMLElement,
+      );
+    }
     await this.waitGone(HomeIds.createCustomerNameInput, Timeouts.SHORT);
     return this;
   }
@@ -767,7 +792,7 @@ export class HomePage extends BasePage {
   /* --- Cart line editor (update-service dialog) ------------------------ */
 
   /**
-   * Open the per-line editor for the first cart service line.
+   * Open the per-line editor for cart service line `index` (0 = the first).
    *
    * Tapping a cart line opens `order-item-dialog.tsx` — the price field, an
    * Apply-Discount switch and a note field. The line is a `cursor-pointer` row
@@ -775,10 +800,10 @@ export class HomePage extends BasePage {
    * {@link HomeIds.orderServiceRows}); readiness keys on the price field rather
    * than the shared dialog role, so it cannot resolve against a stale overlay.
    */
-  async openServiceEditor(): Promise<this> {
-    await logStep('Home: open the cart line editor');
+  async openServiceEditor(index = 0): Promise<this> {
+    await logStep(`Home: open the cart line editor (line ${String(index + 1)})`);
     const rows = await this.findAll(HomeIds.orderServiceRows, { timeout: Timeouts.MEDIUM });
-    const first = rows[0];
+    const first = rows[index];
     if (!first) {
       throw new Error(
         `${this.name}: no editable cart line found. The per-line editor opens from a cart ` +

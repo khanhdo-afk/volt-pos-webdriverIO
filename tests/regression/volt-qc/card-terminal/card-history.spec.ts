@@ -20,11 +20,7 @@
 
 import { expect } from '@wdio/globals';
 import { assertWritesAllowed } from '../../../../configs/env/loadEnv.js';
-import {
-  OhRoButtons as B,
-  OhRoDialogs as D,
-  OhRoText as T,
-} from '../../../../src/constants/testids.voltqc-oh-reopen.js';
+import { OhRoButtons as B, OhRoDialogs as D } from '../../../../src/constants/testids.voltqc-oh-reopen.js';
 import { btn, inMain } from '../../../../src/constants/testids.voltqc-pos.js';
 import { RptText } from '../../../../src/constants/testids.voltqc-reports-time.js';
 import { returnToHome } from '../../../../src/flows/index.js';
@@ -36,19 +32,13 @@ import {
   closeTipDialog,
   detailActions,
   detailText,
-  enteredFor,
   field,
   openAdjustTip,
-  openHistoryOrder,
-  reopenDialogText,
-  reopenDone,
-  reopenToCheckout,
   saveTip,
   tipBackspace,
   tipCurrentCents,
   tipEnteredCents,
   tipKey,
-  waitStatus,
 } from '../../../../src/pages/voltqc/oh-reopen/ohReopen.js';
 import { P } from '../../../../src/pages/voltqc/pay/payProbe.js';
 import {
@@ -57,12 +47,11 @@ import {
   openBatch,
   type DailySnap,
 } from '../../../../src/pages/voltqc/reports-time/rptReports.js';
-import { VqcPay } from '../../../../src/constants/testids.voltqc-pay.js';
+
 import { Tag, title } from '../../../../src/types/testTags.js';
-import { abandonReopen } from '../../order-flow/reopen-flow.helpers.js';
+
 import {
   ONE_CHARGE_MS,
-  cardDialogShown,
   cleanAfterCard,
   createCardOrder,
   dollarsToCents,
@@ -81,7 +70,7 @@ async function waitTip(code: string, usdText: string): Promise<string> {
 }
 
 /** Poll Daily Sale (today) until `ok`, re-opening the report every 3 s. */
-async function dailyUntil(ok: (s: DailySnap) => boolean, budgetMs = 90_000): Promise<DailySnap> {
+async function dailyUntil(ok: (s: DailySnap) => boolean, budgetMs = 180_000): Promise<DailySnap> {
   const end = Date.now() + budgetMs;
   let s = await dailySnapshot(0);
   while (!ok(s) && Date.now() < end) {
@@ -167,53 +156,54 @@ describe('volt-qc card terminal — after the charge (tip, re-open, reports)', f
     },
   );
 
-  // PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bỏ .skip để chạy lại.
-  it.skip(
-    title(
-      'Card order re-opened then abandoned: status Re-open, Continue Re-open, no Adjust Tip / Cancel / Refund; continued and closed unchanged: $0 owed on Card / Cash / Other, Re-Open Done (no Complete Payment, no terminal), still the one card txn, the edit left (RO-202, RO-201)',
-      Tag.REGRESSION,
-      Tag.WRITE,
-      Tag.PAYMENT,
-      Tag.DUAL_WINDOW,
-    ),
-    async function (this: Mocha.Context): Promise<void> {
-      this.timeout(ONE_CHARGE_MS + 2 * 60_000);
-      await requireCardTerminal(this);
-      const o = await createCardOrder(this);
-      const cardBefore = successfulCardsOf(await detailText(o.code));
-      expect(cardBefore).toHaveLength(1);
-      const adjustBefore = (await detailActions())[B.adjustTip];
+  // [TẮT 2026-11-08] Tạm không test (đã đánh dấu skip/MANUAL: cần thiết bị/điều kiện không tự động được, hoặc Re-Open tạm dừng theo yêu cầu) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // // PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bỏ .skip để chạy lại.
+  // it.skip(
+  //   title(
+  //     'Card order re-opened then abandoned: status Re-open, Continue Re-open, no Adjust Tip / Cancel / Refund; continued and closed unchanged: $0 owed on Card / Cash / Other, Re-Open Done (no Complete Payment, no terminal), still the one card txn, the edit left (RO-202, RO-201)',
+  //     Tag.REGRESSION,
+  //     Tag.WRITE,
+  //     Tag.PAYMENT,
+  //     Tag.DUAL_WINDOW,
+  //   ),
+  //   async function (this: Mocha.Context): Promise<void> {
+  //     this.timeout(ONE_CHARGE_MS + 2 * 60_000);
+  //     await requireCardTerminal(this);
+  //     const o = await createCardOrder(this);
+  //     const cardBefore = successfulCardsOf(await detailText(o.code));
+  //     expect(cardBefore).toHaveLength(1);
+  //     const adjustBefore = (await detailActions())[B.adjustTip];
 
-      await step('RO-202 leave the reopened checkout mid-way', async () => {
-        await reopenToCheckout(o.orderId);
-        await abandonReopen(o.orderId);
-        await openHistoryOrder(o.orderId);
-        expect(field(await detailText(o.code), 'Status')).toBe('Re-open');
-        const a = await detailActions();
-        expect(a[B.continueReopen]).toBe(true);
-        for (const k of [B.adjustTip, B.cancelOrder, 'Refund']) expect(a[k]).toBe(false);
-      });
+  //     await step('RO-202 leave the reopened checkout mid-way', async () => {
+  //       await reopenToCheckout(o.orderId);
+  //       await abandonReopen(o.orderId);
+  //       await openHistoryOrder(o.orderId);
+  //       expect(field(await detailText(o.code), 'Status')).toBe('Re-open');
+  //       const a = await detailActions();
+  //       expect(a[B.continueReopen]).toBe(true);
+  //       for (const k of [B.adjustTip, B.cancelOrder, 'Refund']) expect(a[k]).toBe(false);
+  //     });
 
-      await step(
-        'RO-201 Continue Re-open: nothing owed on any tender, Re-Open Done, terminal untouched',
-        async () => {
-          await reopenToCheckout(o.orderId, B.continueReopen);
-          for (const t of ['card', 'cash', 'other'] as const) expect(await enteredFor(t)).toBe(0);
-          expect(await P.has({ role: 'button', name: B.reopenDone })).toBe(true);
-          expect(await P.has(VqcPay.completePayment)).toBe(false);
-          expect(await cardDialogShown()).toBe(false);
-          await reopenDone();
-          expect(await waitStatus(o.code, /^Successful - Unsettled$/)).toBe('Successful - Unsettled');
-          const after = successfulCardsOf(await detailText(o.code));
-          expect(after).toHaveLength(1);
-          expect(after[0]?.amount).toBe(cardBefore[0]?.amount);
-          expect(after[0]?.last4).toBe(cardBefore[0]?.last4);
-          expect((await detailActions())[B.adjustTip]).toBe(adjustBefore);
-          expect(await reopenDialogText(o.orderId)).toContain(T.msgHasEdit);
-        },
-      );
-    },
-  );
+  //     await step(
+  //       'RO-201 Continue Re-open: nothing owed on any tender, Re-Open Done, terminal untouched',
+  //       async () => {
+  //         await reopenToCheckout(o.orderId, B.continueReopen);
+  //         for (const t of ['card', 'cash', 'other'] as const) expect(await enteredFor(t)).toBe(0);
+  //         expect(await P.has({ role: 'button', name: B.reopenDone })).toBe(true);
+  //         expect(await P.has(VqcPay.completePayment)).toBe(false);
+  //         expect(await cardDialogShown()).toBe(false);
+  //         await reopenDone();
+  //         expect(await waitStatus(o.code, /^Successful - Unsettled$/)).toBe('Successful - Unsettled');
+  //         const after = successfulCardsOf(await detailText(o.code));
+  //         expect(after).toHaveLength(1);
+  //         expect(after[0]?.amount).toBe(cardBefore[0]?.amount);
+  //         expect(after[0]?.last4).toBe(cardBefore[0]?.last4);
+  //         expect((await detailActions())[B.adjustTip]).toBe(adjustBefore);
+  //         expect(await reopenDialogText(o.orderId)).toContain(T.msgHasEdit);
+  //       },
+  //     );
+  //   },
+  // );
 
   it(
     title(

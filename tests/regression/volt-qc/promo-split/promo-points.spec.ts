@@ -25,9 +25,7 @@ import { settle } from '../../../../src/helpers/wait.js';
 import { voltQcProbe as P } from '../../../../src/pages/voltqc/pos/VoltQcProbe.js';
 import {
   POINT_RATE,
-  customerFieldLocked,
   dismissCheckPaid,
-  editReopenedOrder,
   eventually,
   refreshPointRates,
   successTotal,
@@ -38,7 +36,6 @@ import {
   checkoutBack,
   checkoutCustomerStats,
   createQuickPayOrder,
-  customDiscountSplit,
   customerEarnedPoints,
   homeCustomerStats,
   pointsFor,
@@ -330,7 +327,7 @@ describe('volt-qc 04 PROMO — customer points & visits (plan 04 — PROMO-M/M2/
         [od, { css: `input[placeholder="${VqpsCheckout.otherNamePlaceholder}"]`, nth: 0 }],
         'QC E2E',
       );
-      await P.clickQ([od, { role: 'button', nameRe: '^Pay \\$', nth: 0 }]);
+      await P.clickQ([od, { role: 'button', nameRe: '^Pay\\s*\\$', nth: 0 }]);
       await waitCheckPaid(2);
       await P.clickQ([{ role: 'dialog', nth: -1 }, btn('Done')]);
       await P.clickQ(inMain({ role: 'button', nameRe: 'Complete Done|^Done$', nth: -1 }));
@@ -341,23 +338,24 @@ describe('volt-qc 04 PROMO — customer points & visits (plan 04 — PROMO-M/M2/
     },
   );
 
-  // PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bỏ .skip để chạy lại.
-  it.skip(
-    title('PROMO-M2a Re-Open then finish again does not add a Visit (PROMO-098)', Tag.REGRESSION, Tag.WRITE),
-    async function () {
-      this.timeout(6 * 60_000);
-      const id = await app.createOrder();
-      const phone = await newCustomer();
-      await payOpen('Other');
-      await app.noReceipt();
-      const v1 = (await readCustomerStats(phone)).visits;
-      await app.reopenOrder(id);
-      await app.finishReopen();
-      const v2 = (await readCustomerStats(phone)).visits;
-      console.warn(`${id}: visit ${String(v1)} → ${String(v2)}`);
-      expect(v2).toBe(v1);
-    },
-  );
+  // [TẮT 2026-11-08] Tạm không test (đã đánh dấu skip/MANUAL: cần thiết bị/điều kiện không tự động được, hoặc Re-Open tạm dừng theo yêu cầu) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // // PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bỏ .skip để chạy lại.
+  // it.skip(
+  //   title('PROMO-M2a Re-Open then finish again does not add a Visit (PROMO-098)', Tag.REGRESSION, Tag.WRITE),
+  //   async function () {
+  //     this.timeout(6 * 60_000);
+  //     const id = await app.createOrder();
+  //     const phone = await newCustomer();
+  //     await payOpen('Other');
+  //     await app.noReceipt();
+  //     const v1 = (await readCustomerStats(phone)).visits;
+  //     await app.reopenOrder(id);
+  //     await app.finishReopen();
+  //     const v2 = (await readCustomerStats(phone)).visits;
+  //     console.warn(`${id}: visit ${String(v1)} → ${String(v2)}`);
+  //     expect(v2).toBe(v1);
+  //   },
+  // );
 
   it(
     title(
@@ -398,84 +396,86 @@ describe('volt-qc 04 PROMO — customer points & visits (plan 04 — PROMO-M/M2/
     },
   );
 
-  // PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bỏ .skip để chạy lại.
-  it.skip(
-    title(
-      'PROMO-PT3 Re-Open an order without customer, add customer C, Re-Open Done → C earns the points',
-      Tag.REGRESSION,
-      Tag.WRITE,
-    ),
-    async function () {
-      this.timeout(6 * 60_000);
-      const id = await app.createOrder();
-      const total = await payOpen('Other'); // paid amount (Other, incl. tax)
-      await app.noReceipt();
-      await app.reopenOrder(id);
-      await editReopenedOrder(id);
-      // DEV: on Re-Open the customer field is locked (pointer-events-none opacity-50 when isReopen) → cannot add C.
-      if (await customerFieldLocked()) {
-        await app.finishReopen();
-        console.warn(
-          'PROMO-PT3 skipped: DEV locks the customer field on Re-Open (isReopen → pointer-events-none) — cannot add customer C (PROMO-097)',
-        );
-        this.skip();
-      }
-      const phone = await newCustomer();
-      await app.finishReopen();
-      const want = pointsFor(total, POINT_RATE.other);
-      expect((await readCustomerStats(phone, want)).points).toBe(want);
-    },
-  );
+  // [TẮT 2026-11-08] Tạm không test (đã đánh dấu skip/MANUAL: cần thiết bị/điều kiện không tự động được, hoặc Re-Open tạm dừng theo yêu cầu) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // // PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bỏ .skip để chạy lại.
+  // it.skip(
+  //   title(
+  //     'PROMO-PT3 Re-Open an order without customer, add customer C, Re-Open Done → C earns the points',
+  //     Tag.REGRESSION,
+  //     Tag.WRITE,
+  //   ),
+  //   async function () {
+  //     this.timeout(6 * 60_000);
+  //     const id = await app.createOrder();
+  //     const total = await payOpen('Other'); // paid amount (Other, incl. tax)
+  //     await app.noReceipt();
+  //     await app.reopenOrder(id);
+  //     await editReopenedOrder(id);
+  //     // DEV: on Re-Open the customer field is locked (pointer-events-none opacity-50 when isReopen) → cannot add C.
+  //     if (await customerFieldLocked()) {
+  //       await app.finishReopen();
+  //       console.warn(
+  //         'PROMO-PT3 skipped: DEV locks the customer field on Re-Open (isReopen → pointer-events-none) — cannot add customer C (PROMO-097)',
+  //       );
+  //       this.skip();
+  //     }
+  //     const phone = await newCustomer();
+  //     await app.finishReopen();
+  //     const want = pointsFor(total, POINT_RATE.other);
+  //     expect((await readCustomerStats(phone, want)).points).toBe(want);
+  //   },
+  // );
 
-  // PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bỏ .skip để chạy lại.
-  it.skip(
-    title(
-      'PROMO-J2 Re-Open: Home has no Promo & Rewards; the gift card line is read-only and cannot be deleted (PROMO-047, PROMO-163)',
-      Tag.REGRESSION,
-      Tag.WRITE,
-    ),
-    async function () {
-      this.timeout(6 * 60_000);
-      await step(
-        'PROMO-047 Custom 10% order paid Other → Re-Open → Edit Order: no Promo & Rewards button',
-        async () => {
-          const id = await app.createOrder();
-          await customDiscountSplit('%', 10);
-          await payOpen('Other');
-          await app.noReceipt();
-          await app.reopenOrder(id);
-          await editReopenedOrder(id);
-          expect(await P.count(btn('Promo & Rewards'))).toBe(0);
-          await app.finishReopen();
-        },
-      );
+  // [TẮT 2026-11-08] Tạm không test (đã đánh dấu skip/MANUAL: cần thiết bị/điều kiện không tự động được, hoặc Re-Open tạm dừng theo yêu cầu) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // // PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bỏ .skip để chạy lại.
+  // it.skip(
+  //   title(
+  //     'PROMO-J2 Re-Open: Home has no Promo & Rewards; the gift card line is read-only and cannot be deleted (PROMO-047, PROMO-163)',
+  //     Tag.REGRESSION,
+  //     Tag.WRITE,
+  //   ),
+  //   async function () {
+  //     this.timeout(6 * 60_000);
+  //     await step(
+  //       'PROMO-047 Custom 10% order paid Other → Re-Open → Edit Order: no Promo & Rewards button',
+  //       async () => {
+  //         const id = await app.createOrder();
+  //         await customDiscountSplit('%', 10);
+  //         await payOpen('Other');
+  //         await app.noReceipt();
+  //         await app.reopenOrder(id);
+  //         await editReopenedOrder(id);
+  //         expect(await P.count(btn('Promo & Rewards'))).toBe(0);
+  //         await app.finishReopen();
+  //       },
+  //     );
 
-      if (!vqEnv.testGiftCard) {
-        console.warn(`PROMO-163 skipped: ${NO_GC}`);
-        this.skip();
-      }
+  //     if (!vqEnv.testGiftCard) {
+  //       console.warn(`PROMO-163 skipped: ${NO_GC}`);
+  //       this.skip();
+  //     }
 
-      await step(
-        'PROMO-163 order with a test-card top-up paid Other → Re-Open → Edit Order: gift card dialog read-only, delete disabled',
-        async () => {
-          const id = await app.createOrder();
-          await addGiftCardLine(vqEnv.testGiftCard, 25);
-          await app.openPendingOrder(id);
-          await payOpen('Other');
-          await app.noReceipt();
-          await app.reopenOrder(id);
-          await editReopenedOrder(id);
-          await P.clickQ(inMain({ textRe: 'Gift Card \\[\\*+-\\*+-\\d{4}\\]', nth: 0 }));
-          const dlg = { role: 'dialog', name: 'Sell Gift Card', nth: -1 } as const;
-          await P.waitFor(dlg, 10_000, 'Sell Gift Card');
-          expect(await P.count([dlg, { role: 'button', name: 'Add' }])).toBe(0);
-          expect(await P.isDisabled([dlg, { role: 'textbox', name: 'Enter gift card code' }])).toBe(true);
-          await P.clickQ([dlg, btn('Close', 0)]);
-          const del = await P.infos(inMain({ role: 'button', name: 'Delete Staff Order Item' }));
-          for (const d of del) expect(d.disabled).toBe(true);
-          await app.finishReopen();
-        },
-      );
-    },
-  );
+  //     await step(
+  //       'PROMO-163 order with a test-card top-up paid Other → Re-Open → Edit Order: gift card dialog read-only, delete disabled',
+  //       async () => {
+  //         const id = await app.createOrder();
+  //         await addGiftCardLine(vqEnv.testGiftCard, 25);
+  //         await app.openPendingOrder(id);
+  //         await payOpen('Other');
+  //         await app.noReceipt();
+  //         await app.reopenOrder(id);
+  //         await editReopenedOrder(id);
+  //         await P.clickQ(inMain({ textRe: 'Gift Card \\[\\*+-\\*+-\\d{4}\\]', nth: 0 }));
+  //         const dlg = { role: 'dialog', name: 'Sell Gift Card', nth: -1 } as const;
+  //         await P.waitFor(dlg, 10_000, 'Sell Gift Card');
+  //         expect(await P.count([dlg, { role: 'button', name: 'Add' }])).toBe(0);
+  //         expect(await P.isDisabled([dlg, { role: 'textbox', name: 'Enter gift card code' }])).toBe(true);
+  //         await P.clickQ([dlg, btn('Close', 0)]);
+  //         const del = await P.infos(inMain({ role: 'button', name: 'Delete Staff Order Item' }));
+  //         for (const d of del) expect(d.disabled).toBe(true);
+  //         await app.finishReopen();
+  //       },
+  //     );
+  //   },
+  // );
 });

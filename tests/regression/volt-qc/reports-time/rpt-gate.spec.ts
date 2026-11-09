@@ -258,7 +258,7 @@ describe('volt-qc RPT — menu & passcode gate', () => {
 
       for (const [route, anchor] of [
         [RptRoutes.staff, 'Total staff income'],
-        [RptRoutes.summary, 'Total Income'],
+        [RptRoutes.summary, /Total Income/], // heading now reads "Total Income Nov 08, 2026"
         [RptRoutes.payroll, /Current Period/],
         [RptRoutes.batch, 'Batch Number'],
       ] as const) {

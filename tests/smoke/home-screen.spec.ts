@@ -9,7 +9,9 @@
 
 import { expect } from '@wdio/globals';
 import { Routes } from '../../src/constants/routes.js';
-import { homePage } from '../../src/pages/index.js';
+import { env } from '../../configs/env/loadEnv.js';
+import { passcodeDialog } from '../../src/components/index.js';
+import { homePage, orderPendingPage } from '../../src/pages/index.js';
 import { Tag, title } from '../../src/types/testTags.js';
 import { expectCentsEqual } from '../../src/utils/money.js';
 
@@ -29,7 +31,17 @@ describe('Home screen', () => {
   });
 
   it(title('Every cart footer row reads back as whole cents', Tag.SMOKE), async () => {
+    // Home opens on the pending list with NO order selected (1.1.x), so there is no
+    // cart footer to read. Quick Checkout is passcode-gated on 1.1.109 (VP-4815),
+    // and Quick Checkout alone only opens the staff picker — the footer renders once
+    // the order holds a line, so build a one-line draft (deleted again below).
+    await orderPendingPage.pressQuickCheckout();
+    if (await passcodeDialog.isPrompting()) await passcodeDialog.enter(env.OWNER_PASSCODE);
+    await homePage.selectStaffByIndex(0);
+    if (await passcodeDialog.isPrompting()) await passcodeDialog.enter(env.OWNER_PASSCODE);
+    await homePage.addServiceByIndex(0);
     const totals = await homePage.cartTotals();
+    await homePage.deleteOrder().catch(() => undefined);
 
     for (const [row, cents] of Object.entries(totals)) {
       // `money()` always renders two decimals, so a fractional value here means

@@ -273,13 +273,21 @@ export const ChargeFeeIds = {
       'Cài đặt lượt',
     ),
   ),
-  discountOwnerInput: locator('discount owner percent', 'discount-setting-owner', '#discount-setting-owner'),
-  discountStaffInput: locator('discount staff percent', 'discount-setting-staff', '#discount-setting-staff'),
+  discountOwnerInput: locator(
+    'discount owner percent',
+    'discount-setting-available-owner',
+    '#discount-setting-available-owner',
+  ),
+  discountStaffInput: locator(
+    'discount staff percent',
+    'discount-setting-available-staff',
+    '#discount-setting-available-staff',
+  ),
   /** The Discount card's own Save — the second Save on the page. */
   discountSaveBtn: locator(
     'discount setting save',
     'discount-setting-save',
-    '//*[@id="discount-setting-staff"]/following::button[normalize-space()="Save" or normalize-space()="Lưu"][1]',
+    '//*[@id="discount-setting-available-owner"]/preceding::button[normalize-space()="Save" or normalize-space()="Lưu"][1]',
   ),
   turnServiceBasedSwitch: locator('turn service-based switch', 'turn-service-based', '#turn-service-based'),
   turnDecimalSwitch: locator('turn decimal switch', 'turn-decimal', '#turn-decimal'),

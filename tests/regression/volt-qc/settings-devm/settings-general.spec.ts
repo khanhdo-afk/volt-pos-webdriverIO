@@ -60,7 +60,7 @@ describe('volt-qc SET — Accessibility, Language, Permissions, Roles (read-only
 
   it(
     title(
-      'Accessibility › Passcode Setting: Require Passcode For, Active All and the 14 gates in Reports / Orders / Others (SET-038)',
+      'Accessibility › Passcode Setting: Require Passcode For, Active All and every gates in Reports / Orders / Others (SET-038)',
       Tag.REGRESSION,
     ),
     async () => {
@@ -84,7 +84,9 @@ describe('volt-qc SET — Accessibility, Language, Permissions, Roles (read-only
           });
         }
       }
-      expect(await vqProbe.count(VqAccessibility.gates())).toBe(14);
+      expect(await vqProbe.count(VqAccessibility.gates())).toBe(
+        Object.values(PASSCODE_GATES_VQ).flat().length,
+      );
     },
   );
 

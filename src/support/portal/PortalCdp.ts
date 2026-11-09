@@ -6,6 +6,9 @@ import { loadEnv } from '../../../configs/env/loadEnv.js';
 
 const env = loadEnv();
 
+/** Longest a single CDP command may go unanswered (Page.navigate on a slow Portal included). */
+const SEND_TIMEOUT = 45_000;
+
 /**
  * A second browser for app-lane specs: Microsoft Edge on the QR-signed
  * `.portal-profile/`, driven over the Chrome DevTools Protocol.
@@ -67,6 +70,12 @@ export class PortalCdp {
     this.ws = await openSocket(page.webSocketDebuggerUrl, (m) => {
       if (m.id !== undefined) this.pending.get(m.id)?.(m);
       if (m.id !== undefined) this.pending.delete(m.id);
+      // A dirty settings form raises "Leave site?" on navigate/reload; left open it
+      // freezes every later Runtime.evaluate. The caller decided to leave: accept.
+      if (m.method === 'Page.javascriptDialogOpening')
+        this.ws?.send(
+          JSON.stringify({ id: ++this.seq, method: 'Page.handleJavaScriptDialog', params: { accept: true } }),
+        );
     });
     await this.send('Page.enable');
     return this;
@@ -87,7 +96,13 @@ export class PortalCdp {
   async send<T = unknown>(method: string, params: Record<string, unknown> = {}): Promise<T> {
     if (!this.ws) throw new Error('PortalCdp: not started');
     const id = ++this.seq;
-    const reply = new Promise<CdpReply>((resolve) => this.pending.set(id, resolve));
+    const reply = new Promise<CdpReply>((resolve, reject) => {
+      this.pending.set(id, resolve);
+      setTimeout(() => {
+        if (this.pending.delete(id))
+          reject(new Error(`PortalCdp ${method}: no reply within ${String(SEND_TIMEOUT / 1000)}s`));
+      }, SEND_TIMEOUT);
+    });
     this.ws.send(JSON.stringify({ id, method, params }));
     const r = await reply;
     if (r.error) throw new Error(`PortalCdp ${method}: ${r.error.message}`);
@@ -133,6 +148,32 @@ export class PortalCdp {
     throw new Error(`PortalCdp: ${what} not met within ${String(timeout / 1000)}s`);
   }
 
+  /**
+   * A real mouse click at the centre of the element `selectorExpr` evaluates to.
+   * Radix Tabs / Select / Vue handlers listen to pointer/mouse-down, which
+   * `el.click()` never fires.
+   */
+  async mouseClick(selectorExpr: string): Promise<void> {
+    const box = await this.eval<{ x: number; y: number } | null>(
+      `const el = ${selectorExpr}; if (!el) return null; el.scrollIntoView({ block: 'center' });
+       await new Promise((r) => setTimeout(r, 150)); const r = el.getBoundingClientRect();
+       return { x: r.x + r.width / 2, y: r.y + r.height / 2 };`,
+    );
+    if (!box) throw new Error(`PortalCdp: nothing to click for ${selectorExpr}`);
+    const base = { x: box.x, y: box.y, button: 'left', clickCount: 1 };
+    await this.send('Input.dispatchMouseEvent', { ...base, type: 'mouseMoved' });
+    await this.send('Input.dispatchMouseEvent', { ...base, type: 'mousePressed' });
+    await this.send('Input.dispatchMouseEvent', { ...base, type: 'mouseReleased' });
+    await sleep(250);
+  }
+
+  /** Press one key (optionally with Ctrl) on the focused element. */
+  async key(key: string, code: string, vk: number, ctrl = false): Promise<void> {
+    const p = { key, code, windowsVirtualKeyCode: vk, modifiers: ctrl ? 2 : 0 };
+    await this.send('Input.dispatchKeyEvent', { ...p, type: 'rawKeyDown' });
+    await this.send('Input.dispatchKeyEvent', { ...p, type: 'keyUp' });
+  }
+
   /** Real typing into the focused element (React sees input events), replacing its selection. */
   async insertText(text: string): Promise<void> {
     await this.send('Input.insertText', { text });
@@ -148,6 +189,40 @@ export class PortalCdp {
   async isSignedIn(): Promise<boolean> {
     const u = await this.url();
     return u.startsWith(env.PORTAL_URL) && !u.includes('/login');
+  }
+
+  /**
+   * The Portal keeps an 8 h `fb_refresh_token` (rotated on use, 5-min access `token`),
+   * but the Keycloak SSO cookie (`KEYCLOAK_SESSION` on auth.dev-fastboy.dev) lives a
+   * year. So when the refresh token has lapsed, "Continue with GCI Business" signs
+   * back in WITHOUT a QR as long as that SSO session is alive. Returns true when the
+   * page ends up signed in.
+   */
+  async ssoRelogin(timeout = 30_000): Promise<boolean> {
+    if (await this.isSignedIn()) return true;
+    const clicked = await this.eval<boolean>(
+      `const b=[...document.querySelectorAll('button,a')].find(x=>/Continue with GCI Business/i.test(x.textContent||''));if(!b)return false;b.click();return true;`,
+    ).catch(() => false);
+    if (!clicked) return false;
+    const deadline = Date.now() + timeout;
+    while (Date.now() < deadline) {
+      await sleep(1_000);
+      const u = await this.url().catch(() => '');
+      if (u.startsWith(env.PORTAL_URL) && !u.includes('/login')) return true;
+    }
+    return false;
+  }
+
+  /** Expiry of the Portal refresh token and the SSO session (null = no such cookie). */
+  async sessionInfo(): Promise<{ refreshExpires: Date | null; ssoExpires: Date | null }> {
+    const { cookies } = await this.send<{ cookies: { name: string; expires: number }[] }>(
+      'Network.getAllCookies',
+    );
+    const at = (name: string): Date | null => {
+      const c = cookies.find((k) => k.name === name);
+      return c && c.expires > 0 ? new Date(c.expires * 1000) : null;
+    };
+    return { refreshExpires: at('fb_refresh_token'), ssoExpires: at('KEYCLOAK_SESSION') };
   }
 
   private async version(): Promise<{ webSocketDebuggerUrl: string } | null> {
@@ -169,6 +244,7 @@ interface CdpTarget {
 }
 
 interface CdpReply {
+  method?: string;
   id?: number;
   result?: unknown;
   error?: { message: string };
@@ -181,8 +257,18 @@ function sleep(ms: number): Promise<void> {
 function openSocket(url: string, onMessage: (m: CdpReply) => void): Promise<WebSocket> {
   return new Promise((resolve, reject) => {
     const ws = new WebSocket(url);
-    ws.onopen = () => resolve(ws);
-    ws.onerror = () => reject(new Error(`PortalCdp: cannot open ${url}`));
+    const timer = setTimeout(
+      () => reject(new Error(`PortalCdp: WebSocket to ${url} did not open within 10s`)),
+      10_000,
+    );
+    ws.onopen = () => {
+      clearTimeout(timer);
+      resolve(ws);
+    };
+    ws.onerror = () => {
+      clearTimeout(timer);
+      reject(new Error(`PortalCdp: cannot open ${url}`));
+    };
     ws.onmessage = (e: MessageEvent) => onMessage(JSON.parse(String(e.data)) as CdpReply);
   });
 }

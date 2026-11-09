@@ -227,8 +227,16 @@ export const Vq = {
   dialogClose: (title: string): VqQuery =>
     q({
       name: `dialog "${title}" close`,
-      css: 'button[aria-label="Close"], button[data-slot="dialog-close"], button',
+      css: 'button[aria-label="Close"], button[data-slot="dialog-close"], button[data-slot="dialog-header-close"], button',
       text: 'Close',
+      within: VqScope.dialog,
+      withinText: title,
+    }),
+  /** 1.1.109 staff-code gate: its X is the dialog's first button, an icon with no label. */
+  gateClose: (title: string): VqQuery =>
+    q({
+      name: `gate "${title}" X`,
+      css: '[data-testid="staff-code-dialog"] button:first-of-type, button[aria-label="Close"]',
       within: VqScope.dialog,
       withinText: title,
     }),
@@ -305,8 +313,13 @@ export const PASSCODE_GATES_VQ: Readonly<Record<string, readonly string[]>> = {
     'delete_order',
     'view_order_history',
     'quick_pay',
+    // 1.1.109 (VP-4815 + Apply Discount): 20 gates in all.
+    'apply_discount',
+    'quick_checkout',
+    'gift_card_sale',
+    'edit_service_price',
   ],
-  Others: ['open_cash_drawer', 'settings_page', 'time_tracking'],
+  Others: ['open_cash_drawer', 'settings_page', 'time_tracking', 'calendar'],
 };
 
 /** Permissions matrix: parent rows and their children (volt-qc `flows/settings.ts`). */
@@ -506,8 +519,8 @@ export const VqStaff = {
 
 export const VqChargeFee = {
   serviceTax: (): VqQuery => Vq.id('charge-fee-service-tax'),
-  discountOwner: (): VqQuery => Vq.id('discount-setting-owner'),
-  discountStaff: (): VqQuery => Vq.id('discount-setting-staff'),
+  discountOwner: (): VqQuery => Vq.id('discount-setting-available-owner'),
+  discountStaff: (): VqQuery => Vq.id('discount-setting-available-staff'),
   turnServiceBased: (): VqQuery => Vq.id('turn-service-based'),
   turnDecimal: (): VqQuery => Vq.id('turn-decimal'),
   /** A section card by its `<h4>` title — the smallest container holding it. */
@@ -535,9 +548,18 @@ export const VqTipping = {
   signatureAfter: (): VqQuery => Vq.id('tipping-signature-timing-after'),
   tipRows: (): VqQuery => q({ name: 'tip option rows', css: 'tbody tr', within: VqScope.main }),
   rowEdit: (row: number): VqQuery =>
-    q({ name: `edit tip row ${String(row)}`, css: 'button[aria-label="Edit Tip Option"]', nth: row }),
+    // 1.1.109: no aria-label — the action cell holds Edit then Delete.
+    q({
+      name: `edit tip row ${String(row)}`,
+      css: 'main tbody tr td:last-child button:nth-of-type(1)',
+      nth: row,
+    }),
   rowDelete: (row: number): VqQuery =>
-    q({ name: `delete tip row ${String(row)}`, css: 'button[aria-label="Delete Tip Option"]', nth: row }),
+    q({
+      name: `delete tip row ${String(row)}`,
+      css: 'main tbody tr td:last-child button:nth-of-type(2)',
+      nth: row,
+    }),
   /** The inline input of the row being edited (second cell). */
   rowInput: (): VqQuery => q({ name: 'inline tip input', css: 'tbody tr td:nth-child(2) input' }),
   dialogPercent: (): VqQuery => Vq.labelled('Percentage', VqScope.dialog),

@@ -99,9 +99,11 @@ describe('VP-2465 — Service name display on Create Order', () => {
     expect(names(inconsistent)).toBe('');
   });
 
-  it(title('TC-08: Vietnamese / special-character names — PENDING (needs a fixture service)'));
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(title('TC-08: Vietnamese / special-character names — PENDING (needs a fixture service)'));
 
-  it(title('TC-09: other screen sizes / orientation — PENDING (fixed-size till window)'));
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(title('TC-09: other screen sizes / orientation — PENDING (fixed-size till window)'));
 
   it(
     title('TC-10 Tapping a clamped and a short card still adds both to the order', Tag.REGRESSION, Tag.WRITE),

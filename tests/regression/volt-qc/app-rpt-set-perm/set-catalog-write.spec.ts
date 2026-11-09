@@ -198,7 +198,10 @@ describe('volt-qc SET — Services & Products writes (settings)', () => {
         await homePage.selectStaffByIndex(0);
         await homePage.searchService(name);
         await homePage.addServiceByIndex(0);
-        expect(await homePage.cartLinePricesCents()).toContain(1700);
+        // The cart line carries the store's 3 % card Service Fee ($15.00 → $15.45), so the
+        // new price reads $17.51 — or $17.00 on a store without the fee.
+        const prices = await homePage.cartLinePricesCents();
+        expect(prices.some((p) => p === 1700 || p === Math.round(1700 * 1.03))).toBe(true);
         await cleanTill();
       });
 

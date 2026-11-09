@@ -11,6 +11,8 @@ import { step } from '../../../helpers/steps.js';
 import { settle } from '../../../helpers/wait.js';
 import { homePage, orderHistoryDetailPage, orderHistoryPage } from '../../index.js';
 import { voltQcProbe as P } from '../pos/VoltQcProbe.js';
+import { posSettingsSnapshot } from '../../../support/portal/portalStore.js';
+import { requireStore } from '../../../support/portal/storeSettings.js';
 
 /**
  * Shared kit for the volt-qc 15-turn write-path ports
@@ -94,6 +96,17 @@ export async function readCfg(): Promise<TurnCfg> {
   };
 }
 
+/**
+ * Turn ON for the merchant: when Turn value is $0 (kill switch), set it on the
+ * Portal (restored after the spec file — tests/setup/rootHooks.ts). False = no Portal.
+ */
+export async function ensureTurnOn(value = 30): Promise<boolean> {
+  const snap = await posSettingsSnapshot().catch(() => null);
+  const cur = (snap?.['sys.merchant_turn_default'] as { turn_value?: number } | undefined)?.turn_value;
+  if (typeof cur === 'number' && cur > 0) return true;
+  return requireStore({ turnValue: value });
+}
+
 /** Save a configuration through board › Setting › Save. Refuses $0 unless `allowZero`. */
 export async function saveCfg(cfg: TurnCfg, allowZero = false): Promise<void> {
   if (!allowZero && !(cfg.turnValueCents > 0))
@@ -107,6 +120,7 @@ export async function saveCfg(cfg: TurnCfg, allowZero = false): Promise<void> {
 
 /** Run `fn` under `cfg`, restoring the original configuration afterwards. Skips when Turn is off. */
 export async function withCfg(ctx: Mocha.Context, cfg: TurnCfg, fn: () => Promise<void>): Promise<void> {
+  await ensureTurnOn();
   const orig = await readCfg();
   if (orig.turnValueCents <= 0) ctx.skip(); // Turn is off: never switch it on (restoring would mean saving $0)
   if (sameCfg(orig, cfg)) return fn();
@@ -205,6 +219,7 @@ export async function withTurnStaff(
   count: number,
   fn: (staff: string[]) => Promise<void>,
 ): Promise<void> {
+  await ensureTurnOn();
   await returnToHome();
   const cfg = await readCfg();
   if (cfg.turnValueCents <= 0) ctx.skip();

@@ -25,51 +25,50 @@
  * staging only.
  */
 
-import { title } from '../../../src/types/testTags.js';
-
 // SPL-01 (Split gated behind Total > $5) runs as volt-qc/vp-tickets/split-order TC-01 (boundary $5.00 / $5.01).
 describe('Payment flows — Split Order', () => {
-  it(
-    title(
-      'SPL-02..08: split methods / tax / clear-check SPEC — COVERED by split-order*.spec.ts (TC-ORDERFLOW-25..33)',
-    ),
-  );
-
-  it(
-    title(
-      'SPL-R1 (VP-4353): pay one check by Card, remaining checks collapse to one — PENDING 💳 (needs card + split)',
-    ),
-  );
-
-  it(
-    title(
-      'SPL-R2 (VP-3788): gift-card "Pay & create new check" merges tip into principal — PENDING 💳 (= GC-R2)',
-    ),
-  );
-
-  it(
-    title(
-      'SPL-R3 (VP-4255): a check card tip is missing on the customer screen — PENDING 🖥️💳 (dual-screen + card)',
-    ),
-  );
-
-  it(title('SPL-R4 (VP-4227): split card skips the tip-suggestion screen — PENDING 💳 (needs card + split)'));
-
-  it(
-    title(
-      'SPL-R5 (VP-4084): Pay button disabled for Card in a split — PENDING 💳 (needs the split tender panel)',
-    ),
-  );
-
-  it(
-    title(
-      'SPL-R6 (VP-4287): terminal disconnect at timeout desyncs POS/FBP — PENDING 🔌 OUT OF SCOPE (fault-injection, §9a)',
-    ),
-  );
-
-  it(
-    title(
-      'SPL-R7 (VP-4405#2): split Total drops after one check is paid in cash — PENDING 🌙 (needs a partial split settle)',
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'SPL-02..08: split methods / tax / clear-check SPEC — COVERED by split-order*.spec.ts (TC-ORDERFLOW-25..33)',
+  //   ),
+  // );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'SPL-R1 (VP-4353): pay one check by Card, remaining checks collapse to one — PENDING 💳 (needs card + split)',
+  //   ),
+  // );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'SPL-R2 (VP-3788): gift-card "Pay & create new check" merges tip into principal — PENDING 💳 (= GC-R2)',
+  //   ),
+  // );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'SPL-R3 (VP-4255): a check card tip is missing on the customer screen — PENDING 🖥️💳 (dual-screen + card)',
+  //   ),
+  // );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(title('SPL-R4 (VP-4227): split card skips the tip-suggestion screen — PENDING 💳 (needs card + split)'));
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'SPL-R5 (VP-4084): Pay button disabled for Card in a split — PENDING 💳 (needs the split tender panel)',
+  //   ),
+  // );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'SPL-R6 (VP-4287): terminal disconnect at timeout desyncs POS/FBP — PENDING 🔌 OUT OF SCOPE (fault-injection, §9a)',
+  //   ),
+  // );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'SPL-R7 (VP-4405#2): split Total drops after one check is paid in cash — PENDING 🌙 (needs a partial split settle)',
+  //   ),
+  // );
 });

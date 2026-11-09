@@ -41,6 +41,7 @@ import {
 import { Tag, title } from '../../../../src/types/testTags.js';
 import { parseMoney } from '../../../../src/utils/money.js';
 import { ensure, expectCents, note, resetTill, track, untrack, usd } from './cd-e2e.helpers.js';
+import { requireStore, TAX_ON } from '../../../../src/support/portal/storeSettings.js';
 
 const GIFT_CARD = (process.env.VOLT_TEST_GIFT_CARD ?? '').trim();
 const REWARD_PHONE = (process.env.VOLT_REWARD_PHONE ?? '').trim();
@@ -57,6 +58,12 @@ async function expectHomeMirror(label: string): Promise<void> {
 }
 
 describe('volt-qc 13 CD deep — the customer display through one order', () => {
+  before(async function () {
+    this.timeout(5 * 60_000);
+    // Store set-up this file needs — Portal-adjusted if the till differs, restored after the file.
+    await requireStore(TAX_ON);
+  });
+
   before(async () => {
     await returnToHome();
   });

@@ -559,17 +559,19 @@ describe('VP-2691 — Version Update page replaces the auto-update popup', () =>
    * 4. Out of reach for this lane
    * ------------------------------------------------------------------ */
 
-  it(
-    title(
-      'TC-VP2691-18: a real update downloads, installs and relaunches on the new version — PENDING ' +
-        '(a real install restarts the app and ends the WebDriver session; dev has no newer build; manual)',
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'TC-VP2691-18: a real update downloads, installs and relaunches on the new version — PENDING ' +
+  //       '(a real install restarts the app and ends the WebDriver session; dev has no newer build; manual)',
+  //   ),
+  // );
 
-  it(
-    title(
-      'TC-VP2691-19: a Deprecated build still goes to /force-update — PENDING ' +
-        '(needs a Portal Deprecate, and the force-update screen installs on mount; manual)',
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'TC-VP2691-19: a Deprecated build still goes to /force-update — PENDING ' +
+  //       '(needs a Portal Deprecate, and the force-update screen installs on mount; manual)',
+  //   ),
+  // );
 });

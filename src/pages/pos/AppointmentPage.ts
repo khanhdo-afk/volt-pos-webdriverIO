@@ -399,6 +399,19 @@ export class AppointmentPage extends BasePage {
    */
   async clickFirstSlotInUnassigned(): Promise<void> {
     const row = await this.find(AppointmentIds.firstSlotLabel, { timeout: Timeouts.MEDIUM });
+    // The grid scrolls inside its own container (Now line in the middle): bring
+    // its top — the 12:00 AM row — into view there, then into the window.
+    await browser.execute(
+      (el: HTMLElement) => {
+        for (let p = el.parentElement; p; p = p.parentElement) {
+          if (p.scrollHeight > p.clientHeight + 4 && /auto|scroll/.test(getComputedStyle(p).overflowY)) {
+            p.scrollTop = 0;
+            break;
+          }
+        }
+      },
+      row as unknown as HTMLElement,
+    );
     await row.scrollIntoView({ block: 'center' });
     await settle(Timeouts.ANIMATION);
     const column = await this.find(AppointmentIds.unassignedHeader, {

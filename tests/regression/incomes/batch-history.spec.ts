@@ -68,7 +68,12 @@ describe('Batch History', () => {
         // The app's designed default, not "This Week" as the scanned case table had it:
         // volt-pos `batch-history/-shared/batch-history.schema.ts` defaults `from` to
         // PRESET_VALUES.LAST_7_DAYS (= startOfDay(today − 6)) since 0.1.406, Apr 2026.
-        expect(DATE_PRESETS.last7Days as readonly string[]).toContain(await batchHistoryPage.presetText());
+        // On a Sunday today − 6 … today IS "This Week" (weeks start Monday): the app labels it so.
+        const accepted: readonly string[] =
+          new Date().getDay() === 0
+            ? [...DATE_PRESETS.last7Days, ...DATE_PRESETS.thisWeek]
+            : DATE_PRESETS.last7Days;
+        expect(accepted).toContain(await batchHistoryPage.presetText());
 
         const today = new Date();
         const sixDaysAgo = new Date(today);
@@ -175,11 +180,12 @@ describe('Batch History', () => {
       },
     );
 
-    it(
-      title(
-        'TC-BATCH-13: a closed batch shows its close date and a non-Open status — PENDING (merchant 14 only has the open batch; needs a closed batch in Last Year)',
-      ),
-    );
+    // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+    // it(
+    //   title(
+    //     'TC-BATCH-13: a closed batch shows its close date and a non-Open status — PENDING (merchant 14 only has the open batch; needs a closed batch in Last Year)',
+    //   ),
+    // );
   });
 
   describe('Batch Close Review', () => {
@@ -312,10 +318,11 @@ describe('Batch History', () => {
       },
     );
 
-    it(
-      title(
-        'TC-BATCH-12: pressing an OD Code opens the order detail — PENDING (target behaviour of the OD Code button not scanned yet)',
-      ),
-    );
+    // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+    // it(
+    //   title(
+    //     'TC-BATCH-12: pressing an OD Code opens the order detail — PENDING (target behaviour of the OD Code button not scanned yet)',
+    //   ),
+    // );
   });
 });

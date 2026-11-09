@@ -43,6 +43,7 @@ import {
 import { vqProbe } from '../../../../src/pages/voltqc/settings-devm/VqProbe.js';
 import { clearPasscodeGrant, ensurePasscodeGrant } from '../../../../src/support/passcodeGrant.js';
 import { Tag, title } from '../../../../src/types/testTags.js';
+import { requireStore } from '../../../../src/support/portal/storeSettings.js';
 
 const SAVED_TOAST = 'Business info updated successfully';
 
@@ -164,6 +165,7 @@ describe('volt-qc SET — settings rail & Business Info (read-only)', () => {
     ),
     async function (this: Mocha.Context) {
       await step('Leave settings and drop the 30-minute grant', async () => {
+        await requireStore({ 'passcode.settingsPage': true });
         await returnToHome();
         await clearPasscodeGrant();
       });
@@ -177,7 +179,7 @@ describe('volt-qc SET — settings rail & Business Info (read-only)', () => {
         );
 
         await step('X closes the gate: back outside settings, no Business Info field', async () => {
-          await vqProbe.press(Vq.dialogClose('Enter staff code to access Merchant Settings Page'));
+          await vqProbe.press(Vq.gateClose('Enter staff code to access Merchant Settings Page'));
           expect(await passcodeDialog.isPrompting(Timeouts.ANIMATION * 2)).toBe(false);
           expect(await vqProbe.path()).not.toMatch(/\/settings\/business/);
           expect(await vqProbe.count(field('City'))).toBe(0);
@@ -538,7 +540,8 @@ describe('volt-qc SET — settings rail & Business Info (read-only)', () => {
       const card = await vqProbe.textAround(Vq.text('Current plan', VqScope.main), '\\d{4}');
       expect(card).toContain('Current plan');
       expect(card).toMatch(/[A-Z][a-z]{2} \d{1,2}.*-.*\d{4}/);
-      expect(card).toMatch(/Weekly|Biweekly|Monthly|Custom/);
+      // 1.1.109 prints the current period's dates ("Nov 06 - Nov 12, 2026") instead of its name.
+      expect(card).toMatch(/Weekly|Biweekly|Monthly|Custom|[A-Z][a-z]{2} \d{2} - [A-Z][a-z]{2} \d{2}, \d{4}/);
 
       let checked = 0;
       for (const type of ['weekly', 'biweekly', 'monthly', 'custom'] as const) {

@@ -317,23 +317,26 @@ describe('Staff Payroll', () => {
     },
   );
 
-  it(
-    title(
-      'TC-10: cross-app — Volt POS vs FASTBOY Portal, same period, every row and summary — PENDING (needs the Portal lane: SSO login to dev.v2.fastboypay.com, not wired into this suite)',
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'TC-10: cross-app — Volt POS vs FASTBOY Portal, same period, every row and summary — PENDING (needs the Portal lane: SSO login to dev.v2.fastboypay.com, not wired into this suite)',
+  //   ),
+  // );
 
-  it(
-    title(
-      'TC-11: cross-app comparison holds over at least 3 periods — PENDING (needs the Portal lane: SSO login to dev.v2.fastboypay.com, not wired into this suite)',
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'TC-11: cross-app comparison holds over at least 3 periods — PENDING (needs the Portal lane: SSO login to dev.v2.fastboypay.com, not wired into this suite)',
+  //   ),
+  // );
 
-  it(
-    title(
-      'TC-12: cross-app — every staff detail panel matches the Portal field by field — PENDING (needs the Portal lane: SSO login to dev.v2.fastboypay.com, not wired into this suite)',
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'TC-12: cross-app — every staff detail panel matches the Portal field by field — PENDING (needs the Portal lane: SSO login to dev.v2.fastboypay.com, not wired into this suite)',
+  //   ),
+  // );
 
   it(
     title('The detail layout matches payType: salary vs commission (TC-13)', Tag.REGRESSION),

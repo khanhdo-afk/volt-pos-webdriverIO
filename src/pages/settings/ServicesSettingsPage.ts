@@ -167,8 +167,12 @@ export class ServicesSettingsPage extends BasePage {
    * the spec asks for "a service category" rather than a name.
    */
   async openFirstServiceCategory(exclude: readonly string[] = []): Promise<string> {
+    // The system categories ("Gift Card" / "Product", first in the list since 1.1.10x)
+    // also render a service-like table, but a service filed there is sold as a gift
+    // card / product on Home — never a plain service line.
+    const system = ['Gift Card', 'Thẻ quà tặng', 'Product', 'Sản phẩm'];
     for (const name of await this.categoryNames()) {
-      if (exclude.includes(name)) continue;
+      if (exclude.includes(name) || system.includes(name)) continue;
       await this.openCategory(name);
       const headers = await this.tableHeaders();
       const isService = headers.some((h) => (ServicesText.durationColumn as readonly string[]).includes(h));

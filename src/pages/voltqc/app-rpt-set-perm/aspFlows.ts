@@ -14,6 +14,7 @@
 import { $, browser } from '@wdio/globals';
 import { Timeouts } from '../../../../configs/constants/timeouts.js';
 import { env } from '../../../../configs/env/loadEnv.js';
+import { passcodeDialog } from '../../../components/index.js';
 import { AspIds } from '../../../constants/testids.voltqc-app-rpt-set-perm.js';
 import { Vq } from '../../../constants/testids.voltqc-settings-devm.js';
 import {
@@ -184,6 +185,10 @@ export async function cleanTill(): Promise<void> {
 export async function buildHomeDraft(lines = 1, staffIndex = 0): Promise<void> {
   await cleanTill();
   await homePage.selectStaffByIndex(staffIndex);
+  // Opening a new order is gated by "Enter staff code to access Quick Checkout" on
+  // 1.1.109 (VP-4815) when no 30-min grant is live. Enter the code WITHOUT ticking
+  // the 30-min skip, so the gates a case is about still ask afterwards.
+  if (await passcodeDialog.isPrompting(1_500)) await passcodeDialog.enter(env.STAFF_PASSCODE);
   const n = Math.max(await homePage.visibleServiceCount(), 1);
   for (let i = 0; i < lines; i += 1) await homePage.addServiceByIndex(i % n);
 }

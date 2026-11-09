@@ -127,7 +127,16 @@ export abstract class UiObject {
    */
   protected async click(loc: Locator, opts: FindOptions = {}): Promise<void> {
     const el = await this.find(loc, { visible: true, ...opts });
-    await el.waitForClickable({ timeout: opts.timeout ?? Timeouts.MEDIUM });
+    const clickable = await el
+      .waitForClickable({ timeout: opts.timeout ?? Timeouts.MEDIUM })
+      .then(() => true)
+      .catch(() => false);
+    if (!clickable) {
+      // A Radix Select / Popover left open by an earlier read (body gets
+      // pointer-events:none) is the usual cover: close it and look once more.
+      await closeStrayPoppers();
+      await el.waitForClickable({ timeout: Timeouts.SHORT });
+    }
     this.log.debug(`click ${loc.name}`);
     noteStep(`${this.constructor.name} › click ${loc.name}`);
     await el.click();
@@ -249,8 +258,26 @@ export abstract class UiObject {
     const deadline = Date.now() + timeout;
     while (Date.now() < deadline) {
       if (!(await this.exists(loc, 300))) return;
+      // 1.1.109 keeps closed Radix dialogs MOUNTED (data-state="closed",
+      // display:none): hidden counts as gone.
+      if (!(await this.isVisible(loc, 300))) return;
       await browser.pause(150);
     }
     throw new Error(`"${loc.name}" was still present after ${timeout}ms.`);
+  }
+}
+
+/** Escape out of any open Radix popper / listbox (no-op when none is open). */
+async function closeStrayPoppers(): Promise<void> {
+  for (let i = 0; i < 3; i += 1) {
+    const open = await browser.execute(
+      () =>
+        document.querySelector(
+          '[data-radix-popper-content-wrapper] [data-state="open"], [role="listbox"][data-state="open"]',
+        ) !== null,
+    );
+    if (!open) return;
+    await browser.keys(['Escape']);
+    await new Promise((r) => setTimeout(r, 200));
   }
 }

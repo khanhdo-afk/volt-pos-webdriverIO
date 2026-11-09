@@ -1,3 +1,5 @@
+import { env } from '../../../../configs/env/loadEnv.js';
+import { passcodeDialog } from '../../../components/index.js';
 import { Timeouts } from '../../../../configs/constants/timeouts.js';
 import { VqcGiftCard, VqcHome, type VqcQuery } from '../../../constants/testids.voltqc-pos.js';
 import { settle } from '../../../helpers/wait.js';
@@ -24,6 +26,9 @@ export const gcPanelBox: readonly VqcQuery[] = [D, { role: 'tabpanel', nth: 0 },
 /** Gift Card tile → dialog (the till must already show an empty order frame). */
 export async function openSellGiftCard(): Promise<void> {
   await P.clickQ(VqcHome.giftCardTile);
+  // "Sell Gift Card" is a passcode gate on 1.1.109 (VP-4815) once the 30-min grant
+  // lapses: enter the code (no 30-min tick) so the sale dialog can open.
+  await unlockSellGiftCardGate();
   await P.waitFor(D, Timeouts.SHORT, 'Sell Gift Card dialog');
 }
 
@@ -99,4 +104,9 @@ export async function gcBalanceCents(): Promise<number> {
   const t = await P.textOf(gcIn({ textRe: '^Balance: \\$', nth: 0 }));
   const m = /\$[\d,.]+/.exec(t);
   return m ? parseMoney(m[0]) : Number.NaN;
+}
+
+/** Enter the staff code when the Sell Gift Card gate asks (no 30-min tick). */
+export async function unlockSellGiftCardGate(): Promise<void> {
+  if (await passcodeDialog.isPrompting(1_500)) await passcodeDialog.enter(env.STAFF_PASSCODE);
 }

@@ -1,3 +1,5 @@
+import { webInput } from '../../src/support/web/webLane.js';
+import type { CheckinInput } from '../../src/pages/web/CheckinKioskPage.js';
 import { checkinKioskPage } from '../../src/pages/web/CheckinKioskPage.js';
 import { writeCheckinHandoff, CHECKIN_HANDOFF_FILE } from '../../src/pages/web/checkinHandoff.js';
 
@@ -17,7 +19,7 @@ describe('WEB-02 create check-in on GoCheckin kiosk', () => {
     await checkinKioskPage.login();
     await checkinKioskPage.openKiosk();
 
-    const handoff = await checkinKioskPage.createCheckin();
+    const handoff = await checkinKioskPage.createCheckin(webInput<CheckinInput>());
     handoff.createdAtLabel = new Date().toISOString();
 
     writeCheckinHandoff(handoff);

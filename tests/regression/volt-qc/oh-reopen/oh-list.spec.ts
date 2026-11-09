@@ -12,7 +12,7 @@
 import { expect } from '@wdio/globals';
 import { Timeouts } from '../../../../configs/constants/timeouts.js';
 import { VqcOrderHistory as OH, inMain } from '../../../../src/constants/testids.voltqc-pos.js';
-import { OhRoButtons as B, OhRoDialogs as D } from '../../../../src/constants/testids.voltqc-oh-reopen.js';
+import { OhRoDialogs as D } from '../../../../src/constants/testids.voltqc-oh-reopen.js';
 import { createOrder, goToOrderHistory, returnToHome } from '../../../../src/flows/index.js';
 import { step } from '../../../../src/helpers/steps.js';
 import { settle } from '../../../../src/helpers/wait.js';
@@ -26,14 +26,10 @@ import {
   field,
   fmtPhone,
   freshTill,
-  hasDetailButton,
   leaveReopen,
-  openByCode,
   openHistoryOrder,
   passcodeIfAsked,
   randomPhone,
-  reopenDone,
-  reopenToCheckout,
   setPasscodeGate,
   staffInDetail,
   staffRoleCode,
@@ -628,52 +624,53 @@ describe('volt-qc 07 ORDER HISTORY — list / search / filter (write)', () => {
     },
   );
 
-  // PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bỏ .skip để chạy lại.
-  it.skip(
-    title(
-      'A Re-open order shows the Re-open badge, the Status filter has no "Re-open", detail offers Continue Re-open (OH-066)',
-      Tag.REGRESSION,
-      Tag.WRITE,
-    ),
-    async function () {
-      this.timeout(6 * 60_000);
-      const { orderId, code } = await createPaidOrder({ method: 'other' });
-      await reopenToCheckout(orderId);
-      try {
-        // Reopen mode hides the nav: leave by router, as the volt-qc test does through the URL.
-        await P.routerGo('/order-history');
-        await passcodeIfAsked(2_000);
-        await P.waitFor(OH.heading, Timeouts.MEDIUM, 'Order History heading');
-        await openFilter();
-        await P.clickQ(inFilter({ role: 'button', nameRe: 'Select status' }));
-        const ids = await P.exec<string[]>(
-          'return Array.prototype.map.call(document.querySelectorAll(\'[id^="status-"]\'), function (e) { return e.id; });',
-        );
-        expect(ids).toHaveLength(9);
-        expect(ids).not.toContain('status-re-open');
-        expect(await P.has({ css: '[id^="status-"]', hasText: 'Re-open' })).toBe(false);
-        await P.escape();
-        if (await P.has(filterDialog)) await P.clickQ(inFilter({ role: 'button', name: 'Close', nth: 0 }));
-        await search(code);
-        expect(await rowShown(code)).toBe(true);
-        expect(await rowOf(code)).toContain('Re-open');
-        await openRow(code);
-        expect(
-          await P.poll(
-            () => hasDetailButton(B.continueReopen),
-            (v) => v,
-            10_000,
-          ),
-        ).toBe(true);
-      } finally {
-        await openByCode(code).catch(() => undefined);
-        if (await hasDetailButton(B.continueReopen)) {
-          await reopenToCheckout(orderId, B.continueReopen);
-          await reopenDone();
-        }
-      }
-    },
-  );
+  // [TẮT 2026-11-08] Tạm không test (đã đánh dấu skip/MANUAL: cần thiết bị/điều kiện không tự động được, hoặc Re-Open tạm dừng theo yêu cầu) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // // PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bỏ .skip để chạy lại.
+  // it.skip(
+  //   title(
+  //     'A Re-open order shows the Re-open badge, the Status filter has no "Re-open", detail offers Continue Re-open (OH-066)',
+  //     Tag.REGRESSION,
+  //     Tag.WRITE,
+  //   ),
+  //   async function () {
+  //     this.timeout(6 * 60_000);
+  //     const { orderId, code } = await createPaidOrder({ method: 'other' });
+  //     await reopenToCheckout(orderId);
+  //     try {
+  //       // Reopen mode hides the nav: leave by router, as the volt-qc test does through the URL.
+  //       await P.routerGo('/order-history');
+  //       await passcodeIfAsked(2_000);
+  //       await P.waitFor(OH.heading, Timeouts.MEDIUM, 'Order History heading');
+  //       await openFilter();
+  //       await P.clickQ(inFilter({ role: 'button', nameRe: 'Select status' }));
+  //       const ids = await P.exec<string[]>(
+  //         'return Array.prototype.map.call(document.querySelectorAll(\'[id^="status-"]\'), function (e) { return e.id; });',
+  //       );
+  //       expect(ids).toHaveLength(9);
+  //       expect(ids).not.toContain('status-re-open');
+  //       expect(await P.has({ css: '[id^="status-"]', hasText: 'Re-open' })).toBe(false);
+  //       await P.escape();
+  //       if (await P.has(filterDialog)) await P.clickQ(inFilter({ role: 'button', name: 'Close', nth: 0 }));
+  //       await search(code);
+  //       expect(await rowShown(code)).toBe(true);
+  //       expect(await rowOf(code)).toContain('Re-open');
+  //       await openRow(code);
+  //       expect(
+  //         await P.poll(
+  //           () => hasDetailButton(B.continueReopen),
+  //           (v) => v,
+  //           10_000,
+  //         ),
+  //       ).toBe(true);
+  //     } finally {
+  //       await openByCode(code).catch(() => undefined);
+  //       if (await hasDetailButton(B.continueReopen)) {
+  //         await reopenToCheckout(orderId, B.continueReopen);
+  //         await reopenDone();
+  //       }
+  //     }
+  //   },
+  // );
 
   it(
     title(

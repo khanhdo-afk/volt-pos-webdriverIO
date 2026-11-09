@@ -49,6 +49,7 @@ import {
 import { quickCheckout } from '../../../../src/pages/voltqc/pos/homeProbe.js';
 import { voltQcProbe as P } from '../../../../src/pages/voltqc/pos/VoltQcProbe.js';
 import { Tag, title } from '../../../../src/types/testTags.js';
+import { freshAppointment } from '../../../../src/support/web/webLane.js';
 
 interface Target {
   day: Date;
@@ -86,6 +87,16 @@ async function reopen(t: Target): Promise<void> {
 }
 
 describe('volt-qc 08 APPOINTMENT — Checkout from a booking', () => {
+  before(async function () {
+    this.timeout(8 * 60_000);
+    // Cases below need an appointment TODAY: book one on GoCheckin web in this run
+    // when none was made in the last hour (src/support/web/webLane.ts).
+    await freshAppointment().catch((e: Error) => {
+      // eslint-disable-next-line no-console
+      console.log(`[web-lane] appointment not created: ${e.message}`);
+    });
+  });
+
   /** Draft orders this file created and has not deleted yet. */
   const created = new Set<string>();
 
@@ -145,7 +156,9 @@ describe('volt-qc 08 APPOINTMENT — Checkout from a booking', () => {
           expect(lines.length).toBeGreaterThan(0);
           expect((await homePage.cartTotals()).subtotal).toBeGreaterThan(0);
           expect(await P.pageText('main')).toContain(Q.bookingTimeRe);
-          if (target.service) expect(await P.pageText('main')).toContain(target.service);
+          // The popover prints "N/A" when the booking line has no service name on it.
+          if (target.service && target.service !== 'N/A')
+            expect(await P.pageText('main')).toContain(target.service);
         },
       );
 
@@ -156,7 +169,7 @@ describe('volt-qc 08 APPOINTMENT — Checkout from a booking', () => {
         await P.waitFor(card, 15_000, `pending card ${id1}`);
         const text = await P.textOf(card);
         expect(text).toContain('Processing');
-        if (target.service) expect(text).toContain(target.service);
+        if (target.service && target.service !== 'N/A') expect(text).toContain(target.service);
         await P.fillQ(VqcPending.searchBox, '');
       });
 

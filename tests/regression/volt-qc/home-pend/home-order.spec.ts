@@ -88,12 +88,7 @@ import {
 } from '../../../../src/pages/voltqc/pos/giftCardProbe.js';
 import { voltQcProbe as P } from '../../../../src/pages/voltqc/pos/VoltQcProbe.js';
 import { Tag, title } from '../../../../src/types/testTags.js';
-import {
-  goToReopenEditor,
-  leaveReopenCheckout,
-  openOrderDetail,
-  reopenOrder,
-} from '../../order-flow/reopen-flow.helpers.js';
+import { openOrderDetail } from '../../order-flow/reopen-flow.helpers.js';
 
 let staff: string[] = [];
 let svc: string[] = [];
@@ -791,32 +786,33 @@ describe('volt-qc 02 HOME — order building & deleting (write)', () => {
 
   /* ---------------------------------------------------------------- re-open mode */
 
-  // PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bỏ .skip để chạy lại.
-  it.skip(
-    title(
-      'Re-open a paid order → Edit Order: the Pending sidebar is hidden on Home (HOME-015)',
-      Tag.REGRESSION,
-      Tag.WRITE,
-    ),
-    async function () {
-      this.timeout(6 * 60_000);
-      await createOrder(A(), [S1()]);
-      const uuid = await payCurrentInCash();
-      await openOrderDetail(uuid);
-      await reopenOrder(uuid);
-      try {
-        // Build 1.1.56 locks Edit Order on some checkout types (VP-4591).
-        if (!(await checkoutPage.isEditOrderLinkShown())) this.skip();
-        await goToReopenEditor();
-        await settle(1_000);
-        expect(await P.count(VqhSidebar.root)).toBe(0);
-        expect(await P.count(VqhOrder.split)).toBe(0);
-      } finally {
-        await leaveReopenCheckout(uuid).catch(() => undefined);
-        await returnToHome().catch(() => undefined);
-      }
-    },
-  );
+  // [TẮT 2026-11-08] Tạm không test (đã đánh dấu skip/MANUAL: cần thiết bị/điều kiện không tự động được, hoặc Re-Open tạm dừng theo yêu cầu) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // // PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bỏ .skip để chạy lại.
+  // it.skip(
+  //   title(
+  //     'Re-open a paid order → Edit Order: the Pending sidebar is hidden on Home (HOME-015)',
+  //     Tag.REGRESSION,
+  //     Tag.WRITE,
+  //   ),
+  //   async function () {
+  //     this.timeout(6 * 60_000);
+  //     await createOrder(A(), [S1()]);
+  //     const uuid = await payCurrentInCash();
+  //     await openOrderDetail(uuid);
+  //     await reopenOrder(uuid);
+  //     try {
+  //       // Build 1.1.56 locks Edit Order on some checkout types (VP-4591).
+  //       if (!(await checkoutPage.isEditOrderLinkShown())) this.skip();
+  //       await goToReopenEditor();
+  //       await settle(1_000);
+  //       expect(await P.count(VqhSidebar.root)).toBe(0);
+  //       expect(await P.count(VqhOrder.split)).toBe(0);
+  //     } finally {
+  //       await leaveReopenCheckout(uuid).catch(() => undefined);
+  //       await returnToHome().catch(() => undefined);
+  //     }
+  //   },
+  // );
 
   /* Quick Pay on an order with a $0 base is also covered by home-quick-pay.spec.ts. */
   it(

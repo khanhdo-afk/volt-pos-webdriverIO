@@ -189,7 +189,7 @@ describe('volt-qc SET — Permissions / Services / Employees / Language (setting
 
   it(
     title(
-      'Permissions: Select All / Unselect All on the Partner column writes every row; 16 rows restored from the snapshot (SET-118)',
+      'Permissions: Select All / Unselect All on the Partner column writes every row; every row restored from the snapshot (SET-118)',
       Tag.REGRESSION,
       Tag.WRITE,
       Tag.EXCLUSIVE,
@@ -246,16 +246,23 @@ describe('volt-qc SET — Permissions / Services / Employees / Language (setting
         this.skip();
       }
       log.info(`SET-151 original order: ${orig.join(', ')}`);
-      const [n0, n1] = [orig[0] ?? '', orig[1] ?? ''];
+      // The system categories (Product, Gift Card) lead the list and are kept there;
+      // swap the first two ordinary categories instead.
+      const SYSTEM = ['Product', 'Gift Card', 'Sản phẩm', 'Thẻ quà tặng'];
+      const base = Math.max(
+        0,
+        orig.findIndex((n) => !SYSTEM.includes(n)),
+      );
+      const [n0, n1] = [orig[base] ?? '', orig[base + 1] ?? ''];
       let touched = false;
       try {
         touched = true;
-        await dragGrip(0, 1);
-        expect((await reorderNames()).slice(0, 2)).toEqual([n1, n0]);
+        await dragGrip(base, base + 1);
+        expect((await reorderNames()).slice(base, base + 2)).toEqual([n1, n0]);
         await closeReorder();
         await goAnyLang('/settings/language');
         await goAnyLang('/settings/services');
-        expect((await reorderNames()).slice(0, 2)).toEqual([n1, n0]);
+        expect((await reorderNames()).slice(base, base + 2)).toEqual([n1, n0]);
         await closeReorder();
         await cleanTill();
         const home = await bodyText('main');
@@ -268,10 +275,10 @@ describe('volt-qc SET — Permissions / Services / Employees / Language (setting
           await goAnyLang('/settings/services');
           for (let k = 0; k < 3; k += 1) {
             const names = await reorderNames();
-            if (names[0] === n0) break;
+            if (names[base] === n0) break;
             const idx = names.indexOf(n0);
-            if (idx <= 0) break;
-            await dragGrip(idx, 0);
+            if (idx <= base) break;
+            await dragGrip(idx, base);
           }
           await closeReorder();
         }
@@ -284,7 +291,7 @@ describe('volt-qc SET — Permissions / Services / Employees / Language (setting
 
   it(
     title(
-      'Add New Item: Price / Supply Fee cap at $9,999,999.99 and refuse negatives; nothing created (SET-139)',
+      'Add New Item: Price / Supply Fee cap at the max ($10,000.00 on 1.1.109) and refuse negatives; nothing created (SET-139)',
       Tag.REGRESSION,
     ),
     async function (this: Mocha.Context): Promise<void> {
@@ -298,9 +305,10 @@ describe('volt-qc SET — Permissions / Services / Employees / Language (setting
         await ServicesSettingsPage.replacePrice('1000000000');
         const over = await ServicesSettingsPage.priceValue();
         const overMsg = await ServicesSettingsPage.dialogText();
-        expect(moneyOk(over) || /Price cannot exceed \$9,999,999\.99/.test(overMsg)).toBe(true);
+        expect(moneyOk(over) || /Price cannot exceed \$(9,999,999\.99|10,000\.00)/.test(overMsg)).toBe(true);
         await ServicesSettingsPage.replacePrice('999999999');
-        expect(await ServicesSettingsPage.priceValue()).toMatch(/9,?999,?999\.99/);
+        // 1.1.109 caps a service price at $10,000.00 (older builds: $9,999,999.99).
+        expect(await ServicesSettingsPage.priceValue()).toMatch(/9,?999,?999\.99|^\$?10,000\.00$/);
         await ServicesSettingsPage.appendToPrice('-');
         expect(await ServicesSettingsPage.priceValue()).not.toMatch(/^-/);
       } finally {
@@ -429,7 +437,7 @@ describe('volt-qc SET — Permissions / Services / Employees / Language (setting
 
   it(
     title(
-      'Create New Staff with every field empty: Nick name / Staff code / Role required, nothing created (SET-158)',
+      'Create New Staff with every field empty: Nick name / Staff code required (Role pre-filled), nothing created (SET-158)',
       Tag.REGRESSION,
     ),
     async function (this: Mocha.Context): Promise<void> {
@@ -440,7 +448,9 @@ describe('volt-qc SET — Permissions / Services / Employees / Language (setting
         await vqProbe.press(Vq.button('Create', VqScope.dialog));
         await settle(800);
         const t = await StaffsSettingsPage.dialogText();
-        for (const m of ['Nick name is required', 'Staff code is required', 'Role is required'])
+        // The Role select is pre-filled with "Staff" on 1.1.109 (TC-EMP-25), so only the
+        // two empty text fields can be reported missing.
+        for (const m of ['Nick name is required', 'Staff code is required'])
           expect({ m, has: t.includes(m) }).toEqual({ m, has: true });
         expect(
           /First name is required|Last name is required|Phone is required|Email is required/i.test(t),

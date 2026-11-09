@@ -504,12 +504,18 @@ export class StaffsSettingsPage extends BasePage {
     await browser.keys(['Escape']);
     // Escape normally closes it; 1.1.56 sometimes keeps it open, so the header
     // Close is the fallback.
-    const closed = await this.waitGone(StaffsIds.dialog, Timeouts.SHORT)
+    // 1.1.109 keeps the closed dialog MOUNTED (data-state="closed", display:none),
+    // so "gone" means "not visible", not "not in the DOM".
+    const closed = await browser
+      .waitUntil(async () => !(await this.isDialogOpen()), { timeout: Timeouts.SHORT, interval: 200 })
       .then(() => true)
       .catch(() => false);
     if (!closed) {
       await this.click(StaffsIds.dialogClose);
-      await this.waitGone(StaffsIds.dialog, Timeouts.SHORT);
+      await browser.waitUntil(async () => !(await this.isDialogOpen()), {
+        timeout: Timeouts.SHORT,
+        interval: 200,
+      });
     }
     return this;
   }
@@ -518,8 +524,7 @@ export class StaffsSettingsPage extends BasePage {
   async closeAnything(): Promise<void> {
     for (let i = 0; i < 3; i += 1) {
       const open =
-        (await this.exists(StaffsIds.dialog, Timeouts.ANIMATION)) ||
-        (await this.exists(StaffsIds.selectOptions, Timeouts.ANIMATION));
+        (await this.isDialogOpen()) || (await this.exists(StaffsIds.selectOptions, Timeouts.ANIMATION));
       if (!open) return;
       await browser.keys(['Escape']);
       await settle();

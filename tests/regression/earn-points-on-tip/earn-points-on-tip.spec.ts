@@ -117,7 +117,8 @@ describe('Earn points on tip (VP-4812)', () => {
   });
 
   describe('1. Portal', () => {
-    it(title('EPT-01: Portal toggle saves and survives a reload — PENDING (Portal UI, manual)'));
+    // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+    // it(title('EPT-01: Portal toggle saves and survives a reload — PENDING (Portal UI, manual)'));
 
     it(title('EPT-01b: the saved setting reaches POS as earn_on_tip', Tag.REGRESSION), async function () {
       const setting = await liveSetting();
@@ -273,12 +274,13 @@ describe('Earn points on tip (VP-4812)', () => {
   });
 
   describe('4. Changing the setting while POS runs', () => {
-    it(
-      title(
-        'EPT-07: toggling on the Portal applies to the next order without a restart — PENDING ' +
-          '(needs a Portal change mid-test; covered by running the ON and OFF passes on one app session)',
-      ),
-    );
+    // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+    // it(
+    //   title(
+    //     'EPT-07: toggling on the Portal applies to the next order without a restart — PENDING ' +
+    //       '(needs a Portal change mid-test; covered by running the ON and OFF passes on one app session)',
+    //   ),
+    // );
   });
 
   describe('5. Unaffected', () => {

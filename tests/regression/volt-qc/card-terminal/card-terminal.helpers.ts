@@ -40,6 +40,7 @@
  * `cardPayments()`, which are dollars — convert with {@link dollarsToCents}.
  */
 
+import { reloadPos } from '../../../../src/support/portal/portalStore.js';
 import { browser, expect } from '@wdio/globals';
 import { Timeouts } from '../../../../configs/constants/timeouts.js';
 import { VqcPay } from '../../../../src/constants/testids.voltqc-pay.js';
@@ -229,6 +230,9 @@ export async function withSignatureRule(want: SignatureSettings, fn: () => Promi
   try {
     await setSignatureSettings(want);
     expect(await readSignatureSettings()).toEqual(want);
+    // POS stores the new rule at once but the checkout keeps the old one until the
+    // webview reloads (same as every synced store setting) — reload before charging.
+    await reloadPos().catch(() => undefined);
     await app.go('/home', { passcode: false });
     await fn();
   } finally {
@@ -237,6 +241,7 @@ export async function withSignatureRule(want: SignatureSettings, fn: () => Promi
     await setSignatureSettings(before).catch((e: unknown) => {
       console.warn(`[card-terminal] restoring the signature rule failed: ${String(e)}`);
     });
+    await reloadPos().catch(() => undefined);
     await cleanTill().catch(() => undefined);
   }
 }

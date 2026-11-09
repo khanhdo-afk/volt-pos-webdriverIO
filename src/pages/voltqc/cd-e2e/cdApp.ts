@@ -1,3 +1,5 @@
+import { unlockSellGiftCardGate } from '../pos/giftCardProbe.js';
+import { unlockQuickCheckoutGate } from '../pos/homeProbe.js';
 import { Timeouts } from '../../../../configs/constants/timeouts.js';
 import { assertWritesAllowed, env } from '../../../../configs/env/loadEnv.js';
 import { appNav, passcodeDialog } from '../../../components/index.js';
@@ -253,6 +255,9 @@ class CdApp {
     await this.go(Routes.HOME);
     for (let attempt = 0; attempt < 3; attempt += 1) {
       await P.clickQ(CdMain.quickCheckout);
+      // Quick Checkout is passcode-gated on 1.1.109 (VP-4815) once the 30-min grant
+      // lapses — unlock it instead of letting the keypad cover the till.
+      await unlockQuickCheckoutGate();
       const deadline = Date.now() + 3_000;
       let emptySince = 0;
       while (Date.now() < deadline) {
@@ -564,6 +569,7 @@ class CdApp {
   /** Quick Pay tile → amount (cents) → optional name → Add. Needs a staff on the order. */
   async quickPay(cents: number, name = ''): Promise<void> {
     await P.clickQ(CdMain.quickPayTile);
+    await unlockSellGiftCardGate(); // Quick Pay is gated the same way on 1.1.109 (VP-4815)
     await P.waitFor(CdMain.quickPayDialog, Timeouts.SHORT, 'Quick Pay dialog');
     await P.fillQ([CdMain.quickPayDialog, { css: 'input', placeholder: '0.00', nth: 0 }], String(cents));
     if (name)
@@ -878,7 +884,7 @@ class CdApp {
         [dlg, { role: 'textbox', name: 'Input payment method name', nth: 0 }],
         opts.otherName ?? 'QC Other',
       );
-      await P.clickQ([dlg, { role: 'button', nameRe: '^Pay \\$', nth: 0 }]);
+      await P.clickQ([dlg, { role: 'button', nameRe: '^Pay\\s*\\$', nth: 0 }]);
     } else {
       if (!opts.giftCode) throw new Error('splitPayCheck(Gift Card) needs giftCode');
       const deadline = Date.now() + 40_000;
@@ -923,6 +929,7 @@ class CdApp {
 
   async openSellGiftCard(): Promise<void> {
     await P.clickQ(CdMain.giftCardTile);
+    await unlockSellGiftCardGate(); // VP-4815 gate on 1.1.109
     await P.waitFor(CdMain.sellGiftCardDialog, Timeouts.SHORT, 'Sell Gift Card dialog');
   }
 

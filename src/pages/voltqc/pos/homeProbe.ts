@@ -58,7 +58,10 @@ export async function quickCheckout(): Promise<void> {
 
 /** Enter the staff passcode when a Quick Checkout / staff-pick passcode gate is up. */
 export async function unlockQuickCheckoutGate(): Promise<void> {
-  await passcodeDialog.unlockForRun(env.STAFF_PASSCODE, { timeout: 1_500 });
+  // Only answer a gate that is actually up, and never tick / re-stamp the 30-min
+  // grant (unlockForRun re-seeds it when no dialog shows) — a case that cleared
+  // the grant on purpose must keep seeing its own passcode prompts.
+  if (await passcodeDialog.isPrompting(1_500)) await passcodeDialog.enter(env.STAFF_PASSCODE);
 }
 
 /**

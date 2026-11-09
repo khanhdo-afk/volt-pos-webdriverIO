@@ -20,20 +20,19 @@
  *   - TC-ORDERFLOW-81  the customer "Add a tip" screen: 15/18/20/25% + Custom + No Tip
  */
 
-import { Tag, title } from '../../../src/types/testTags.js';
-
 describe('Order flow — Customer display', () => {
-  it(
-    title(
-      'TC-ORDERFLOW-80: till waits on "Customer is adding a tip" — PENDING (needs launch lane + tip config)',
-      Tag.DUAL_WINDOW,
-    ),
-  );
-
-  it(
-    title(
-      'TC-ORDERFLOW-81: customer "Add a tip" screen options — PENDING (needs launch lane + tip config)',
-      Tag.DUAL_WINDOW,
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'TC-ORDERFLOW-80: till waits on "Customer is adding a tip" — PENDING (needs launch lane + tip config)',
+  //     Tag.DUAL_WINDOW,
+  //   ),
+  // );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'TC-ORDERFLOW-81: customer "Add a tip" screen options — PENDING (needs launch lane + tip config)',
+  //     Tag.DUAL_WINDOW,
+  //   ),
+  // );
 });

@@ -21,16 +21,15 @@
  *   - TC-ORDERFLOW-63  the dialog exposes service / method / amount / reason
  */
 
-import { title } from '../../../src/types/testTags.js';
-
 describe('Order flow — Refund', () => {
-  it(title('TC-ORDERFLOW-60: un-batched credit disables Refund — PENDING (needs a settled order)'));
-
-  it(
-    title('TC-ORDERFLOW-61: All services = full refund, autofilled total — PENDING (needs a settled order)'),
-  );
-
-  it(title('TC-ORDERFLOW-62: subset = partial refund, pro-rated amount — PENDING (needs a settled order)'));
-
-  it(title('TC-ORDERFLOW-63: dialog exposes service/method/amount/reason — PENDING (needs a settled order)'));
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(title('TC-ORDERFLOW-60: un-batched credit disables Refund — PENDING (needs a settled order)'));
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title('TC-ORDERFLOW-61: All services = full refund, autofilled total — PENDING (needs a settled order)'),
+  // );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(title('TC-ORDERFLOW-62: subset = partial refund, pro-rated amount — PENDING (needs a settled order)'));
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(title('TC-ORDERFLOW-63: dialog exposes service/method/amount/reason — PENDING (needs a settled order)'));
 });

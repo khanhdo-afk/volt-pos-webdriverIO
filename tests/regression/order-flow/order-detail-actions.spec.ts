@@ -90,23 +90,24 @@ describe('Order flow — Order detail actions', () => {
     },
   );
 
-  // PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bỏ .skip để chạy lại.
-  it.skip(
-    title(
-      'An unsettled order offers Cancel / Re-Open, not Refund (TC-ORDERFLOW-55)',
-      Tag.REGRESSION,
-      Tag.WRITE,
-    ),
-    async () => {
-      // Settled-only actions must be absent while the order is unsettled...
-      expect(await orderHistoryDetailPage.isRefundAvailable()).toBe(false);
-      // ...and the unsettled actions present.
-      expect(await orderHistoryDetailPage.isCancelAvailable()).toBe(true);
-      expect(await orderHistoryDetailPage.isReopenAvailable()).toBe(true);
-      // One staff on the order, so no tip to split.
-      expect(await orderHistoryDetailPage.isSplitTipAvailable()).toBe(false);
-    },
-  );
+  // [TẮT 2026-11-08] Tạm không test (đã đánh dấu skip/MANUAL: cần thiết bị/điều kiện không tự động được, hoặc Re-Open tạm dừng theo yêu cầu) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // // PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bỏ .skip để chạy lại.
+  // it.skip(
+  //   title(
+  //     'An unsettled order offers Cancel / Re-Open, not Refund (TC-ORDERFLOW-55)',
+  //     Tag.REGRESSION,
+  //     Tag.WRITE,
+  //   ),
+  //   async () => {
+  //     // Settled-only actions must be absent while the order is unsettled...
+  //     expect(await orderHistoryDetailPage.isRefundAvailable()).toBe(false);
+  //     // ...and the unsettled actions present.
+  //     expect(await orderHistoryDetailPage.isCancelAvailable()).toBe(true);
+  //     expect(await orderHistoryDetailPage.isReopenAvailable()).toBe(true);
+  //     // One staff on the order, so no tip to split.
+  //     expect(await orderHistoryDetailPage.isSplitTipAvailable()).toBe(false);
+  //   },
+  // );
 
   it(title('Cancel Order opens its reason dialog (TC-ORDERFLOW-64)', Tag.REGRESSION, Tag.WRITE), async () => {
     expect(await orderHistoryDetailPage.isCancelAvailable()).toBe(true);
@@ -130,11 +131,15 @@ describe('Order flow — Order detail actions', () => {
     },
   );
 
-  it(title('TC-ORDERFLOW-56: Settled → Receipt + Refund — PENDING (needs a batched/settled order)'));
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(title('TC-ORDERFLOW-56: Settled → Receipt + Refund — PENDING (needs a batched/settled order)'));
 
-  it(title('TC-ORDERFLOW-57: Canceled → Receipt + voided payment — PENDING (needs a cancelled order)'));
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(title('TC-ORDERFLOW-57: Canceled → Receipt + voided payment — PENDING (needs a cancelled order)'));
 
-  it(title('TC-ORDERFLOW-58: Refunded → Receipt + Refund Information — PENDING (needs a refunded order)'));
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(title('TC-ORDERFLOW-58: Refunded → Receipt + Refund Information — PENDING (needs a refunded order)'));
 
-  it(title('TC-ORDERFLOW-59: Partial Refunded → Receipt / Refund / Partial Refund — PENDING (needs one)'));
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(title('TC-ORDERFLOW-59: Partial Refunded → Receipt / Refund / Partial Refund — PENDING (needs one)'));
 });

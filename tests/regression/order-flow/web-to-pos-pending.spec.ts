@@ -36,27 +36,31 @@
  */
 
 import { browser, expect } from '@wdio/globals';
-import { readHandoff } from '../../../src/pages/web/handoff.js';
 import { loadEnv } from '../../../configs/env/loadEnv.js';
 import { Timeouts } from '../../../configs/constants/timeouts.js';
 import { Routes } from '../../../src/constants/routes.js';
 import { goTo } from '../../../src/helpers/navigate.js';
 import { settle } from '../../../src/helpers/wait.js';
+import { freshAppointment } from '../../../src/support/web/webLane.js';
 
 const env = loadEnv();
-const handoff = readHandoff();
+let handoff: Awaited<ReturnType<typeof freshAppointment>> | null = null;
 
 describe('WEB→POS appointment sync', () => {
-  before(function () {
-    if (!handoff) {
+  before(async function () {
+    this.timeout(8 * 60_000);
+    // Made in this run on GoCheckin web when the handoff is missing/stale (src/support/web/webLane.ts).
+    handoff = await freshAppointment().catch((e: Error) => {
       // eslint-disable-next-line no-console
-      console.log('[web-to-pos] No handoff file — run `npm run web:appointment` first. Skipping.');
-      this.skip();
-    }
+      console.log(`[web-lane] could not create it: ${e.message}`);
+      return null;
+    });
+    if (!handoff) this.skip();
   });
 
   it('shows the web-created appointment on the app calendar', async function () {
     if (!handoff) return; // guarded by before(); keeps the type-checker happy
+    const ho = handoff;
 
     if (env.WEB_MERCHANT_ID !== env.MERCHANT_ID) {
       // eslint-disable-next-line no-console
@@ -73,7 +77,7 @@ describe('WEB→POS appointment sync', () => {
     // enough; the sync-presence check below is what proves readiness.
     await goTo(Routes.APPOINTMENT);
 
-    const name = handoff.customerName;
+    const name = ho.customerName;
     const isListed = async (): Promise<boolean> => {
       // Reading the rendered text sidesteps every per-card testid/class question:
       // if the synced appointment is on the calendar, the customer's name is in
@@ -90,7 +94,7 @@ describe('WEB→POS appointment sync', () => {
       timeout: Timeouts.APP_BOOT,
       interval: 3_000,
       timeoutMsg:
-        `Appointment for "${name}" (created on web at ${handoff.createdAtLabel}) ` +
+        `Appointment for "${name}" (created on web at ${ho.createdAtLabel}) ` +
         'did not appear on the app calendar within the sync window.',
     });
 

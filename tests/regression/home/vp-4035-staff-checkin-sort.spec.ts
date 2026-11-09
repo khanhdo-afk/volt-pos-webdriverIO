@@ -208,10 +208,11 @@ describe('VP-4035 — Home staff sort "Staff Checked In"', function () {
     },
   );
 
-  it(
-    title(
-      'TC-VP4035-08: after an app reload the sort falls back to "Default Order" — PENDING ' +
-        '(doc-only observation outside the ticket scope; needs an app reload on the shared till)',
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'TC-VP4035-08: after an app reload the sort falls back to "Default Order" — PENDING ' +
+  //       '(doc-only observation outside the ticket scope; needs an app reload on the shared till)',
+  //   ),
+  // );
 });

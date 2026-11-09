@@ -313,7 +313,7 @@ describe('Settings — Services & Products', () => {
       ).toBe(true);
       expect(await servicesSettingsPage.dialogSwitchStates()).toEqual([true]);
       expect(await servicesSettingsPage.dialogText()).toMatch(/Active|Đang hoạt động/);
-      expect(await servicesSettingsPage.dialogSwatchCount()).toBe(20);
+      expect(await servicesSettingsPage.dialogSwatchCount()).toBe(15); // palette cut to 15 colours by VP-5338 / VP-5483 (was 20)
       expect(await servicesSettingsPage.isSubmitEnabled('create')).toBe(false);
 
       await servicesSettingsPage.closeDialogWithEscape();

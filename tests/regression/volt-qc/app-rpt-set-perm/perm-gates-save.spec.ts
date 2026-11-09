@@ -31,7 +31,7 @@ import {
 import { Vq } from '../../../../src/constants/testids.voltqc-settings-devm.js';
 import { goToOrderHistory, returnToHome } from '../../../../src/flows/index.js';
 import { step } from '../../../../src/helpers/steps.js';
-import { settle, waitUntilPath } from '../../../../src/helpers/wait.js';
+import { settle } from '../../../../src/helpers/wait.js';
 import {
   checkoutPage,
   orderHistoryDetailPage,
@@ -51,13 +51,12 @@ import {
   readGates,
   restoreGates,
   saveGates,
-  settleCashOrder,
   toastShown,
 } from '../../../../src/pages/voltqc/app-rpt-set-perm/aspFlows.js';
 import { vqProbe } from '../../../../src/pages/voltqc/settings-devm/VqProbe.js';
 import { clearPasscodeGrant } from '../../../../src/support/passcodeGrant.js';
 import { Tag, title } from '../../../../src/types/testTags.js';
-import { finishReopenUnchanged } from '../../order-flow/reopen-flow.helpers.js';
+
 import { recoverShell } from '../app-perm/app-perm.helpers.js';
 
 let snapshot: PasscodeGateState | null = null;
@@ -308,58 +307,59 @@ describe('volt-qc PERM — Passcode Setting saved, gates ON/OFF (settings)', () 
     },
   );
 
-  // PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bỏ .skip để chạy lại.
-  it.skip(
-    title(
-      'Cancel Order and Re-Open gates OFF: void and re-open run with no passcode (PERM-048, PERM-050)',
-      Tag.REGRESSION,
-      Tag.WRITE,
-      Tag.EXCLUSIVE,
-    ),
-    async function (this: Mocha.Context): Promise<void> {
-      this.timeout(Timeouts.MOCHA_HOOK * 3);
-      // Orders first — the gates go down only for the two actions.
-      const a = await settleCashOrder();
-      const b = await settleCashOrder();
-      let reopened = false;
-      try {
-        await saveGates({ cancel_order: false, reopen_order: false });
-        await clearPasscodeGrant();
+  // [TẮT 2026-11-08] Tạm không test (đã đánh dấu skip/MANUAL: cần thiết bị/điều kiện không tự động được, hoặc Re-Open tạm dừng theo yêu cầu) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // // PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bỏ .skip để chạy lại.
+  // it.skip(
+  //   title(
+  //     'Cancel Order and Re-Open gates OFF: void and re-open run with no passcode (PERM-048, PERM-050)',
+  //     Tag.REGRESSION,
+  //     Tag.WRITE,
+  //     Tag.EXCLUSIVE,
+  //   ),
+  //   async function (this: Mocha.Context): Promise<void> {
+  //     this.timeout(Timeouts.MOCHA_HOOK * 3);
+  //     // Orders first — the gates go down only for the two actions.
+  //     const a = await settleCashOrder();
+  //     const b = await settleCashOrder();
+  //     let reopened = false;
+  //     try {
+  //       await saveGates({ cancel_order: false, reopen_order: false });
+  //       await clearPasscodeGrant();
 
-        await step('PERM-048 cancel order A — no passcode, toast', async () => {
-          await goToOrderHistory();
-          await orderHistoryPage.openOrder(a.orderId);
-          await orderHistoryDetailPage.waitForOrder(a.orderId);
-          await gateProbe.watchGates();
-          await orderHistoryDetailPage.cancelOrder('customer_request');
-          expect(await toastShown(AspText.orderCanceled, Timeouts.API)).toBe(true);
-          expect(await gateProbe.gatesSeen()).toEqual([]);
-        });
+  //       await step('PERM-048 cancel order A — no passcode, toast', async () => {
+  //         await goToOrderHistory();
+  //         await orderHistoryPage.openOrder(a.orderId);
+  //         await orderHistoryDetailPage.waitForOrder(a.orderId);
+  //         await gateProbe.watchGates();
+  //         await orderHistoryDetailPage.cancelOrder('customer_request');
+  //         expect(await toastShown(AspText.orderCanceled, Timeouts.API)).toBe(true);
+  //         expect(await gateProbe.gatesSeen()).toEqual([]);
+  //       });
 
-        await step('PERM-050 re-open order B — no passcode, lands on checkout', async () => {
-          await returnToHome();
-          await goToOrderHistory();
-          await orderHistoryPage.openOrder(b.orderId);
-          await orderHistoryDetailPage.waitForOrder(b.orderId);
-          await gateProbe.watchGates();
-          await orderHistoryDetailPage.openReopenDialog();
-          await orderHistoryDetailPage.pressReopenConfirm();
-          await waitUntilPath((p) => p.startsWith(`/order/${b.orderId}/checkout`), {
-            timeout: Timeouts.NAVIGATION,
-            message: 'Re-open with the gate OFF never reached checkout',
-          });
-          reopened = true;
-          expect(await gateProbe.gatesSeen()).toEqual([]);
-          await checkoutPage.waitForReady(Timeouts.MEDIUM);
-          await finishReopenUnchanged(b.orderId);
-          reopened = false;
-        });
-      } finally {
-        if (reopened) await finishReopenUnchanged(b.orderId).catch(() => undefined);
-        await restoreGates(snapshot);
-      }
-    },
-  );
+  //       await step('PERM-050 re-open order B — no passcode, lands on checkout', async () => {
+  //         await returnToHome();
+  //         await goToOrderHistory();
+  //         await orderHistoryPage.openOrder(b.orderId);
+  //         await orderHistoryDetailPage.waitForOrder(b.orderId);
+  //         await gateProbe.watchGates();
+  //         await orderHistoryDetailPage.openReopenDialog();
+  //         await orderHistoryDetailPage.pressReopenConfirm();
+  //         await waitUntilPath((p) => p.startsWith(`/order/${b.orderId}/checkout`), {
+  //           timeout: Timeouts.NAVIGATION,
+  //           message: 'Re-open with the gate OFF never reached checkout',
+  //         });
+  //         reopened = true;
+  //         expect(await gateProbe.gatesSeen()).toEqual([]);
+  //         await checkoutPage.waitForReady(Timeouts.MEDIUM);
+  //         await finishReopenUnchanged(b.orderId);
+  //         reopened = false;
+  //       });
+  //     } finally {
+  //       if (reopened) await finishReopenUnchanged(b.orderId).catch(() => undefined);
+  //       await restoreGates(snapshot);
+  //     }
+  //   },
+  // );
 
   it(
     title(

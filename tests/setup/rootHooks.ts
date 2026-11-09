@@ -27,6 +27,8 @@
  * screen.
  */
 
+import { closeOpenPoppers } from '../../src/pages/settings/SettingsPage.js';
+import { ensureStoreBaseline, restoreStore } from '../../src/support/portal/storeSettings.js';
 import { browser } from '@wdio/globals';
 // Side effect: records WHY each runtime this.skip() happened, for the GUI.
 import '../../src/support/skipReason.js';
@@ -44,7 +46,7 @@ import {
   resetCustomerWindow,
 } from '../../src/support/attachApp.js';
 import { restoreDeviceBaseline } from '../../src/support/deviceBaseline.js';
-import { ensurePasscodeGrant } from '../../src/support/passcodeGrant.js';
+import { ensurePasscodeGrant, topUpPasscodeGrant } from '../../src/support/passcodeGrant.js';
 import { killStaleProcesses } from '../../src/support/process.js';
 import { moduleLogger } from '../../src/utils/logger.js';
 
@@ -186,6 +188,11 @@ function isolateGroupedFiles(root: Mocha.Suite | undefined): void {
       // A session the previous file left dead would fail this file and every
       // one after it in the group; start this one on a new session instead.
       if (!(await sessionAnswers())) await replaceDeadSession();
+      await restoreStore();
+      await ensureStoreBaseline().catch((e: Error) =>
+        console.warn(`[rootHooks] store baseline: ${e.message}`),
+      );
+      await ensurePasscodeGrant().catch(() => undefined);
       await reloadToTill();
     });
     const hooks = (suite as unknown as { _beforeAll: unknown[] })._beforeAll;
@@ -196,6 +203,11 @@ function isolateGroupedFiles(root: Mocha.Suite | undefined): void {
 
 export const mochaHooks: Mocha.RootHookObject = {
   async beforeAll(this: Mocha.Context): Promise<void> {
+    // Same trap as tests (see beforeEach): WebdriverIO arms a HOOK's timer from its
+    // timeout before the body runs, so `this.timeout(5 * 60_000)` inside a spec's
+    // before() never applies and a Portal / web-lane set-up was cut at 120 s. Lift
+    // every such hook up front — this root hook runs before any spec hook.
+    raiseHookTimeouts(this.test?.parent);
     // The splash runs migrations, opens three SQLCipher databases and completes
     // a sync handshake — measured worst case ~50s cold. A hook otherwise
     // inherits `mochaOpts.timeout` (MOCHA_TEST), which would abort mid-boot on
@@ -229,6 +241,10 @@ export const mochaHooks: Mocha.RootHookObject = {
     // before any gate has been unlocked through the UI once.
     await ensurePasscodeGrant();
 
+    // Payment specs are written against the store-14 tip / fee / tax baseline:
+    // put it back through the Portal BEFORE anything is charged if it drifted.
+    await ensureStoreBaseline().catch((e: Error) => console.warn(`[rootHooks] store baseline: ${e.message}`));
+
     await installStepOverlay();
 
     // The app's updater comparator is `|_current, _update| true`, so every
@@ -256,6 +272,17 @@ export const mochaHooks: Mocha.RootHookObject = {
     // session switched to it. Every staff-side lookup then misses in a window
     // that has no staff controls, and the next failure names the wrong screen.
     await switchToMain();
+
+    // The 30-min passcode grant outlives a spec file only if someone re-stamps it:
+    // a long file (or a grouped ⚡ run) otherwise hits a fresh keypad mid-way —
+    // e.g. the Quick Checkout gate (new on 1.1.109) blocking every e2e order.
+    // Top up a grant that is still there but close to expiry; a grant a test
+    // cleared on purpose (passcode-gate cases) is left cleared.
+    await topUpPasscodeGrant().catch(() => undefined);
+
+    // A Select / Popover a previous case left open blocks every click (body gets
+    // pointer-events:none) — close it before this case starts.
+    await closeOpenPoppers().catch(() => undefined);
   },
 
   async afterEach(this: Mocha.Context): Promise<void> {
@@ -315,6 +342,10 @@ export const mochaHooks: Mocha.RootHookObject = {
 
     stopUpdaterWatcher();
 
+    // Store settings a case asked the Portal for (requireStore) go back now, so the
+    // next spec file starts on the merchant as it was.
+    await restoreStore();
+
     // The next spec FILE starts from whatever this one left behind — the driver
     // session outlives the Mocha instance. Handing it `/home` is what lets each
     // file assume a till and not a checkout screen.
@@ -324,3 +355,20 @@ export const mochaHooks: Mocha.RootHookObject = {
     flushDeadTime(this.test?.parent?.suites.at(-1)?.file ?? 'unknown');
   },
 };
+
+/** Give every hook that sets its own timeout the body cap, across the whole suite tree. */
+function raiseHookTimeouts(suite: Mocha.Suite | undefined): void {
+  if (!suite) return;
+  const internal = suite as unknown as {
+    _beforeAll: Mocha.Hook[];
+    _beforeEach: Mocha.Hook[];
+    _afterAll: Mocha.Hook[];
+    _afterEach: Mocha.Hook[];
+  };
+  for (const hooks of [internal._beforeAll, internal._beforeEach, internal._afterAll, internal._afterEach]) {
+    for (const hook of hooks ?? []) {
+      if (/\bthis\.timeout\(/.test(hook.fn?.toString() ?? '')) hook.timeout(BODY_TIMEOUT_CAP_MS);
+    }
+  }
+  for (const child of suite.suites) raiseHookTimeouts(child);
+}

@@ -47,9 +47,20 @@ export async function rowCodes(): Promise<string[]> {
 }
 
 /** MM/dd/yyyy of each rendered row's time column. */
+/**
+ * Each row's BUSINESS date (MM/DD/YYYY). The date filter works in the merchant's
+ * timezone, while the row's printed time is the device's — on a till whose clock is
+ * in another zone (the QC PC: UTC+7 vs the store's Central) an afternoon order prints
+ * as the next day. The OD code carries the store date (`OD261105-…` = 11/05/2026),
+ * so read that; fall back to the printed date when a row has no OD code.
+ */
 export async function rowDates(): Promise<string[]> {
   return (await rowTexts())
-    .map((t) => /(\d{2}\/\d{2}\/\d{4}) \d{2}:\d{2} [AP]M/.exec(t)?.[1] ?? '')
+    .map((t) => {
+      const od = /\bOD(\d{2})(\d{2})(\d{2})-/.exec(t);
+      if (od) return `${od[2] ?? ''}/${od[3] ?? ''}/20${od[1] ?? ''}`;
+      return /(\d{2}\/\d{2}\/\d{4}) \d{2}:\d{2} [AP]M/.exec(t)?.[1] ?? '';
+    })
     .filter(Boolean);
 }
 
@@ -104,7 +115,7 @@ export async function dayButton(d: Date, maxMonths = 90): Promise<readonly VqcQu
       });
       var pop = pops[pops.length - 1];
       if (!pop) return [];
-      return Array.prototype.map.call(pop.querySelectorAll('td[data-day]'), function (e) {
+      return Array.prototype.map.call(pop.querySelectorAll('td[data-day]:not([data-outside])'), function (e) {
         var p = (e.getAttribute('data-day') || '').split('-').map(Number);
         return new Date(p[0], p[1] - 1, p[2]).getTime();
       });

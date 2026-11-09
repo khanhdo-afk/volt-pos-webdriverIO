@@ -31,7 +31,7 @@ import { expect } from '@wdio/globals';
 import { loadEnv } from '../../../configs/env/loadEnv.js';
 import { orderPendingPage } from '../../../src/pages/index.js';
 import type { CheckinHandoff } from '../../../src/pages/web/CheckinKioskPage.js';
-import { readCheckinBulk, readCheckinHandoff } from '../../../src/pages/web/checkinHandoff.js';
+
 import { returnToHome } from '../../../src/flows/index.js';
 import { step } from '../../../src/helpers/steps.js';
 import { Tag, title } from '../../../src/types/testTags.js';
@@ -44,13 +44,14 @@ import {
   rowsFor,
   type PendingCheckinRow,
 } from './vp-4823-checkin-sync.helpers.js';
+import { freshCheckin, freshCheckinBulk } from '../../../src/support/web/webLane.js';
 
 const log = moduleLogger('vp-4823');
 const env = loadEnv();
 
 /** The batch size the ticket reproduced with, and the follow-up load batch. */
 const TICKET_BATCH = 18;
-const LOAD_BATCH = 100;
+// const LOAD_BATCH = 100;
 
 const label = (c: CheckinHandoff): string => `${c.name} ${c.phone} (${c.createdAtLabel ?? '?'})`;
 
@@ -61,17 +62,13 @@ function requireSameStore(ctx: Mocha.Context): void {
   }
 }
 
-/** The bulk batch, or skip when it is smaller than `min`. */
-function requireBatch(ctx: Mocha.Context, min: number): CheckinHandoff[] {
-  const batch = readCheckinBulk();
-  if (batch.length < min) {
-    log.info(
-      `SKIP — .tmp/web-checkin-bulk.json has ${String(batch.length)} check-ins, needs ≥ ${String(min)} ` +
-        `(run \`CHECKIN_COUNT=${String(min)} CHECKIN_BULK_RESET=1 npm run web:checkin-bulk\`)`,
-    );
-    ctx.skip();
-  }
-  return batch;
+/**
+ * Today's bulk batch of at least `min` kiosk check-ins — made on the GAP kiosk NOW
+ * when the saved one is from an earlier day or too short (Pending lists today only).
+ */
+async function requireBatch(ctx: Mocha.Context, min: number): Promise<CheckinHandoff[]> {
+  ctx.timeout(min * 200_000 + 10 * 60_000);
+  return freshCheckinBulk(min);
 }
 
 /** Check-ins of `batch` with no pending order in POS data, polled across the sync window. */
@@ -102,7 +99,16 @@ describe('VP-4823 — GoCheckin kiosk check-in → Volt POS Pending Orders', () 
     await returnToHome().catch(() => undefined);
   });
 
-  describe('1. Bulk check-ins (ticket repro: 18 in a row)', () => {
+  describe('1. Bulk check-ins (ticket repro: 18 in a row)', function () {
+    // Make today's batch ONCE for the group (~80 s per GAP check-in → up to ~25 min);
+    // the cases below then read the saved batch instantly. The SUITE timeout is what
+    // reaches the hook: WebdriverIO arms its timer from the runnable's timeout before
+    // the body runs, so a this.timeout() inside the hook would come too late.
+    this.timeout(45 * 60_000);
+    before(async function () {
+      await freshCheckinBulk(TICKET_BATCH);
+    });
+
     it(
       title(
         `TC-VP4823-01: every check-in of a ${String(TICKET_BATCH)}-check-in kiosk batch shows on Pending Orders`,
@@ -112,7 +118,7 @@ describe('VP-4823 — GoCheckin kiosk check-in → Volt POS Pending Orders', () 
       ),
       async function () {
         requireSameStore(this);
-        const batch = requireBatch(this, TICKET_BATCH);
+        const batch = await requireBatch(this, TICKET_BATCH);
         const missing = await step('Scan Pending Orders for every check-in', () => missingOnScreen(batch));
         for (const c of missing) log.info(`MISSING on screen: ${label(c)}`);
         expect(missing.map(label)).toEqual([]);
@@ -128,7 +134,7 @@ describe('VP-4823 — GoCheckin kiosk check-in → Volt POS Pending Orders', () 
       ),
       async function () {
         requireSameStore(this);
-        const batch = requireBatch(this, TICKET_BATCH);
+        const batch = await requireBatch(this, TICKET_BATCH);
         const missing = await step('Look every check-in up in POS orderList', () => missingInData(batch));
         for (const c of missing) log.info(`MISSING in POS data (never reached the till?): ${label(c)}`);
         expect(missing.map(label)).toEqual([]);
@@ -139,7 +145,7 @@ describe('VP-4823 — GoCheckin kiosk check-in → Volt POS Pending Orders', () 
       title('TC-VP4823-03: each kiosk check-in becomes exactly ONE pending order', Tag.REGRESSION),
       async function () {
         requireSameStore(this);
-        const batch = requireBatch(this, TICKET_BATCH);
+        const batch = await requireBatch(this, TICKET_BATCH);
         const rows = await pendingCheckinRows();
         const counts = batch.map((c) => ({ c, n: rowsFor(rows, c).length }));
         const duplicated = counts.filter(({ n }) => n > 1).map(({ c, n }) => `${label(c)} ×${String(n)}`);
@@ -156,9 +162,11 @@ describe('VP-4823 — GoCheckin kiosk check-in → Volt POS Pending Orders', () 
       ),
       async function () {
         requireSameStore(this);
-        const handoff = readCheckinHandoff();
+        this.timeout(10 * 60_000);
+        // Made in this run on the GAP kiosk when missing/stale (src/support/web/webLane.ts).
+        const handoff = await freshCheckin().catch(() => null);
         if (!handoff) {
-          log.info('SKIP — no .tmp/web-checkin-handoff.json; run `npm run web:checkin` first');
+          log.info('SKIP — could not create a GAP kiosk check-in (web lane failed)');
           this.skip();
           return;
         }
@@ -182,53 +190,55 @@ describe('VP-4823 — GoCheckin kiosk check-in → Volt POS Pending Orders', () 
   });
 
   describe('3. Load batch (follow-up in the ticket)', () => {
-    it(
-      title(
-        `TC-VP4823-05: a ${String(LOAD_BATCH)}-check-in batch loses none (POS data and screen)`,
-        Tag.REGRESSION,
-        Tag.SLOW,
-      ),
-      async function () {
-        requireSameStore(this);
-        const batch = requireBatch(this, LOAD_BATCH);
-        const inData = await step('Look every check-in up in POS orderList', () => missingInData(batch));
-        const onScreen = await step('Scan Pending Orders for every check-in', () => missingOnScreen(batch));
-        log.info(
-          `RESULT total=${String(batch.length)} missingData=${String(inData.length)} ` +
-            `missingScreen=${String(onScreen.length)}`,
-        );
-        expect({ data: inData.map(label), screen: onScreen.map(label) }).toEqual({ data: [], screen: [] });
-      },
-    );
+    // [TẮT 2026-11-08] Tải 100 check-in GAP (~100 phút/lần, vướng giới hạn check-in/ngày) — chạy riêng: CHECKIN_COUNT=100 npm run web:checkin-bulk — mở lại (bỏ comment) khi tính năng hoàn thiện.
+    // it(
+    //   title(
+    //     `TC-VP4823-05: a ${String(LOAD_BATCH)}-check-in batch loses none (POS data and screen)`,
+    //     Tag.REGRESSION,
+    //     Tag.SLOW,
+    //   ),
+    //   async function () {
+    //     requireSameStore(this);
+    //     const batch = await requireBatch(this, LOAD_BATCH);
+    //     const inData = await step('Look every check-in up in POS orderList', () => missingInData(batch));
+    //     const onScreen = await step('Scan Pending Orders for every check-in', () => missingOnScreen(batch));
+    //     log.info(
+    //       `RESULT total=${String(batch.length)} missingData=${String(inData.length)} ` +
+    //         `missingScreen=${String(onScreen.length)}`,
+    //     );
+    //     expect({ data: inData.map(label), screen: onScreen.map(label) }).toEqual({ data: [], screen: [] });
+    //   },
+    // );
   });
 
   describe('4. Not automatable here', () => {
-    it(
-      title(
-        'TC-VP4823-06: kiosk reports an error when the submit is dropped — PENDING ' +
-          '(kiosk / backend side; the drop cannot be provoked from POS)',
-      ),
-    );
-
-    it(
-      title(
-        'TC-VP4823-07: backend lookup of the lost phone 8766050017 (received? order created? synced?) — PENDING ' +
-          '(BE-only: GAP / volt-pos-api logs)',
-      ),
-    );
-
-    it(
-      title(
-        'TC-VP4823-08: the batch is still complete after reopening Volt POS — PENDING ' +
-          '(needs an app restart, not allowed on the shared attach till)',
-      ),
-    );
-
-    it(
-      title(
-        'TC-VP4823-09: POS and the kiosk must be the same store for sync — PENDING ' +
-          '(doc-only precondition; enforced by the MERCHANT_ID = WEB_MERCHANT_ID gate)',
-      ),
-    );
+    // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+    // it(
+    //   title(
+    //     'TC-VP4823-06: kiosk reports an error when the submit is dropped — PENDING ' +
+    //       '(kiosk / backend side; the drop cannot be provoked from POS)',
+    //   ),
+    // );
+    // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+    // it(
+    //   title(
+    //     'TC-VP4823-07: backend lookup of the lost phone 8766050017 (received? order created? synced?) — PENDING ' +
+    //       '(BE-only: GAP / volt-pos-api logs)',
+    //   ),
+    // );
+    // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+    // it(
+    //   title(
+    //     'TC-VP4823-08: the batch is still complete after reopening Volt POS — PENDING ' +
+    //       '(needs an app restart, not allowed on the shared attach till)',
+    //   ),
+    // );
+    // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+    // it(
+    //   title(
+    //     'TC-VP4823-09: POS and the kiosk must be the same store for sync — PENDING ' +
+    //       '(doc-only precondition; enforced by the MERCHANT_ID = WEB_MERCHANT_ID gate)',
+    //   ),
+    // );
   });
 });

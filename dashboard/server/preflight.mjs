@@ -268,17 +268,28 @@ export function createPreflight({ repoRoot, apps, warm, logCrash }) {
       else {
         // The Portal SPA keeps its URL while it decides; read the page instead
         // (textContent: innerText is '' while the window is hidden).
-        const onPortal = page.url.startsWith(acc.url.replace(/\/+$/, '')) && !page.url.includes('/login');
-        const seen = onPortal
-          ? await evaluate(
-              page.webSocketDebuggerUrl,
-              `(() => { const t = document.body ? document.body.textContent : '';
+        // Poll: a page still 'loading' is not "signed out" (the SPA decides a beat
+        // later), and a lapsed 8 h refresh token is renewed WITHOUT a QR by the
+        // year-long Keycloak SSO session — click "Continue with GCI Business" once.
+        const probe = `(() => { const t = document.body ? document.body.textContent : '';
                  if (/Continue with GCI Business|Secure access for your business/i.test(t)) return 'login';
                  if (/Store Settings|Staff Members|Overview/.test(t)) return 'ok';
-                 return 'loading'; })()`,
+                 return 'loading'; })()`;
+        let seen = 'loading';
+        let ssoTried = false;
+        for (let t = 0; t < 20; t++) {
+          seen = await evaluate(page.webSocketDebuggerUrl, probe, 5_000).catch(() => 'loading');
+          if (seen === 'ok') break;
+          if (seen === 'login' && !ssoTried) {
+            ssoTried = true;
+            await evaluate(
+              page.webSocketDebuggerUrl,
+              `(() => { const b=[...document.querySelectorAll('button,a')].find(x=>/Continue with GCI Business/i.test(x.textContent||'')); if (b) b.click(); return !!b; })()`,
               5_000,
-            )
-          : 'login';
+            ).catch(() => false);
+          } else if (seen === 'login' && t > 12) break;
+          await new Promise((r) => setTimeout(r, 1_500));
+        }
         signed = seen === 'ok';
       }
     } catch {

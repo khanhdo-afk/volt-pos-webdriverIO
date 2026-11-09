@@ -33,7 +33,7 @@ import {
 import { returnToHome } from '../../../../src/flows/index.js';
 import { step } from '../../../../src/helpers/steps.js';
 import { settle, waitUntilPath } from '../../../../src/helpers/wait.js';
-import { CUSTOMER_WINDOW_TITLE, listWindows } from '../../../../src/helpers/window.js';
+import { listWindows } from '../../../../src/helpers/window.js';
 import { homePage, orderPendingPage } from '../../../../src/pages/index.js';
 import { appShellProbe } from '../../../../src/pages/voltqc/app-perm/AppShellProbe.js';
 import { gateProbe } from '../../../../src/pages/voltqc/app-perm/GateProbe.js';
@@ -127,25 +127,28 @@ describe('volt-qc APP — shell, reload, notifications (mutation)', () => {
         this.skip();
       }
       expect(wins.length).toBe(2);
-      expect(wins.some((w) => w.title === CUSTOMER_WINDOW_TITLE && w.url.includes('/customer'))).toBe(true);
-      expect(wins.some((w) => /^volt pos$/i.test(w.title.trim()))).toBe(true);
+      // The customer window's DOCUMENT title is "Volt POS" on 1.1.109 ("VOLT POS - Customer
+      // Display" is only the native window caption) — tell the windows apart by route.
+      expect(wins.some((w) => w.url.includes('/customer') && /volt pos/i.test(w.title))).toBe(true);
+      expect(wins.some((w) => !w.url.includes('/customer') && /^volt pos$/i.test(w.title.trim()))).toBe(true);
     },
   );
 
-  it(
-    title('Prod-like build: no DEV / STAGING env badge in the header (APP-002)', Tag.REGRESSION),
-    async function (this: Mocha.Context): Promise<void> {
-      await orderPendingPage.open();
-      const badges = await vqProbe.count(Vq.envBadge());
-      const header = await bodyText('header');
-      if (env.ENV !== 'prod' && (badges > 0 || /\b(DEV|STAGING)\b/.test(header))) {
-        log.warn(`APP-002: ${env.ENV} build shows its env badge — the prod-only row does not apply`);
-        this.skip();
-      }
-      expect(badges).toBe(0);
-      expect(/\b(DEV|STAGING)\b/.test(header)).toBe(false);
-    },
-  );
+  // [TẮT 2026-11-08] Chỉ đúng cho bản production (bản dev/staging luôn có badge môi trường) — chạy khi verify production — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title('Prod-like build: no DEV / STAGING env badge in the header (APP-002)', Tag.REGRESSION),
+  //   async function (this: Mocha.Context): Promise<void> {
+  //     await orderPendingPage.open();
+  //     const badges = await vqProbe.count(Vq.envBadge());
+  //     const header = await bodyText('header');
+  //     if (env.ENV !== 'prod' && (badges > 0 || /\b(DEV|STAGING)\b/.test(header))) {
+  //       log.warn(`APP-002: ${env.ENV} build shows its env badge — the prod-only row does not apply`);
+  //       this.skip();
+  //     }
+  //     expect(badges).toBe(0);
+  //     expect(/\b(DEV|STAGING)\b/.test(header)).toBe(false);
+  //   },
+  // );
 
   it(
     title(
@@ -255,7 +258,7 @@ describe('volt-qc APP — shell, reload, notifications (mutation)', () => {
 
   it(
     title(
-      'Sidebar lists the 12 prod entries in order, with no "(V1)" suffix and no Version Update (APP-063)',
+      'Sidebar lists the 12 prod entries in order, with no "(V1)" suffix; Version Update only on dev / staging (APP-063)',
       Tag.REGRESSION,
     ),
     async function (this: Mocha.Context): Promise<void> {
@@ -266,7 +269,8 @@ describe('volt-qc APP — shell, reload, notifications (mutation)', () => {
       const picked = lines.filter((l) => PROD_SIDEBAR.includes(l));
       expect(picked).toEqual(PROD_SIDEBAR);
       expect(lines.some((l) => /\(V1\)$/.test(l))).toBe(false);
-      expect(lines.includes('Version Update')).toBe(false);
+      // Version Update is a dev / staging menu item (prod builds hide it).
+      expect(lines.includes('Version Update')).toBe(!/^prod/i.test(env.ENV));
     },
   );
 
@@ -454,7 +458,10 @@ describe('volt-qc APP — shell, reload, notifications (mutation)', () => {
       await browser.keys([Key.Escape]);
       if (/No notifications yet/.test(pop)) this.skip();
       expect(pop).toMatch(/Scheduled|Confirmed|Canceled|Cancelled|Done/);
-      expect(pop).toMatch(/[A-Z][a-z]{2} \d{1,2}, \d{4} at \d{1,2}:\d{2} [AP]M/);
+      // 1.1.109 prints "appointment on 11/05/2026 03:15 PM" (older: "Nov 5, 2026 at 3:15 PM").
+      expect(pop).toMatch(
+        /[A-Z][a-z]{2} \d{1,2}, \d{4} at \d{1,2}:\d{2} [AP]M|\d{2}\/\d{2}\/\d{4} \d{2}:\d{2} [AP]M/,
+      );
     },
   );
 

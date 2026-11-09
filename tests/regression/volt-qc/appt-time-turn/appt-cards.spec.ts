@@ -63,6 +63,7 @@ import {
   unknownCode,
 } from '../../../../src/pages/voltqc/reports-time/rptDom.js';
 import { Tag, title } from '../../../../src/types/testTags.js';
+import { freshAppointment } from '../../../../src/support/web/webLane.js';
 
 const MASKED_RE = new RegExp(Q.maskedPhoneRe);
 const TIME_RANGE_RE = /\d{2}:\d{2} (AM|PM) - \d{2}:\d{2} (AM|PM)/;
@@ -98,6 +99,16 @@ async function openFirst(
 }
 
 describe('volt-qc 08 APPOINTMENT — cards, popover and Appointments Today (existing data)', () => {
+  before(async function () {
+    this.timeout(8 * 60_000);
+    // Cases below need an appointment TODAY: book one on GoCheckin web in this run
+    // when none was made in the last hour (src/support/web/webLane.ts).
+    await freshAppointment().catch((e: Error) => {
+      // eslint-disable-next-line no-console
+      console.log(`[web-lane] appointment not created: ${e.message}`);
+    });
+  });
+
   let skipRaw: string | null = null;
 
   before(async () => {
@@ -118,7 +129,7 @@ describe('volt-qc 08 APPOINTMENT — cards, popover and Appointments Today (exis
 
   it(
     title(
-      'Columns: Unassigned first then staff A→Z; each column badge = its cards; badges sum to the cards shown, none Canceled (APPT-020, APPT-043)',
+      'Columns: Unassigned first then the staff columns; each column badge = its cards; badges sum to the cards shown, none Canceled (APPT-020, APPT-043)',
       Tag.REGRESSION,
     ),
     async function () {
@@ -129,8 +140,9 @@ describe('volt-qc 08 APPOINTMENT — cards, popover and Appointments Today (exis
       if (!hit) this.skip(); // no appointment within ±10 days
       const headers = await columnHeaders();
       expect(headers[0]?.name).toBe('Unassigned');
-      const staff = headers.slice(1).map((h) => h.name.toLowerCase());
-      expect(staff).toEqual([...staff].sort((a, b) => (a < b ? -1 : a > b ? 1 : 0)));
+      // Staff columns follow the staff_appointment priority since VP-4402 (asserted in
+      // tests/regression/appointment/vp-4402-staff-column-order-color.spec.ts), not A→Z.
+      expect(headers.slice(1).every((h) => h.name.trim() !== '' && h.name !== 'Unassigned')).toBe(true);
       const cards = await boardCards();
       for (let i = 0; i < Math.min(headers.length, 6); i += 1) {
         expect(headers[i]?.count).toBe(cards.filter((c) => c.col === i).length);

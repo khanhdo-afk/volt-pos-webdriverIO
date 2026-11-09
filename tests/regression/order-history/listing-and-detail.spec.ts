@@ -16,10 +16,12 @@ import { Timeouts } from '../../../configs/constants/timeouts.js';
 import { Routes } from '../../../src/constants/routes.js';
 import { createOrder, goToOrderHistory, payInCash, returnToHome } from '../../../src/flows/index.js';
 import { homePage, orderHistoryPage } from '../../../src/pages/index.js';
+import { requireStore } from '../../../src/support/portal/storeSettings.js';
 import { Tag, title } from '../../../src/types/testTags.js';
 import { expectCentsEqual, formatMoney } from '../../../src/utils/money.js';
 
-describe('Order history — the order this run took', () => {
+describe('Order history — the order this run took', function () {
+  this.timeout(6 * 60_000); // suite-level so the Portal step in before() gets it
   let orderId = '';
   let paidTotalCents = 0;
 
@@ -28,6 +30,9 @@ describe('Order history — the order this run took', () => {
     // plus a sync push — comfortably more than a single assertion's budget.
     this.timeout(Timeouts.MOCHA_HOOK);
 
+    // The cash tender must close straight away: with tips on Cash the customer
+    // display would park the till on "Customer is adding a tip". Restored after the file.
+    await requireStore({ tipOnCash: false });
     await returnToHome();
     await createOrder();
 

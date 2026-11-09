@@ -80,6 +80,10 @@ export const VqpsCheckout = {
     flags: 'i',
     nth: -1,
   } as VqcQuery,
+  /** Split "Gift Card not Enough Balance": balance below base − $1 → redeem it all and open a remainder check (VP-3788). */
+  gcCreateNewCheck: btn('Create New Check', 0),
+  /** Split "Gift Card not Enough Balance": balance within [base − $1, base + tip] → refused, only this button (VP-3788). */
+  gcSelectAnotherMethod: btn('Select Another Method', 0),
   cashierTipDialog: { role: 'dialog', hasText: 'Enter Amount', hasCss: 'button', nth: -1 } as VqcQuery,
   otherNamePlaceholder: 'Input payment method name',
   editOrder: btn('Edit Order', 0),
@@ -99,7 +103,8 @@ export const VqpsSplit = {
   cashDrawer: inMain(btnRe('^Cash\\s*Drawer$', 0)),
   addCheck: inMain(btn('Add New Check', 0)),
   completeDone: inMain(btn('Complete Done', 0)),
-  backToOrder: inMain(btnRe('Back to order', 0)),
+  // In the HEADER on 1.1.109 (outside <main>), an icon button with aria-label.
+  backToOrder: { css: 'button[aria-label="Back to order"]', nth: 0 } as VqcQuery,
   select: (id: string, n: number): readonly VqcQuery[] =>
     inMain({ css: `[aria-label="Select #${id}-${String(n)}"]`, nth: 0 }),
   paidMark: (id: string, n: number): readonly VqcQuery[] =>

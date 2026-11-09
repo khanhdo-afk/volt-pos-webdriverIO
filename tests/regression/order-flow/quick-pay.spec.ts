@@ -67,26 +67,38 @@ describe('Order flow — Quick Pay', () => {
     after(voidAnyDraft);
 
     it(
-      title('The Quick Pay dialog opens with Add disabled (TC-ORDERFLOW-14)', Tag.REGRESSION, Tag.WRITE),
+      title(
+        'The Quick Pay dialog opens and an empty form adds nothing (TC-ORDERFLOW-14)',
+        Tag.REGRESSION,
+        Tag.WRITE,
+      ),
       async () => {
         await homePage.openQuickPay();
 
         expect(await homePage.isQuickPayDialogShown()).toBe(true);
-        // Both required fields are empty, so Add starts disabled.
-        expect(await homePage.isQuickPayAddEnabled()).toBe(false);
+        // 1.1.109 validates on submit instead of greying Add out: with both required
+        // fields empty, Add must not add anything — the dialog stays open.
+        if (await homePage.isQuickPayAddEnabled()) {
+          expect(await homePage.submitQuickPay(3_000)).toBe(false);
+          expect(await homePage.isQuickPayDialogShown()).toBe(true);
+        }
 
         await homePage.closeQuickPayDialog();
       },
     );
 
     it(
-      title('Add unlocks only with an amount AND a name (TC-ORDERFLOW-15)', Tag.REGRESSION, Tag.WRITE),
+      title('Add goes through only with an amount AND a name (TC-ORDERFLOW-15)', Tag.REGRESSION, Tag.WRITE),
       async () => {
         await homePage.openQuickPay();
 
         await homePage.fillQuickPayAmount(AMOUNT_CENTS);
-        // An amount alone is not enough — the service name is the second required field.
-        expect(await homePage.isQuickPayAddEnabled()).toBe(false);
+        // An amount alone is not enough — the service name is the second required field
+        // (1.1.109: Add stays clickable but the submit is refused, the dialog stays).
+        if (await homePage.isQuickPayAddEnabled()) {
+          expect(await homePage.submitQuickPay(3_000)).toBe(false);
+          expect(await homePage.isQuickPayDialogShown()).toBe(true);
+        }
 
         await homePage.fillQuickPayName('E2E Quick Pay');
         expect(await homePage.isQuickPayAddEnabled()).toBe(true);

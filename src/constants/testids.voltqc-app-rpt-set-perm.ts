@@ -65,7 +65,9 @@ export const AspTip = {
       text: desc,
       match: 'contains',
       within: VqScope.main,
-      up: { until: `button[aria-label="${label}"]`, css: `button[aria-label="${label}"]`, nth: 0 },
+      // 1.1.109 dropped the buttons' aria-label (the label is a text <span>): the
+      // action cell holds Edit then Delete.
+      up: { until: 'td:last-child button', css: 'button', text: label, nth: 0 },
     }),
   rowSwitch: (desc: string): VqQuery =>
     q({
@@ -84,8 +86,8 @@ export const AspTip = {
 
 /** DOM ids volt-qc relied on (they survived the testid strip). */
 export const AspIds = {
-  discountOwner: Vq.id('discount-setting-owner'),
-  discountStaff: Vq.id('discount-setting-staff'),
+  discountOwner: Vq.id('discount-setting-available-owner'),
+  discountStaff: Vq.id('discount-setting-available-staff'),
   showPoint: Vq.id('customer-display-show-point'),
   showReward: Vq.id('customer-display-show-reward'),
   splitTipEvenly: Vq.id('split-tip-evenly'),
@@ -97,12 +99,9 @@ export const AspIds = {
   themeDark: q({ name: 'theme dark', css: '[data-testid="appearance-theme-dark"], [id="dark"]' }),
   /** `language-list.tsx` puts the locale code straight into the radio id. */
   language: (code: 'en' | 'vi'): VqQuery => Vq.id(code),
-  supplyBefore: q({
-    name: 'Deduct Before Commission',
-    css: '[role="radio"]',
-    text: 'Deduct Before Commission',
-  }),
-  supplyAfter: q({ name: 'Deduct After Commission', css: '[role="radio"]', text: 'Deduct After Commission' }),
+  // The radio carries no text (its <label for> does): address it by its stable id.
+  supplyBefore: q({ name: 'Deduct Before Commission', css: '#supply-deduct-before_commission' }),
+  supplyAfter: q({ name: 'Deduct After Commission', css: '#supply-deduct-after_commission' }),
 } as const;
 
 /** The on-screen virtual keyboard (react-simple-keyboard in a drawer). */
@@ -271,6 +270,13 @@ export const ASP_PERMISSION_ROWS = [
   'Completed Payment',
   'Delete Order',
   'Order History',
+  // New under Order Management on 1.1.109 — a snapshot without them wipes them on restore.
+  'Quick Pay',
+  'Apply Discount (Promo & Rewards)',
+  'Quick Checkout',
+  'Sell Gift Card',
+  'Edit Service Price',
+  'Calendar',
   'Summary Income',
   'Daily Income',
   'Staff Income',

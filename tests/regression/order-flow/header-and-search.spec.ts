@@ -50,20 +50,24 @@ describe('Order flow — Header & Search', () => {
     },
   );
 
-  // TC-75: the GlobalSearch component (open + tabs, proven by TC-74) is in place,
-  // but the Order tab does not surface the searched order within the timeout on
-  // build 1.1.x — its result rows need their own DOM mapping (and the search is
-  // network-debounced). One step from done: drive it with the attach lane, read
-  // the Order result row, then set `globalSearch` result selector + a results wait.
-  it(
-    title(
-      'TC-ORDERFLOW-75: Search by Order ID redirects to detail — PENDING (Order-tab result row not yet mapped on build 1.1.x)',
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // // TC-75: the GlobalSearch component (open + tabs, proven by TC-74) is in place,
+  // // but the Order tab does not surface the searched order within the timeout on
+  // // build 1.1.x — its result rows need their own DOM mapping (and the search is
+  // // network-debounced). One step from done: drive it with the attach lane, read
+  // // the Order result row, then set `globalSearch` result selector + a results wait.
+  // it(
+  //   title(
+  //     'TC-ORDERFLOW-75: Search by Order ID redirects to detail — PENDING (Order-tab result row not yet mapped on build 1.1.x)',
+  //   ),
+  // );
 
-  it(
-    title('TC-ORDERFLOW-71: Cash Drawer absent from the header — PENDING (absence of an unlabelled control)'),
-  );
-  it(title('TC-ORDERFLOW-72: scan a gift card for a quick look — PENDING (needs a scanner)'));
-  it(title('TC-ORDERFLOW-73: scan an order QR → Order History — PENDING (needs a scanner)'));
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title('TC-ORDERFLOW-71: Cash Drawer absent from the header — PENDING (absence of an unlabelled control)'),
+  // );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(title('TC-ORDERFLOW-72: scan a gift card for a quick look — PENDING (needs a scanner)'));
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(title('TC-ORDERFLOW-73: scan an order QR → Order History — PENDING (needs a scanner)'));
 });

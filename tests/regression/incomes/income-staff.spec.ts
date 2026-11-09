@@ -294,11 +294,12 @@ describe('Staff Income', () => {
     await incomeStaffPage.statCents('totalStaffIncome');
   });
 
-  it(
-    title(
-      'TC-IST-05: Search staff box is shown and accepts input — PENDING (build 1.1.56 renders no Search staff box on Staff Income; live DOM 2026-10-25)',
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'TC-IST-05: Search staff box is shown and accepts input — PENDING (build 1.1.56 renders no Search staff box on Staff Income; live DOM 2026-10-25)',
+  //   ),
+  // );
 
   it(title('The date preset defaults to "Today" (TC-IST-06)', Tag.REGRESSION), async () => {
     await incomeStaffPage.open(new Date());
@@ -408,11 +409,12 @@ describe('Staff Income', () => {
     },
   );
 
-  it(
-    title(
-      'TC-IST-14: [data] Search filters by nickname — PENDING (build 1.1.56 renders no Search staff box on Staff Income; live DOM 2026-10-25)',
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'TC-IST-14: [data] Search filters by nickname — PENDING (build 1.1.56 renders no Search staff box on Staff Income; live DOM 2026-10-25)',
+  //   ),
+  // );
 
   it(
     title(

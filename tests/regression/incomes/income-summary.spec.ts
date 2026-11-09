@@ -303,7 +303,8 @@ describe('Income Summary (V1) — live scan 2026-10-25', () => {
       },
     );
 
-    it(title('TC-INCSUM-16: Print sends the period detail to the printer — PENDING (needs a printer)'));
+    // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+    // it(title('TC-INCSUM-16: Print sends the period detail to the printer — PENDING (needs a printer)'));
   });
 
   it(

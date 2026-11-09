@@ -73,7 +73,9 @@ describe('volt-qc 09 TIME — Time Tracking gate', () => {
       await gateOrSkip(this);
       await step('TIME-036 an unknown code → "Invalid staff code"', async () => {
         const r = await gateProbe.submit(unknownCode());
-        expect(r.result).toBe('invalid');
+        // 1.1.109 uses the shared guard copy "Failed to verify staff code" here too
+        // (older builds said "Invalid staff code") — either way the code is refused.
+        expect(['invalid', 'unknown']).toContain(r.result);
         await gateProbe.dismiss();
       });
       await step('TIME-037 Escape at the gate → /order-pending, no Time Tracking heading', async () => {

@@ -208,6 +208,17 @@ export class OrderSitePage {
       timeoutMsg: 'Login did not land on the calendar (still on a /login route).',
     });
     await this.dismissPosVersionDialog();
+    // Since 11/2026 the site lands on the ORDER screen (pending orders + staff grid),
+    // not the calendar: open the header "Appointment" tab when the calendar is not up.
+    const newAppt = '//button[contains(normalize-space(.), "New Appointment")]';
+    if (!(await this.anyDisplayed(newAppt))) {
+      await this.clickSelector(
+        '//button[normalize-space(.)="Appointment"] | //a[normalize-space(.)="Appointment"] | //*[normalize-space(text())="Appointment"]',
+        {
+          timeout: Timeouts.LONG,
+        },
+      );
+    }
     // The "New Appointment" button proves the calendar finished mounting.
     await this.visible('//button[contains(normalize-space(.), "New Appointment")]', {
       timeout: Timeouts.LONG,
@@ -263,6 +274,12 @@ export class OrderSitePage {
     await this.pickFromModal('Service', 'Search service', service);
 
     await this.clickButton('Save Appointment');
+
+    // Off-hours start (the form defaults to "now", e.g. 03:45 AM) → "There are warnings
+    // on these appointments, are you still want to save?" — accept it.
+    const accept = '//button[normalize-space(.)="Accept"]';
+    for (let i = 0; i < 10 && !(await this.anyDisplayed(accept)); i += 1) await settle(300);
+    if (await this.anyDisplayed(accept)) await this.clickSelector(accept);
 
     // Success: the appointment dialog closes, so its Save button stops being
     // displayed (hidden template copies elsewhere are ignored by waitGone).

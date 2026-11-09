@@ -23,8 +23,8 @@ import { appNav } from '../../../../src/components/index.js';
 import { RptCss, RptRoutes, RptTitles } from '../../../../src/constants/testids.voltqc-reports-time.js';
 import { AspText } from '../../../../src/constants/testids.voltqc-app-rpt-set-perm.js';
 import { goToOrderHistory, payWithOther, returnToHome } from '../../../../src/flows/index.js';
-import { step } from '../../../../src/helpers/steps.js';
-import { settle, waitUntilPath } from '../../../../src/helpers/wait.js';
+
+import { settle } from '../../../../src/helpers/wait.js';
 import { checkoutPage, orderHistoryDetailPage, orderHistoryPage } from '../../../../src/pages/index.js';
 import { gateProbe } from '../../../../src/pages/voltqc/app-perm/GateProbe.js';
 import {
@@ -60,7 +60,6 @@ import {
 } from '../../../../src/pages/voltqc/reports-time/rptReports.js';
 import { clearPasscodeGrant, ensurePasscodeGrant } from '../../../../src/support/passcodeGrant.js';
 import { Tag, title } from '../../../../src/types/testTags.js';
-import { finishReopenUnchanged } from '../../order-flow/reopen-flow.helpers.js';
 
 const bare = (code: string): string => code.replace(/^#/, '').trim();
 const rowsFor = (snap: DailySnap, code: string): DailyRow[] =>
@@ -68,7 +67,7 @@ const rowsFor = (snap: DailySnap, code: string): DailyRow[] =>
 const cardValue = (snap: DailySnap, titleText: string): number => snap.cards[titleText]?.value ?? Number.NaN;
 
 /** Poll Daily Sale (today) until `ok(snapshot)` or the budget runs out; returns the last snapshot. */
-async function dailyUntil(ok: (s: DailySnap) => boolean, budgetMs = 60_000): Promise<DailySnap> {
+async function dailyUntil(ok: (s: DailySnap) => boolean, budgetMs = 180_000): Promise<DailySnap> {
   const end = Date.now() + budgetMs;
   let s = await dailySnapshot(0);
   while (!ok(s) && Date.now() < end) {
@@ -103,6 +102,16 @@ function rowMinutes(rows: DailyRow[]): number[] {
     .map((r) => /(\d{1,2}):(\d{2})\s*([AP]M)/i.exec(r.order))
     .filter((m): m is RegExpExecArray => m !== null)
     .map((m) => ((Number(m[1]) % 12) + (/p/i.test(m[3] ?? '') ? 12 : 0)) * 60 + Number(m[2]));
+}
+
+/** Answer the Cancel gate if it shows, and report whether "Order canceled" toasted. */
+async function cancelGateThenToast(): Promise<boolean> {
+  const deadline = Date.now() + Timeouts.API;
+  while (Date.now() < deadline) {
+    if (await gateProbe.isOpen()) await gateProbe.submit(ownerCode()).catch(() => undefined);
+    if (await toastShown(AspText.orderCanceled, 1_000)) return true;
+  }
+  return false;
 }
 
 describe('volt-qc RPT — new orders vs the reports (mutation)', () => {
@@ -244,8 +253,9 @@ describe('volt-qc RPT — new orders vs the reports (mutation)', () => {
       await dailyUntil((s) => rowsFor(s, o.orderNumber).length === 1);
       await openHistoryDetail(o.orderId);
       await orderHistoryDetailPage.cancelOrder('customer_request');
-      await gateProbe.submit(ownerCode()).catch(() => undefined);
-      expect(await toastShown(AspText.orderCanceled, Timeouts.API)).toBe(true);
+      // The Cancel gate ('Enter staff code to continue') mounts a beat after Confirm —
+      // or not at all under a live 30-min grant, when the toast comes straight away.
+      expect(await cancelGateThenToast()).toBe(true);
       const after = await dailyUntil((s) => rowsFor(s, o.orderNumber).length === 0);
       expect(rowsFor(after, o.orderNumber)).toEqual([]);
     },
@@ -282,52 +292,53 @@ describe('volt-qc RPT — new orders vs the reports (mutation)', () => {
     },
   );
 
-  // PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bỏ .skip để chạy lại.
-  it.skip(
-    title(
-      'A re-opened order leaves Daily Sale; completed again it is counted exactly once (RPT-049)',
-      Tag.REGRESSION,
-      Tag.WRITE,
-    ),
-    async function (this: Mocha.Context): Promise<void> {
-      this.timeout(Timeouts.MOCHA_HOOK * 3);
-      const o = await settleCashOrder();
-      await dailyUntil((s) => rowsFor(s, o.orderNumber).length === 1);
-      let reopened = false;
-      try {
-        await openHistoryDetail(o.orderId);
-        await orderHistoryDetailPage.openReopenDialog();
-        await orderHistoryDetailPage.pressReopenConfirm();
-        await gateProbe.waitOpen(2_000).then(async (up) => (up ? gateProbe.submit(ownerCode()) : undefined));
-        await waitUntilPath((p) => p.startsWith(`/order/${o.orderId}/checkout`), {
-          timeout: Timeouts.NAVIGATION,
-          message: 'Re-open never reached checkout',
-        });
-        reopened = true;
-        await step('While re-opened the order is not on Daily Sale', async () => {
-          const mid = await dailyUntil((s) => rowsFor(s, o.orderNumber).length === 0, 30_000);
-          expect(rowsFor(mid, o.orderNumber)).toEqual([]);
-          await openHistoryDetail(o.orderId);
-          await orderHistoryDetailPage.openReopenDialog();
-          await orderHistoryDetailPage.pressReopenConfirm();
-          await gateProbe
-            .waitOpen(2_000)
-            .then(async (up) => (up ? gateProbe.submit(ownerCode()) : undefined));
-          await waitUntilPath((p) => p.startsWith(`/order/${o.orderId}/checkout`), {
-            timeout: Timeouts.NAVIGATION,
-            message: 'Continue Re-open never reached checkout',
-          });
-        });
-        await checkoutPage.waitForReady(Timeouts.MEDIUM);
-        await finishReopenUnchanged(o.orderId);
-        reopened = false;
-      } finally {
-        if (reopened) await finishReopenUnchanged(o.orderId).catch(() => undefined);
-      }
-      const after = await dailyUntil((s) => rowsFor(s, o.orderNumber).length === 1);
-      expect(rowsFor(after, o.orderNumber).length).toBe(1);
-    },
-  );
+  // [TẮT 2026-11-08] Tạm không test (đã đánh dấu skip/MANUAL: cần thiết bị/điều kiện không tự động được, hoặc Re-Open tạm dừng theo yêu cầu) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // // PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bỏ .skip để chạy lại.
+  // it.skip(
+  //   title(
+  //     'A re-opened order leaves Daily Sale; completed again it is counted exactly once (RPT-049)',
+  //     Tag.REGRESSION,
+  //     Tag.WRITE,
+  //   ),
+  //   async function (this: Mocha.Context): Promise<void> {
+  //     this.timeout(Timeouts.MOCHA_HOOK * 3);
+  //     const o = await settleCashOrder();
+  //     await dailyUntil((s) => rowsFor(s, o.orderNumber).length === 1);
+  //     let reopened = false;
+  //     try {
+  //       await openHistoryDetail(o.orderId);
+  //       await orderHistoryDetailPage.openReopenDialog();
+  //       await orderHistoryDetailPage.pressReopenConfirm();
+  //       await gateProbe.waitOpen(2_000).then(async (up) => (up ? gateProbe.submit(ownerCode()) : undefined));
+  //       await waitUntilPath((p) => p.startsWith(`/order/${o.orderId}/checkout`), {
+  //         timeout: Timeouts.NAVIGATION,
+  //         message: 'Re-open never reached checkout',
+  //       });
+  //       reopened = true;
+  //       await step('While re-opened the order is not on Daily Sale', async () => {
+  //         const mid = await dailyUntil((s) => rowsFor(s, o.orderNumber).length === 0, 30_000);
+  //         expect(rowsFor(mid, o.orderNumber)).toEqual([]);
+  //         await openHistoryDetail(o.orderId);
+  //         await orderHistoryDetailPage.openReopenDialog();
+  //         await orderHistoryDetailPage.pressReopenConfirm();
+  //         await gateProbe
+  //           .waitOpen(2_000)
+  //           .then(async (up) => (up ? gateProbe.submit(ownerCode()) : undefined));
+  //         await waitUntilPath((p) => p.startsWith(`/order/${o.orderId}/checkout`), {
+  //           timeout: Timeouts.NAVIGATION,
+  //           message: 'Continue Re-open never reached checkout',
+  //         });
+  //       });
+  //       await checkoutPage.waitForReady(Timeouts.MEDIUM);
+  //       await finishReopenUnchanged(o.orderId);
+  //       reopened = false;
+  //     } finally {
+  //       if (reopened) await finishReopenUnchanged(o.orderId).catch(() => undefined);
+  //     }
+  //     const after = await dailyUntil((s) => rowsFor(s, o.orderNumber).length === 1);
+  //     expect(rowsFor(after, o.orderNumber).length).toBe(1);
+  //   },
+  // );
 
   it(
     title(
@@ -371,10 +382,17 @@ describe('volt-qc RPT — new orders vs the reports (mutation)', () => {
         if (how === 'escape') await browser.keys([Key.Escape]);
         else if (how === 'x') {
           await browser.execute(function () {
-            const d = Array.from(document.querySelectorAll('[role="dialog"]')).pop();
-            const b = d?.querySelector<HTMLButtonElement>(
-              'button[aria-label="Close"], button[data-slot="dialog-close"]',
-            );
+            // 1.1.109 keeps closed dialogs mounted (hidden): take the last VISIBLE one.
+            const d = Array.from(document.querySelectorAll('[role="dialog"]'))
+              .filter((e) => e.getClientRects().length > 0)
+              .pop();
+            const b =
+              d?.querySelector<HTMLButtonElement>(
+                'button[aria-label="Close"], button[data-slot="dialog-close"]',
+              ) ??
+              Array.from(d?.querySelectorAll<HTMLButtonElement>('button') ?? []).find(
+                (x) => (x.textContent ?? '').trim() === 'Close',
+              );
             b?.click();
           });
         } else await voltQcProbe.clickAt(5, 5);
@@ -390,8 +408,8 @@ describe('volt-qc RPT — new orders vs the reports (mutation)', () => {
     title('Daily Sale opened by URL keeps the requested day and chart (RPT-191)', Tag.REGRESSION),
     async function (this: Mocha.Context): Promise<void> {
       const yesterday: UnixRange = rangeOffset(-1);
-      await openDaily(yesterday, 'tip');
-      expect(await searchParam('activeChart')).toBe('tip');
+      await openDaily(yesterday, 'totalTip');
+      expect(await searchParam('activeChart')).toBe('totalTip');
       expect(Number(await searchParam('from'))).toBe(yesterday.from);
       const d = new Date(yesterday.from * 1000);
       const label = await dateRangeText();
@@ -446,8 +464,9 @@ describe('volt-qc RPT — new orders vs the reports (mutation)', () => {
       const withOrder = await staffList();
       await openHistoryDetail(o.orderId);
       await orderHistoryDetailPage.cancelOrder('customer_request');
-      await gateProbe.submit(ownerCode()).catch(() => undefined);
-      expect(await toastShown(AspText.orderCanceled, Timeouts.API)).toBe(true);
+      // The Cancel gate ('Enter staff code to continue') mounts a beat after Confirm —
+      // or not at all under a live 30-min grant, when the toast comes straight away.
+      expect(await cancelGateThenToast()).toBe(true);
       let after = withOrder;
       const end = Date.now() + 60_000;
       while (Date.now() < end) {

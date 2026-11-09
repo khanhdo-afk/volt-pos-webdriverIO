@@ -207,12 +207,13 @@ describe('VP-4489 — check-in point vs $1 = 1 point (+ VP-5112 "1 point" label)
       },
     );
 
-    it(
-      title(
-        'TC-VP4489-06: a Portal setting change applies on POS without a restart — PENDING ' +
-          '(cross-surface: Portal change + POS check in one run; Portal lane is ready (`.portal-profile`), POS side not wired)',
-      ),
-    );
+    // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+    // it(
+    //   title(
+    //     'TC-VP4489-06: a Portal setting change applies on POS without a restart — PENDING ' +
+    //       '(cross-surface: Portal change + POS check in one run; Portal lane is ready (`.portal-profile`), POS side not wired)',
+    //   ),
+    // );
   });
 
   describe('2. Customer display label (VP-5112)', () => {
@@ -303,18 +304,20 @@ describe('VP-4489 — check-in point vs $1 = 1 point (+ VP-5112 "1 point" label)
       },
     );
 
-    it(
-      title(
-        'TC-VP4489-11: POS in Vietnamese — the earned-points line is not broken — PENDING ' +
-          '(switching the app language is merchant-global @exclusive state; run by hand)',
-      ),
-    );
+    // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+    // it(
+    //   title(
+    //     'TC-VP4489-11: POS in Vietnamese — the earned-points line is not broken — PENDING ' +
+    //       '(switching the app language is merchant-global @exclusive state; run by hand)',
+    //   ),
+    // );
 
-    it(
-      title(
-        'TC-VP4489-12: Manual with 0 points shows "0 points" while Auto hides the block — PENDING ' +
-          '(doc-only: waiting on a PO decision, no expected behaviour to assert)',
-      ),
-    );
+    // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+    // it(
+    //   title(
+    //     'TC-VP4489-12: Manual with 0 points shows "0 points" while Auto hides the block — PENDING ' +
+    //       '(doc-only: waiting on a PO decision, no expected behaviour to assert)',
+    //   ),
+    // );
   });
 });

@@ -67,6 +67,7 @@ const GATE_LABEL: Record<(typeof PASSCODE_GATES)[number], string> = {
   delete_order: 'Delete Order',
   view_order_history: 'Order History',
   quick_pay: 'Quick Pay',
+  apply_discount: 'Apply Discount (Promo & Rewards)',
   quick_checkout: 'Quick Checkout',
   gift_card_sale: 'Sell Gift Card',
   edit_service_price: 'Edit Service Price',
@@ -346,7 +347,7 @@ describe('volt-qc PERM — passcode guard, skip, Passcode Setting, matrix (read-
 
   it(
     title(
-      'Passcode Setting lists 14 gates with their labels in 3 groups, Save disabled, no big gap under the title (PERM-031, PERM-037)',
+      'Passcode Setting lists every gate with their labels in 3 groups, Save disabled, no big gap under the title (PERM-031, PERM-037)',
       Tag.REGRESSION,
     ),
     async () => {
@@ -392,7 +393,7 @@ describe('volt-qc PERM — passcode guard, skip, Passcode Setting, matrix (read-
       };
 
       try {
-        await step('PERM-032 Active All = every gate; toggling it sets all 14', async () => {
+        await step('PERM-032 Active All = every gate; toggling it sets them all', async () => {
           await accessibilitySettingsPage.setGate('refund', !snap.refund);
           expect(await accessibilitySettingsPage.isGateOn('all')).toBe(await every());
           await accessibilitySettingsPage.setGate('refund', snap.refund);

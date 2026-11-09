@@ -21,152 +21,146 @@
  * opened but never confirmed). dev / staging only.
  */
 
-import { expect } from '@wdio/globals';
-import { Timeouts } from '../../../configs/constants/timeouts.js';
-import { returnToHome } from '../../../src/flows/index.js';
-import { homePage, orderHistoryDetailPage } from '../../../src/pages/index.js';
-import { Tag, title } from '../../../src/types/testTags.js';
-import { createAndSettleCashOrder } from './payment-flows.helpers.js';
+// [TẮT 2026-11-08] Tạm không test (đã đánh dấu skip/MANUAL: cần thiết bị/điều kiện không tự động được, hoặc Re-Open tạm dừng theo yêu cầu) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+// // PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bỏ .skip để chạy lại.
+// describe.skip('Payment flows — Reopen Order', () => {
+//   before(async function (this: Mocha.Context): Promise<void> {
+//     this.timeout(Timeouts.MOCHA_HOOK);
+//     await createAndSettleCashOrder();
+//   });
 
-// PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bỏ .skip để chạy lại.
-describe.skip('Payment flows — Reopen Order', () => {
-  before(async function (this: Mocha.Context): Promise<void> {
-    this.timeout(Timeouts.MOCHA_HOOK);
-    await createAndSettleCashOrder();
-  });
+//   after(async () => {
+//     await returnToHome();
+//     await homePage.waitForReady();
+//   });
 
-  after(async () => {
-    await returnToHome();
-    await homePage.waitForReady();
-  });
+//   it(
+//     title(
+//       'Re-Open is offered on an unsettled order and its dialog opens (ROP-01)',
+//       Tag.REGRESSION,
+//       Tag.WRITE,
+//     ),
+//     async () => {
+//       // Re-open is an unsettled-only action; Refund (settled-only) must be absent.
+//       expect(await orderHistoryDetailPage.isReopenAvailable()).toBe(true);
+//       expect(await orderHistoryDetailPage.isRefundAvailable()).toBe(false);
 
-  it(
-    title(
-      'Re-Open is offered on an unsettled order and its dialog opens (ROP-01)',
-      Tag.REGRESSION,
-      Tag.WRITE,
-    ),
-    async () => {
-      // Re-open is an unsettled-only action; Refund (settled-only) must be absent.
-      expect(await orderHistoryDetailPage.isReopenAvailable()).toBe(true);
-      expect(await orderHistoryDetailPage.isRefundAvailable()).toBe(false);
+//       await orderHistoryDetailPage.openReopenDialog();
+//       expect(await orderHistoryDetailPage.isReopenDialogShown()).toBe(true);
 
-      await orderHistoryDetailPage.openReopenDialog();
-      expect(await orderHistoryDetailPage.isReopenDialogShown()).toBe(true);
+//       // The dialog is the confirmation gate before the passcode guard. Reading it is
+//       // the coverage; confirming would navigate to checkout and demand a re-payment.
+//       const body = await orderHistoryDetailPage.readReopenDialogText();
+//       expect(body.length).toBeGreaterThan(0);
 
-      // The dialog is the confirmation gate before the passcode guard. Reading it is
-      // the coverage; confirming would navigate to checkout and demand a re-payment.
-      const body = await orderHistoryDetailPage.readReopenDialogText();
-      expect(body.length).toBeGreaterThan(0);
+//       await orderHistoryDetailPage.closeReopenDialog();
+//       expect(await orderHistoryDetailPage.isReopenDialogShown()).toBe(false);
+//     },
+//   );
 
-      await orderHistoryDetailPage.closeReopenDialog();
-      expect(await orderHistoryDetailPage.isReopenDialogShown()).toBe(false);
-    },
-  );
+//   it(
+//     title(
+//       'ROP-01 full (VP-2585): re-open is one-time, 2nd press is Continue/hidden — PENDING 🌙 (needs the re-open carried out)',
+//     ),
+//   );
 
-  it(
-    title(
-      'ROP-01 full (VP-2585): re-open is one-time, 2nd press is Continue/hidden — PENDING 🌙 (needs the re-open carried out)',
-    ),
-  );
+//   it(
+//     title(
+//       'ROP-02: "Void all" appears when totalPaid < newTotal or tax changes — PENDING 🌙 (needs re-open + edit)',
+//     ),
+//   );
 
-  it(
-    title(
-      'ROP-02: "Void all" appears when totalPaid < newTotal or tax changes — PENDING 🌙 (needs re-open + edit)',
-    ),
-  );
+//   it(
+//     title(
+//       'ROP-03 (VP-2585): re-open allows one service/price/staff edit — PENDING 🌙 (needs re-open carried out)',
+//     ),
+//   );
 
-  it(
-    title(
-      'ROP-03 (VP-2585): re-open allows one service/price/staff edit — PENDING 🌙 (needs re-open carried out)',
-    ),
-  );
+//   it(
+//     title(
+//       'ROP-04: discount/promo/reward/tax lock to the old version, SF recomputes — PENDING 🌙 (needs re-open + recompute read)',
+//     ),
+//   );
 
-  it(
-    title(
-      'ROP-04: discount/promo/reward/tax lock to the old version, SF recomputes — PENDING 🌙 (needs re-open + recompute read)',
-    ),
-  );
+//   it(
+//     title(
+//       'ROP-R1 (VP-3913): re-open with no limit despite reopenEditCount — PENDING 🌙 (needs re-open carried out)',
+//     ),
+//   );
 
-  it(
-    title(
-      'ROP-R1 (VP-3913): re-open with no limit despite reopenEditCount — PENDING 🌙 (needs re-open carried out)',
-    ),
-  );
+//   it(
+//     title(
+//       'ROP-R2 (VP-3914): Re-Open shows no "edits remaining" message — PENDING 🌙 (needs re-open carried out)',
+//     ),
+//   );
 
-  it(
-    title(
-      'ROP-R2 (VP-3914): Re-Open shows no "edits remaining" message — PENDING 🌙 (needs re-open carried out)',
-    ),
-  );
+//   it(
+//     title(
+//       'ROP-R3 (VP-4067): re-open after split settle charges the odd cent again — PENDING 🌙 (needs a split settle)',
+//     ),
+//   );
 
-  it(
-    title(
-      'ROP-R3 (VP-4067): re-open after split settle charges the odd cent again — PENDING 🌙 (needs a split settle)',
-    ),
-  );
+//   it(
+//     title(
+//       'ROP-R4 (VP-4013): re-open +service, Cash shows $110.17 not $110.00 — PENDING 🌙 (needs re-open + recompute)',
+//     ),
+//   );
 
-  it(
-    title(
-      'ROP-R4 (VP-4013): re-open +service, Cash shows $110.17 not $110.00 — PENDING 🌙 (needs re-open + recompute)',
-    ),
-  );
+//   it(
+//     title(
+//       'ROP-R5 (VP-4012): re-open +item, Card tax base misses Service Fee — PENDING 🌙💳 (needs re-open + card)',
+//     ),
+//   );
 
-  it(
-    title(
-      'ROP-R5 (VP-4012): re-open +item, Card tax base misses Service Fee — PENDING 🌙💳 (needs re-open + card)',
-    ),
-  );
+//   it(
+//     title(
+//       'ROP-R6 (VP-3957): re-open +service Card total wrong with SF + Tax — PENDING 🌙💳 (needs re-open + card)',
+//     ),
+//   );
 
-  it(
-    title(
-      'ROP-R6 (VP-3957): re-open +service Card total wrong with SF + Tax — PENDING 🌙💳 (needs re-open + card)',
-    ),
-  );
+//   it(
+//     title(
+//       'ROP-R7 (VP-3931): re-open +service Cash skips new service tax ($67.20 vs $68.20) — PENDING 🌙 (needs re-open + recompute)',
+//     ),
+//   );
 
-  it(
-    title(
-      'ROP-R7 (VP-3931): re-open +service Cash skips new service tax ($67.20 vs $68.20) — PENDING 🌙 (needs re-open + recompute)',
-    ),
-  );
+//   it(
+//     title(
+//       'ROP-R8 (VP-4079): re-open +Product Card, product tax not applied — PENDING 🌙💳 (needs re-open + card)',
+//     ),
+//   );
 
-  it(
-    title(
-      'ROP-R8 (VP-4079): re-open +Product Card, product tax not applied — PENDING 🌙💳 (needs re-open + card)',
-    ),
-  );
+//   it(
+//     title(
+//       'ROP-R9 (VP-4077): re-open recompute must honor the saved gift-card SF toggle — PENDING 🌙 (needs re-open + setting)',
+//     ),
+//   );
 
-  it(
-    title(
-      'ROP-R9 (VP-4077): re-open recompute must honor the saved gift-card SF toggle — PENDING 🌙 (needs re-open + setting)',
-    ),
-  );
+//   it(
+//     title(
+//       'ROP-R10 (VP-4037): Edit Order still allowed in Reopen/Pending/Cancel — PENDING 🌙 (needs those statuses + Edit-Order locator)',
+//     ),
+//   );
 
-  it(
-    title(
-      'ROP-R10 (VP-4037): Edit Order still allowed in Reopen/Pending/Cancel — PENDING 🌙 (needs those statuses + Edit-Order locator)',
-    ),
-  );
+//   it(
+//     title(
+//       'ROP-R11 (VP-3982): re-open remove-then-add customer fails — PENDING 🌙 (needs re-open carried out)',
+//     ),
+//   );
 
-  it(
-    title(
-      'ROP-R11 (VP-3982): re-open remove-then-add customer fails — PENDING 🌙 (needs re-open carried out)',
-    ),
-  );
+//   it(
+//     title('ROP-R12 (VP-3969): re-open bumps customer visit +1 — PENDING 🌙 (needs re-open + customer read)'),
+//   );
 
-  it(
-    title('ROP-R12 (VP-3969): re-open bumps customer visit +1 — PENDING 🌙 (needs re-open + customer read)'),
-  );
+//   it(
+//     title(
+//       'ROP-R13 (VP-4085): re-open point & check-in/out per the new point model — PENDING 🌙 (needs re-open + point read)',
+//     ),
+//   );
 
-  it(
-    title(
-      'ROP-R13 (VP-4085): re-open point & check-in/out per the new point model — PENDING 🌙 (needs re-open + point read)',
-    ),
-  );
-
-  it(
-    title(
-      'ROP-R14 (VP-4405): PR#2175 side-effects cluster (tax 1¢, split total, point revoke, Quick Pay $25→$27.50) — PENDING 🌙💳 (split into ROP-R14a..e on implementation)',
-    ),
-  );
-});
+//   it(
+//     title(
+//       'ROP-R14 (VP-4405): PR#2175 side-effects cluster (tax 1¢, split total, point revoke, Quick Pay $25→$27.50) — PENDING 🌙💳 (split into ROP-R14a..e on implementation)',
+//     ),
+//   );
+// });

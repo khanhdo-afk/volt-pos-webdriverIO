@@ -443,6 +443,10 @@ describe('Settings — Employees', () => {
   // dirtying this form however it is retyped (measured 2026-10-30). Still red when
   // run after TC-EMP-01..22 while green on its own — open, see the doc's notes.
   it(title('Editing a field makes the form dirty and enables Save (TC-EMP-23)', Tag.REGRESSION), async () => {
+    // A form an earlier case cleared through WebDriver stops tracking dirtiness until
+    // it re-mounts (see the note above) — leave and re-open the staff for a fresh form.
+    await onStaffsScreen();
+    await staffsSettingsPage.openStaff(staff);
     await onStaffDetail();
     originalAddress = await staffsSettingsPage.addressValue();
 

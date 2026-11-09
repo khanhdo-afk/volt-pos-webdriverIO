@@ -123,7 +123,13 @@ describe('volt-qc 08 APPOINTMENT — board entry, defaults and surface', () => {
       if (!line?.visible) this.skip(); // e.g. exactly at midnight
       const now = new Date();
       const expectedTop = (now.getHours() * 60 + now.getMinutes()) * ROW_PX_PER_MIN;
-      expect(Math.abs((line?.top ?? 0) - expectedTop)).toBeLessThanOrEqual(3 * ROW_PX_PER_MIN);
+      // 1.1.109 positions the line inside a grid with a 48 px top band, so its
+      // style.top reads 48 px (8 min) past minutes × 6 — the same at any hour.
+      const delta = Math.min(
+        Math.abs((line?.top ?? 0) - expectedTop),
+        Math.abs((line?.top ?? 0) - 48 - expectedTop),
+      );
+      expect(delta).toBeLessThanOrEqual(3 * ROW_PX_PER_MIN);
       const box = await boardScroll();
       const y = await P.poll(
         async () => (await nowLine())?.y ?? -1,

@@ -287,11 +287,12 @@ describe('VP-3356 — Staff Payroll lists $0-income staff', () => {
       },
     );
 
-    it(
-      title(
-        'TC-VP3356-09: POS list + summary match the Portal for Unclosed and closed periods — PENDING (cross-surface: Portal change + POS check in one run; Portal lane is ready (`.portal-profile`), POS side not wired; passed manually 26/10)',
-      ),
-    );
+    // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+    // it(
+    //   title(
+    //     'TC-VP3356-09: POS list + summary match the Portal for Unclosed and closed periods — PENDING (cross-surface: Portal change + POS check in one run; Portal lane is ready (`.portal-profile`), POS side not wired; passed manually 26/10)',
+    //   ),
+    // );
   });
 
   /* ------------------------------------------------------------------ *

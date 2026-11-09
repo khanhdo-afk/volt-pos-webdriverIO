@@ -1,3 +1,5 @@
+import { webInput } from '../../src/support/web/webLane.js';
+import type { AppointmentInput } from '../../src/pages/web/OrderSitePage.js';
 import { orderSitePage } from '../../src/pages/web/OrderSitePage.js';
 import { writeHandoff, HANDOFF_FILE } from '../../src/pages/web/handoff.js';
 
@@ -15,7 +17,7 @@ describe('WEB-01 create appointment on GoPOS web', () => {
   it('logs in and creates an appointment that syncs upstream', async () => {
     await orderSitePage.login();
 
-    const handoff = await orderSitePage.createAppointment();
+    const handoff = await orderSitePage.createAppointment(webInput<AppointmentInput>());
     handoff.createdAtLabel = new Date().toISOString();
 
     writeHandoff(handoff);

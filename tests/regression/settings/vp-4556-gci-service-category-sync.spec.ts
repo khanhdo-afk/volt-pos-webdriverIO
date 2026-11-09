@@ -122,45 +122,51 @@ describe('VP-4556 — GCI service sync survives a concurrently deleted category'
    * 2. No CDC failure — GCI + Portal Monitoring, manual
    * ------------------------------------------------------------------ */
 
-  it(
-    title(
-      'TC-VP4556-02: deleting a category with 30 services raises no Sys Notify Cdc Failure — PENDING ' +
-        '(delete on GCI + Portal → Monitoring → Report tasks; manual)',
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'TC-VP4556-02: deleting a category with 30 services raises no Sys Notify Cdc Failure — PENDING ' +
+  //       '(delete on GCI + Portal → Monitoring → Report tasks; manual)',
+  //   ),
+  // );
 
-  it(
-    title(
-      'TC-VP4556-03: deleting a category with 15 services (retest) raises no new CDC failure — PENDING ' +
-        '(GCI + Portal Monitoring; manual)',
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'TC-VP4556-03: deleting a category with 15 services (retest) raises no new CDC failure — PENDING ' +
+  //       '(GCI + Portal Monitoring; manual)',
+  //   ),
+  // );
 
-  it(
-    title(
-      'TC-VP4556-05: regression — service create / update on GCI still syncs without a CDC failure — PENDING ' +
-        '(changes are made on GCI; manual)',
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'TC-VP4556-05: regression — service create / update on GCI still syncs without a CDC failure — PENDING ' +
+  //       '(changes are made on GCI; manual)',
+  //   ),
+  // );
 
-  it(
-    title(
-      'TC-VP4556-06: service_insert while its category is deleted is handled without 23503 — PENDING ' +
-        '(needs a GCI race; BE / Monitoring only)',
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'TC-VP4556-06: service_insert while its category is deleted is handled without 23503 — PENDING ' +
+  //       '(needs a GCI race; BE / Monitoring only)',
+  //   ),
+  // );
 
-  it(
-    title(
-      'TC-VP4556-07: sibling resources (staff_service, customer_checkin_service, item) have no FK gap — PENDING ' +
-        '(BE pipeline review + Monitoring)',
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'TC-VP4556-07: sibling resources (staff_service, customer_checkin_service, item) have no FK gap — PENDING ' +
+  //       '(BE pipeline review + Monitoring)',
+  //   ),
+  // );
 
-  it(
-    title(
-      'TC-VP4556-08: the behaviour for a missing category (skip vs category_id = NULL) is documented — PENDING ' +
-        '(doc-only: volt-pos-api#1552)',
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'TC-VP4556-08: the behaviour for a missing category (skip vs category_id = NULL) is documented — PENDING ' +
+  //       '(doc-only: volt-pos-api#1552)',
+  //   ),
+  // );
 });

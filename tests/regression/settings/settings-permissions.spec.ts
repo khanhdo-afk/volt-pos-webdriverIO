@@ -43,7 +43,8 @@ import { Tag, title } from '../../../src/types/testTags.js';
 
 /**
  * The permission tree on build 1.1.56 (English till). The doc recorded 19 rows;
- * Order Management has since gained Delete Order, Order History and Quick Pay → 22.
+ * Order Management has since gained Delete Order, Order History and Quick Pay → 22,
+ * and on 1.1.109 Apply Discount, Quick Checkout, Sell Gift Card, Edit Service Price and Calendar → 27.
  */
 const TREE: Record<string, string[]> = {
   'Order Management': [
@@ -54,6 +55,11 @@ const TREE: Record<string, string[]> = {
     'Delete Order',
     'Order History',
     'Quick Pay',
+    'Apply Discount (Promo & Rewards)',
+    'Quick Checkout',
+    'Sell Gift Card',
+    'Edit Service Price',
+    'Calendar',
   ],
   Income: ['Summary Income', 'Daily Income', 'Staff Income', 'Staff Payroll'],
   'Batch Management': ['Batch History', 'Batch Close'],
@@ -61,7 +67,7 @@ const TREE: Record<string, string[]> = {
   'System Setting': ['POS Settings', 'View Phone Number', 'View Time Tracking'],
 };
 const PARENTS = Object.keys(TREE);
-const TOTAL_ROWS = PARENTS.length + Object.values(TREE).flat().length; // 22
+const TOTAL_ROWS = PARENTS.length + Object.values(TREE).flat().length; // 27
 
 /** The rows rendered between `parent` and the next parent row, in the expanded matrix. */
 function childrenOf(rows: PermissionRow[], parent: string): string[] {
@@ -122,7 +128,7 @@ describe('Settings — Permissions', () => {
     expect(PERMISSION_TEXT.expandAll).toContain(await permissionsSettingsPage.expandToggleLabel());
   });
 
-  it(title('Expand All shows all 22 rows / 88 switches (TC-PERM-04)', Tag.REGRESSION), async () => {
+  it(title('Expand All shows all 27 rows / 108 switches (TC-PERM-04)', Tag.REGRESSION), async () => {
     await permissionsSettingsPage.expandAll();
 
     expect(await permissionsSettingsPage.readMatrix()).toHaveLength(TOTAL_ROWS);
@@ -140,7 +146,7 @@ describe('Settings — Permissions', () => {
     for (const parent of PARENTS) expect(expanded).toContain(parent);
   });
 
-  it(title('Order Management has its 7 children (TC-PERM-06)', Tag.REGRESSION), async () => {
+  it(title('Order Management has its 12 children (TC-PERM-06)', Tag.REGRESSION), async () => {
     await permissionsSettingsPage.expandAll();
     expect(childrenOf(await permissionsSettingsPage.readMatrix(), 'Order Management')).toEqual(
       TREE['Order Management'],
@@ -187,17 +193,19 @@ describe('Settings — Permissions', () => {
    * Live writes — PENDING (see the file header)
    * ------------------------------------------------------------------ */
 
-  it(
-    title(
-      'TC-PERM-12: turning a parent ON cascades to its children — PENDING (each click saves to a real system role; no throwaway role exists)',
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'TC-PERM-12: turning a parent ON cascades to its children — PENDING (each click saves to a real system role; no throwaway role exists)',
+  //   ),
+  // );
 
-  it(
-    title(
-      'TC-PERM-13: turning a parent OFF cascades to its children — PENDING (each click saves to a real system role; no throwaway role exists)',
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'TC-PERM-13: turning a parent OFF cascades to its children — PENDING (each click saves to a real system role; no throwaway role exists)',
+  //   ),
+  // );
 
   it(title('No Save / Apply button — changes save on click (TC-PERM-14)', Tag.REGRESSION), async () => {
     await permissionsSettingsPage.expandAll();
@@ -211,17 +219,19 @@ describe('Settings — Permissions', () => {
     expect(labels.some((l) => selectLabels.includes(l))).toBe(true);
   });
 
-  it(
-    title(
-      'TC-PERM-15: toggling a switch shows no toast — PENDING (needs a live toggle of a real system role)',
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'TC-PERM-15: toggling a switch shows no toast — PENDING (needs a live toggle of a real system role)',
+  //   ),
+  // );
 
-  it(
-    title(
-      'TC-PERM-16: a toggle survives a reload (saved server-side) — PENDING (needs a live toggle of a real system role)',
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'TC-PERM-16: a toggle survives a reload (saved server-side) — PENDING (needs a live toggle of a real system role)',
+  //   ),
+  // );
 
   it(title('Expand state is not persisted across a re-visit (TC-PERM-17)', Tag.REGRESSION), async () => {
     await permissionsSettingsPage.expandAll();
@@ -259,17 +269,19 @@ describe('Settings — Permissions', () => {
     expect(headers.manager.button).not.toBeNull();
   });
 
-  it(
-    title(
-      'TC-PERM-20: Select All turns on every permission of a role — PENDING (writes the whole column of a real system role)',
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'TC-PERM-20: Select All turns on every permission of a role — PENDING (writes the whole column of a real system role)',
+  //   ),
+  // );
 
-  it(
-    title(
-      'TC-PERM-21: Unselect All turns off every permission of a role — PENDING (writes the whole column of a real system role)',
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'TC-PERM-21: Unselect All turns off every permission of a role — PENDING (writes the whole column of a real system role)',
+  //   ),
+  // );
 
   /* ------------------------------------------------------------------ *
    * Passcode gate

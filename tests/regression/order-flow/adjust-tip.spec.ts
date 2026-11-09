@@ -77,5 +77,6 @@ describe('Order flow — Adjust Tip', () => {
     },
   );
 
-  it(title('TC-ORDERFLOW-70: a multi-tender order forces a tender choice — PENDING (multi-settle order)'));
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(title('TC-ORDERFLOW-70: a multi-tender order forces a tender choice — PENDING (multi-settle order)'));
 });

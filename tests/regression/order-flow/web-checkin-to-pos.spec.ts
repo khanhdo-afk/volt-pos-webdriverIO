@@ -41,27 +41,31 @@
  */
 
 import { browser, expect } from '@wdio/globals';
-import { readCheckinHandoff } from '../../../src/pages/web/checkinHandoff.js';
 import { loadEnv } from '../../../configs/env/loadEnv.js';
 import { Timeouts } from '../../../configs/constants/timeouts.js';
 import { Routes } from '../../../src/constants/routes.js';
 import { goTo } from '../../../src/helpers/navigate.js';
 import { settle } from '../../../src/helpers/wait.js';
+import { freshCheckin } from '../../../src/support/web/webLane.js';
 
 const env = loadEnv();
-const handoff = readCheckinHandoff();
+let handoff: Awaited<ReturnType<typeof freshCheckin>> | null = null;
 
 describe('WEB CHECK-IN → POS sync', () => {
-  before(function () {
-    if (!handoff) {
+  before(async function () {
+    this.timeout(8 * 60_000);
+    // Made in this run on the GAP kiosk when the handoff is missing/stale (src/support/web/webLane.ts).
+    handoff = await freshCheckin().catch((e: Error) => {
       // eslint-disable-next-line no-console
-      console.log('[web-checkin] No handoff file — run `npm run web:checkin` first. Skipping.');
-      this.skip();
-    }
+      console.log(`[web-lane] could not create it: ${e.message}`);
+      return null;
+    });
+    if (!handoff) this.skip();
   });
 
   it('shows the GoCheckin web check-in as a pending order on the app', async function () {
     if (!handoff) return; // guarded by before(); keeps the type-checker happy
+    const ho = handoff;
 
     if (env.MERCHANT_ID !== env.WEB_MERCHANT_ID) {
       // eslint-disable-next-line no-console
@@ -80,7 +84,7 @@ describe('WEB CHECK-IN → POS sync', () => {
 
     const needle = (hay: string): boolean => {
       const t = hay.toLowerCase();
-      return t.includes(handoff.name.toLowerCase()) || t.includes(handoff.phone) || t.includes(handoff.last4);
+      return t.includes(ho.name.toLowerCase()) || t.includes(ho.phone) || t.includes(ho.last4);
     };
 
     const isListed = async (): Promise<boolean> => {
@@ -95,7 +99,7 @@ describe('WEB CHECK-IN → POS sync', () => {
         );
         if (needle(body)) {
           // eslint-disable-next-line no-console
-          console.log(`[web-checkin] FOUND "${handoff.name}" on ${route}`);
+          console.log(`[web-checkin] FOUND "${ho.name}" on ${route}`);
           return true;
         }
       }
@@ -106,7 +110,7 @@ describe('WEB CHECK-IN → POS sync', () => {
       timeout: Timeouts.APP_BOOT,
       interval: 3_000,
       timeoutMsg:
-        `Web check-in for "${handoff.name}" (phone ${handoff.phone}, created ${handoff.createdAtLabel}) ` +
+        `Web check-in for "${ho.name}" (phone ${ho.phone}, created ${ho.createdAtLabel}) ` +
         'did not appear on the app Home / Order-pending within the sync window.',
     });
 

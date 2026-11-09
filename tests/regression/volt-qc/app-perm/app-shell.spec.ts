@@ -26,6 +26,7 @@ import { appShellProbe } from '../../../../src/pages/voltqc/app-perm/AppShellPro
 import { gateProbe } from '../../../../src/pages/voltqc/app-perm/GateProbe.js';
 import { Tag, title } from '../../../../src/types/testTags.js';
 import { log, ownerCode, recoverShell, visit } from './app-perm.helpers.js';
+import { requireStore } from '../../../../src/support/portal/storeSettings.js';
 
 const onPath = (path: string): Promise<string> =>
   waitUntilPath((p) => p === path || p.startsWith(`${path}/`), {
@@ -121,6 +122,7 @@ describe('volt-qc APP — app shell, header & sidebar (read-only)', () => {
       Tag.REGRESSION,
     ),
     async function (this: Mocha.Context): Promise<void> {
+      await requireStore({ 'passcode.orderHistory': true });
       await gateProbe.clearSkip();
       await appShellProbe.clickHeaderOrderHistory();
       if (!(await gateProbe.waitOpen(4_000))) this.skip(); // Order History gate is OFF in Passcode Setting
@@ -340,6 +342,7 @@ describe('volt-qc APP — app shell, header & sidebar (read-only)', () => {
       Tag.REGRESSION,
     ),
     async function (this: Mocha.Context): Promise<void> {
+      await requireStore({ 'passcode.timeTracking': true });
       await gateProbe.clearSkip();
       await appNav.openSidebar();
       await appShellProbe.clickSidebarLink(Routes.TIME_TRACKING);

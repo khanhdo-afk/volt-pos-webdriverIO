@@ -1,3 +1,4 @@
+import fs from 'node:fs';
 import path from 'node:path';
 import { Paths } from '../constants/paths.js';
 import { Timeouts } from '../constants/timeouts.js';
@@ -36,6 +37,22 @@ const PORTAL_PROFILE = process.env.PORTAL_PROFILE === '1' ? path.join(Paths.ROOT
  *
  *   npm run web:appointment
  */
+/** `157.0.4341.42` from the Edge install folder (Windows), or '' when not found. */
+function installedEdgeVersion(): string {
+  if (process.env.WEB_EDGE_VERSION) return process.env.WEB_EDGE_VERSION;
+  for (const base of [process.env['ProgramFiles(x86)'], process.env.ProgramFiles]) {
+    if (!base) continue;
+    const dir = path.join(base, 'Microsoft', 'Edge', 'Application');
+    try {
+      const v = fs.readdirSync(dir).find((d) => /^\d+\.\d+\.\d+\.\d+$/.test(d));
+      if (v) return v;
+    } catch {
+      /* not installed here */
+    }
+  }
+  return '';
+}
+
 export const config: WebdriverIO.Config = {
   runner: 'local',
 
@@ -47,6 +64,15 @@ export const config: WebdriverIO.Config = {
   capabilities: [
     {
       browserName: 'MicrosoftEdge',
+      // Pin the INSTALLED Edge build so WebdriverIO fetches the matching msedgedriver
+      // (it otherwise reused a cached 155 driver against Edge 157: "session not created").
+      ...(installedEdgeVersion() ? { browserVersion: installedEdgeVersion() } : {}),
+      // Own cache dir: %TEMP%\msedgedriver.exe is the WebView2-matched driver of the
+      // app lane (155) and must not be swapped; the web lane needs desktop Edge's.
+      'wdio:edgedriverOptions': {
+        cacheDir: path.join(Paths.ROOT, '.tmp', 'edgedriver-web'),
+        ...(installedEdgeVersion() ? { edgeDriverVersion: installedEdgeVersion() } : {}),
+      },
       'ms:edgeOptions': {
         args: [
           '--disable-popup-blocking',

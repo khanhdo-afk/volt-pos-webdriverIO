@@ -1,3 +1,4 @@
+import { unlockSellGiftCardGate } from '../pos/giftCardProbe.js';
 import { browser } from '@wdio/globals';
 import { Timeouts } from '../../../../configs/constants/timeouts.js';
 import { assertWritesAllowed, env } from '../../../../configs/env/loadEnv.js';
@@ -521,6 +522,7 @@ export async function editItem(name: string, o: ItemEdit, nth = 0): Promise<void
 /** Quick Pay tile → (passcode gate VP-3115) → wait for the dialog. */
 export async function openQuickPay(): Promise<void> {
   await P.clickQ(VqcHome.quickPayTile);
+  await unlockSellGiftCardGate(); // Quick Pay is gated the same way on 1.1.109 (VP-4815)
   await passcodeDialog.unlockForRun(env.STAFF_PASSCODE, { timeout: 2_000 });
   await P.waitFor(VqhDialog.quickPay, Timeouts.MEDIUM, 'Quick Pay dialog');
 }

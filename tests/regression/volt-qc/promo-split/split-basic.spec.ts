@@ -129,7 +129,7 @@ describe('volt-qc 05 SPLIT — split bill basics', () => {
         await app.passcodeIfAsked(1_500);
         const dlg = S.otherDialog;
         await P.fillQ([dlg, { role: 'textbox', name: 'Input payment method name' }], 'Zelle E2E');
-        await P.clickQ([dlg, { role: 'button', nameRe: '^Pay \\$', nth: 0 }]);
+        await P.clickQ([dlg, { role: 'button', nameRe: '^Pay\\s*\\$', nth: 0 }]);
         await S.waitCheckPaid(2);
         expect(await appears(textQ('All checks paid'), 5_000)).toBe(true);
         await P.clickQ([{ role: 'dialog', nth: -1 }, btn('Done')]);

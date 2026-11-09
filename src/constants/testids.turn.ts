@@ -179,7 +179,7 @@ export const TurnAdjustIds = {
   /* Row-relative (use with `within: row`). */
   rowName: locator('adjust row name', 'turn-adjust-row-name', './div/p[1]'),
   rowCurrent: locator('adjust row current', 'turn-adjust-row-current', './div/p[2]'),
-  rowValue: locator('adjust row pending value', 'turn-adjust-row-value', './span'),
+  rowValue: locator('adjust row pending value', 'turn-adjust-row-value', './span[not(@data-slot="avatar")]'),
   rowDecrease: locator('adjust row decrease', 'turn-adjust-row-decrease', './button[@aria-label="decrease"]'),
   rowIncrease: locator('adjust row increase', 'turn-adjust-row-increase', './button[@aria-label="increase"]'),
   rowSave: locator('adjust row save', 'turn-adjust-row-save', `./button[${anyText(Actions.save)}]`),

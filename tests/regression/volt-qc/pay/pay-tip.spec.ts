@@ -60,6 +60,7 @@ import {
 } from '../../../../src/pages/voltqc/pay/payProbe.js';
 import { Tag, title } from '../../../../src/types/testTags.js';
 import { buildDraft } from '../../order-flow/charge-matrix.helpers.js';
+import { requireStore, TIP_FULL } from '../../../../src/support/portal/storeSettings.js';
 
 async function cashCheckout(quickPayCents?: number): Promise<{ homeTotal: number; cash: number }> {
   await buildDraft(
@@ -83,6 +84,12 @@ async function toCustomerTipOrSkip(ctx: Mocha.Context): Promise<void> {
 }
 
 describe('volt-qc 03 PAY — tips', function () {
+  before(async function () {
+    this.timeout(5 * 60_000);
+    // Store set-up this file needs — Portal-adjusted if the till differs, restored after the file.
+    await requireStore({ ...TIP_FULL, tipType: 'percent' });
+  });
+
   this.timeout(Timeouts.MOCHA_TEST * 3);
 
   afterEach(async () => {

@@ -103,89 +103,106 @@ describe('Payment flows — Payment reliability', () => {
     },
   );
 
-  it(
-    title(
-      'PAY-R11 (VP-3725): complete re-pushes a stale snapshot, order reverts to Pending — PENDING 🌙 (needs a settled order + snapshot race)',
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'PAY-R11 (VP-3725): complete re-pushes a stale snapshot, order reverts to Pending — PENDING 🌙 (needs a settled order + snapshot race)',
+  //   ),
+  // );
 
-  it(
-    title(
-      'PAY-R18 (VP-3063): Payment Details omits the successful card charge — PENDING 🌙 (needs a settled card order + tx read)',
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'PAY-R18 (VP-3063): Payment Details omits the successful card charge — PENDING 🌙 (needs a settled card order + tx read)',
+  //   ),
+  // );
 
-  it(
-    title(
-      'PAY-R1 (VP-2919): phantom payment (Approved on reader, online-auth fails) — PENDING 🔌 OUT OF SCOPE',
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'PAY-R1 (VP-2919): phantom payment (Approved on reader, online-auth fails) — PENDING 🔌 OUT OF SCOPE',
+  //   ),
+  // );
 
-  it(
-    title(
-      'PAY-R2 (VP-4338): charged-but-failed at 19s on a stale pooled socket → double — PENDING 🔌 OUT OF SCOPE',
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'PAY-R2 (VP-4338): charged-but-failed at 19s on a stale pooled socket → double — PENDING 🔌 OUT OF SCOPE',
+  //   ),
+  // );
 
-  it(
-    title(
-      'PAY-R3 (VP-4168): double charge after terminal disconnect, UNKNOWN outcome — PENDING 🔌 OUT OF SCOPE',
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'PAY-R3 (VP-4168): double charge after terminal disconnect, UNKNOWN outcome — PENDING 🔌 OUT OF SCOPE',
+  //   ),
+  // );
 
-  it(
-    title(
-      'PAY-R4 (VP-4287): POS/FBP transaction mismatch after disconnect at timeout — PENDING 🔌 OUT OF SCOPE (shared SPL-R6)',
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'PAY-R4 (VP-4287): POS/FBP transaction mismatch after disconnect at timeout — PENDING 🔌 OUT OF SCOPE (shared SPL-R6)',
+  //   ),
+  // );
 
-  it(
-    title(
-      'PAY-R5 (VP-2828): success on FBP but POS Failed/Decline → double charge + income — PENDING 🔌 OUT OF SCOPE',
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'PAY-R5 (VP-2828): success on FBP but POS Failed/Decline → double charge + income — PENDING 🔌 OUT OF SCOPE',
+  //   ),
+  // );
 
-  it(
-    title(
-      'PAY-R6 (VP-4087): Semi mode card-read error wedges awaiting-payment → repeat charge — PENDING 🔌🖥️ OUT OF SCOPE',
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'PAY-R6 (VP-4087): Semi mode card-read error wedges awaiting-payment → repeat charge — PENDING 🔌🖥️ OUT OF SCOPE',
+  //   ),
+  // );
 
-  it(title('PAY-R7 (VP-4195): charge success on FBP but POS demands re-payment — PENDING 🔌 OUT OF SCOPE'));
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(title('PAY-R7 (VP-4195): charge success on FBP but POS demands re-payment — PENDING 🔌 OUT OF SCOPE'));
 
-  it(
-    title(
-      'PAY-R8 (VP-4334): OD still Pending though charge Succeeded, POS re-charges — PENDING 🔌 OUT OF SCOPE',
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'PAY-R8 (VP-4334): OD still Pending though charge Succeeded, POS re-charges — PENDING 🔌 OUT OF SCOPE',
+  //   ),
+  // );
 
-  it(title('PAY-R9 (VP-4356): card transaction shows Processing after charge — PENDING 🔌 OUT OF SCOPE'));
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(title('PAY-R9 (VP-4356): card transaction shows Processing after charge — PENDING 🔌 OUT OF SCOPE'));
 
-  it(
-    title(
-      'PAY-R10 (VP-4377): loyalty point over-awarded after a decline-then-success — PENDING 🔌 OUT OF SCOPE',
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'PAY-R10 (VP-4377): loyalty point over-awarded after a decline-then-success — PENDING 🔌 OUT OF SCOPE',
+  //   ),
+  // );
 
-  it(title('PAY-R12 (VP-3591): $150 double charge on card — PENDING 🔌 OUT OF SCOPE'));
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(title('PAY-R12 (VP-3591): $150 double charge on card — PENDING 🔌 OUT OF SCOPE'));
 
-  it(
-    title(
-      'PAY-R13 (VP-3958): 10s CHARGE_TIMEOUT + verify-by-reference, no re-charge — PENDING 🔌 OUT OF SCOPE',
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'PAY-R13 (VP-3958): 10s CHARGE_TIMEOUT + verify-by-reference, no re-charge — PENDING 🔌 OUT OF SCOPE',
+  //   ),
+  // );
 
-  it(title('PAY-R14 (VP-2214): double-charge WARNING for Magensa — PENDING 🔌 OUT OF SCOPE'));
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(title('PAY-R14 (VP-2214): double-charge WARNING for Magensa — PENDING 🔌 OUT OF SCOPE'));
 
-  it(
-    title(
-      'PAY-R15 (VP-4169): card-read error must show on the cashier too — PENDING 🖥️ OUT OF SCOPE (dual-screen)',
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'PAY-R15 (VP-4169): card-read error must show on the cashier too — PENDING 🖥️ OUT OF SCOPE (dual-screen)',
+  //   ),
+  // );
 
-  it(
-    title(
-      'PAY-R16 (VP-4133): cashier can leave the card screen safely while the reader waits — PENDING 🖥️ OUT OF SCOPE (dual-screen)',
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'PAY-R16 (VP-4133): cashier can leave the card screen safely while the reader waits — PENDING 🖥️ OUT OF SCOPE (dual-screen)',
+  //   ),
+  // );
 });

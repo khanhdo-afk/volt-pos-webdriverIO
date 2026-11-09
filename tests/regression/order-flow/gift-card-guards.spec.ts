@@ -104,79 +104,92 @@ describe('Payment flows — Gift Card', () => {
     },
   );
 
-  // --- Selling side: blocked by the missing sale/scan testids (see module note) ---
-  it(
-    title(
-      'GC-01: sell gift card, Balance = VALUE + Bonus — PENDING ✅-blocked (sale dialog has no testid on dev build)',
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // // --- Selling side: blocked by the missing sale/scan testids (see module note) ---
+  // it(
+  //   title(
+  //     'GC-01: sell gift card, Balance = VALUE + Bonus — PENDING ✅-blocked (sale dialog has no testid on dev build)',
+  //   ),
+  // );
 
-  it(
-    title(
-      'GC-02: custom value cap $10,000; quick $25/$50/$100 — PENDING ✅-blocked (sale dialog has no testid)',
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'GC-02: custom value cap $10,000; quick $25/$50/$100 — PENDING ✅-blocked (sale dialog has no testid)',
+  //   ),
+  // );
 
-  it(
-    title(
-      'GC-R5 (VP-3910): "Scan again" returns no result after first scan — PENDING ✅-blocked (scan dialog has no testid)',
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'GC-R5 (VP-3910): "Scan again" returns no result after first scan — PENDING ✅-blocked (scan dialog has no testid)',
+  //   ),
+  // );
 
-  it(
-    title(
-      'GC-R7 (VP-4160): gift-card price drops $105→$104.75 under a promotion — PENDING ✅-blocked (sale dialog has no testid)',
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'GC-R7 (VP-4160): gift-card price drops $105→$104.75 under a promotion — PENDING ✅-blocked (sale dialog has no testid)',
+  //   ),
+  // );
 
-  it(
-    title(
-      'GC-R8 (VP-3827): exclude GC Sale from Service Fee & Cash Discount — PENDING ✅-blocked (sale dialog has no testid)',
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'GC-R8 (VP-3827): exclude GC Sale from Service Fee & Cash Discount — PENDING ✅-blocked (sale dialog has no testid)',
+  //   ),
+  // );
 
-  it(
-    title(
-      'GC-R9 (VP-3812): GC Sale still charged Service Fee — PENDING ✅-blocked (sale dialog has no testid)',
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'GC-R9 (VP-3812): GC Sale still charged Service Fee — PENDING ✅-blocked (sale dialog has no testid)',
+  //   ),
+  // );
 
-  it(
-    title(
-      'GC-R10 (VP-3235): scan shows no Transaction History — PENDING ✅-blocked (scan dialog has no testid)',
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'GC-R10 (VP-3235): scan shows no Transaction History — PENDING ✅-blocked (scan dialog has no testid)',
+  //   ),
+  // );
 
-  // --- Need a real settle / card / point read ---
-  it(
-    title(
-      'GC-04: Gift Card is Void-only, never a refund method — PENDING 💳 (needs a settled gift-card order)',
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // // --- Need a real settle / card / point read ---
+  // it(
+  //   title(
+  //     'GC-04: Gift Card is Void-only, never a refund method — PENDING 💳 (needs a settled gift-card order)',
+  //   ),
+  // );
 
-  it(
-    title(
-      'GC-R1 (VP-3565): redemption amount mismatch + not linked to tx — PENDING 💳 (needs a real redemption + tx read)',
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'GC-R1 (VP-3565): redemption amount mismatch + not linked to tx — PENDING 💳 (needs a real redemption + tx read)',
+  //   ),
+  // );
 
-  it(
-    title('GC-R2 (VP-3788): partial-redemption split loses the check tip — PENDING 💳 (shared with SPL-R2)'),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title('GC-R2 (VP-3788): partial-redemption split loses the check tip — PENDING 💳 (shared with SPL-R2)'),
+  // );
 
-  it(
-    title(
-      'GC-R3 (VP-3727): cancel of multiple gift cards restores wrong balance — PENDING 💳 (shared with CAN-R1)',
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'GC-R3 (VP-3727): cancel of multiple gift cards restores wrong balance — PENDING 💳 (shared with CAN-R1)',
+  //   ),
+  // );
 
-  it(
-    title(
-      'GC-R4 (VP-3547): scan Active but "Invalid" on Add Value — PENDING 💳 (add-value dialog has no testid)',
-    ),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title(
+  //     'GC-R4 (VP-3547): scan Active but "Invalid" on Add Value — PENDING 💳 (add-value dialog has no testid)',
+  //   ),
+  // );
 
-  it(
-    title('GC-R6 (VP-4171): gift-card sale not excluded from point — PENDING 🌙 (needs a point/report read)'),
-  );
+  // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // it(
+  //   title('GC-R6 (VP-4171): gift-card sale not excluded from point — PENDING 🌙 (needs a point/report read)'),
+  // );
 });

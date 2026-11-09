@@ -4,7 +4,7 @@ import { pathOf, Routes } from '../../constants/routes.js';
 import { SettingsIds, settingsLanguageOption, settingsNavItem } from '../../constants/testids.js';
 import { SettingsLeaveGuardIds } from '../../constants/testids.settings.js';
 import type { Locator } from '../../helpers/selectors.js';
-import { waitUntilPath } from '../../helpers/wait.js';
+import { settle, waitUntilPath } from '../../helpers/wait.js';
 import { BasePage } from '../BasePage.js';
 
 /**
@@ -86,6 +86,7 @@ export class SettingsPage extends BasePage {
    */
   async openSection(section: SettingsSectionName): Promise<this> {
     const path = SettingsSection[section];
+    await closeOpenPoppers();
     await this.click(settingsNavItem(path));
     await waitUntilPath((current) => current.startsWith(path), {
       timeout: Timeouts.NAVIGATION,
@@ -179,3 +180,22 @@ export class SettingsPage extends BasePage {
 }
 
 export default new SettingsPage();
+
+/**
+ * A Radix Select / Popover left open (a read helper that peeked at the options)
+ * sets `pointer-events: none` on <body>, so every later click "is not clickable".
+ * Escape closes it; no-op when nothing is open.
+ */
+export async function closeOpenPoppers(): Promise<void> {
+  for (let i = 0; i < 3; i += 1) {
+    const open = await browser.execute(
+      () =>
+        document.querySelector(
+          '[data-radix-popper-content-wrapper] [data-state="open"], [role="listbox"][data-state="open"]',
+        ) !== null,
+    );
+    if (!open) return;
+    await browser.keys(['Escape']);
+    await settle(200);
+  }
+}

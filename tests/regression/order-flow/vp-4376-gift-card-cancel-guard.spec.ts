@@ -223,22 +223,23 @@ describe('VP-4376 — gift-card cancel guard: empty-card lookup is "unknown", no
 
   /* ----------------------------------------------------------------------- */
   describe('3. Not automatable here / documentation', () => {
-    it(
-      title(
-        'TC-VP4376-07: AC 01–03 on a PRODUCTION build (v1.1.2+, #2844 picked) — PENDING 🧱 (no production build / no writes on prod from this PC)',
-      ),
-    );
-
-    it(
-      title(
-        'TC-VP4376-08: make the code unresolvable for real (rename / delete the card code) — PENDING 🧱 (Portal / BE access)',
-      ),
-    );
-
-    it(
-      title(
-        'TC-VP4376-10: cherry-pick of #2844 keeps only fetchCurrentBalance + the "empty card" unit test — PENDING 📄 (PR review)',
-      ),
-    );
+    // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+    // it(
+    //   title(
+    //     'TC-VP4376-07: AC 01–03 on a PRODUCTION build (v1.1.2+, #2844 picked) — PENDING 🧱 (no production build / no writes on prod from this PC)',
+    //   ),
+    // );
+    // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+    // it(
+    //   title(
+    //     'TC-VP4376-08: make the code unresolvable for real (rename / delete the card code) — PENDING 🧱 (Portal / BE access)',
+    //   ),
+    // );
+    // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+    // it(
+    //   title(
+    //     'TC-VP4376-10: cherry-pick of #2844 keeps only fetchCurrentBalance + the "empty card" unit test — PENDING 📄 (PR review)',
+    //   ),
+    // );
   });
 });

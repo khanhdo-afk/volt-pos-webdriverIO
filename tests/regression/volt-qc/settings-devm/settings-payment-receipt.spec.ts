@@ -42,6 +42,7 @@ import {
 import { vqProbe } from '../../../../src/pages/voltqc/settings-devm/VqProbe.js';
 import { vqTipTable } from '../../../../src/pages/voltqc/settings-devm/VqTipTable.js';
 import { Tag, title } from '../../../../src/types/testTags.js';
+import { requireStore } from '../../../../src/support/portal/storeSettings.js';
 
 const DISCARD_PROMPT =
   'You have unsaved changes. Do you want to undo changes and leave this page, or continue editing?';
@@ -81,6 +82,12 @@ async function restoreToggles(state: Record<string, boolean>): Promise<void> {
 }
 
 describe('volt-qc SET — Charge & Fee, Tipping, Receipt (read-only)', () => {
+  before(async function () {
+    this.timeout(5 * 60_000);
+    // Store set-up this file needs — Portal-adjusted if the till differs, restored after the file.
+    await requireStore({ tipType: 'percent' });
+  });
+
   afterEach(async () => {
     await dismissOverlays().catch(() => undefined);
     // A draft left by a failed case: leave through the rail and discard it.
@@ -176,11 +183,11 @@ describe('volt-qc SET — Charge & Fee, Tipping, Receipt (read-only)', () => {
         await step('Display', async () => {
           expect(
             await vqProbe.isShown(
-              Vq.text('Set how promotion discounts are shared between the owner and staff.', VqScope.main),
+              Vq.text('Split of a promotion discount between the owner and the staff.', VqScope.main),
             ),
           ).toBe(true);
-          expect(await vqProbe.isShown(Vq.text('Percent for owner', VqScope.main))).toBe(true);
-          expect(await vqProbe.isShown(Vq.text('Percent for staff', VqScope.main))).toBe(true);
+          expect(await vqProbe.isShown(Vq.text('Owner share (%)', VqScope.main))).toBe(true); // 1.1.109 copy
+          expect(await vqProbe.isShown(Vq.text('Staff share (%)', VqScope.main))).toBe(true);
           expect(Number(o0) + Number(s0)).toBe(100);
           expect(await chargeFeePage.isDiscountSaveEnabled()).toBe(false);
         });
@@ -315,7 +322,8 @@ describe('volt-qc SET — Charge & Fee, Tipping, Receipt (read-only)', () => {
           });
         }
         expect(await vqProbe.count(Vq.text('Discount Setting', VqScope.main))).toBe(0);
-        expect(await vqProbe.count(Vq.textMatching('^Supply Share', VqScope.main))).toBe(0);
+        // 1.1.109 moved the Supply Share card here (it used to sit on Charge & Fee).
+        expect(await vqProbe.count(Vq.textMatching('^Supply Share', VqScope.main))).toBeGreaterThan(0);
       });
 
       await step('Tip Method, Tip Timing, Tip Amount', async () => {
@@ -592,7 +600,7 @@ describe('volt-qc SET — Charge & Fee, Tipping, Receipt (read-only)', () => {
 
   it(
     title(
-      'Receipt header: the business phone shows masked, asks a passcode on click and hides with its switch (SET-093)',
+      'Receipt header: the business phone shows in full and hides with its switch (SET-093)',
       Tag.REGRESSION,
     ),
     async function (this: Mocha.Context) {
@@ -606,17 +614,13 @@ describe('volt-qc SET — Charge & Fee, Tipping, Receipt (read-only)', () => {
       const original = await readToggles(['show-business-phone']);
       try {
         await vqProbe.setChecked(VqReceipt.toggle('show-business-phone'), true);
-        expect(await vqProbe.isShown(VqReceipt.maskedPhone())).toBe(true);
-        expect(await vqProbe.textOf(VqReceipt.maskedPhone())).toContain(phone.slice(-4));
-        await vqProbe.press(VqReceipt.maskedPhone());
-        const asked = await vqProbe.isShown(
-          Vq.textContaining('Enter staff code', VqScope.dialog),
-          Timeouts.SHORT,
-        );
-        if (asked) await vqProbe.pressKey('Escape');
-        expect(asked).toBe(true);
+        // 1.1.109 prints the store's own phone in full, "(888) 887-6789" — no mask and
+        // no passcode (it is the business number, not a customer's).
+        const shown = (await vqProbe.bodyText()).replace(/\D/g, '');
+        expect(shown).toContain(phone.slice(-10));
         await vqProbe.setChecked(VqReceipt.toggle('show-business-phone'), false);
-        expect(await vqProbe.count(VqReceipt.maskedPhone())).toBe(0);
+        const hidden = (await vqProbe.bodyText()).replace(/\D/g, '');
+        expect(hidden.includes(phone.slice(-10))).toBe(false);
       } finally {
         await restoreToggles(original);
       }

@@ -87,7 +87,8 @@ describe('VP-2105 — Order History date range: no duplicate / overlapping days'
   });
 
   describe('1. Two calendars', () => {
-    it(title('TC-VP2105-01: POS version carries the fix (Menu › Version Update) — PENDING (doc-only)'));
+    // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+    // it(title('TC-VP2105-01: POS version carries the fix (Menu › Version Update) — PENDING (doc-only)'));
 
     it(
       title(

@@ -29,18 +29,10 @@ import {
   findHistoryCode,
   paymentSection,
 } from '../../../../src/pages/voltqc/oh-reopen/ohReopen.js';
-import {
-  GC,
-  createSplitPaid,
-  freshDetail,
-  leaveReopenVq,
-  payAndReopenDone,
-  reopenToHome,
-  staffSegment,
-} from '../../../../src/pages/voltqc/oh-reopen/vqReopen.js';
+import { GC, createSplitPaid, leaveReopenVq } from '../../../../src/pages/voltqc/oh-reopen/vqReopen.js';
 import { settledGiftCardBalance } from '../../../../src/pages/voltqc/promo-split/promoFlows.js';
 import { openSplit, payCheck, settleSplit } from '../../../../src/pages/voltqc/promo-split/splitFlows.js';
-import { app, field, vqEnv, visible, waitUntil } from '../../../../src/pages/voltqc/promo-split/vqApp.js';
+import { app, vqEnv, visible, waitUntil } from '../../../../src/pages/voltqc/promo-split/vqApp.js';
 import {
   collectCodes,
   inFilter,
@@ -56,15 +48,13 @@ import {
   dailyCards,
   openBatch,
   openDaily,
-  openStaffIncome,
   orderDetailsButtons,
   orderDetailsText,
-  staffList,
   waitOrderDetails,
 } from '../../../../src/pages/voltqc/reports-time/rptReports.js';
 import { Tag, title } from '../../../../src/types/testTags.js';
 
-const GC_LINE = /Gift Card \[[*\-\d]+\]/;
+// const GC_LINE = /Gift Card \[[*\-\d]+\]/;
 const SEARCH_ANY = inMain({ css: 'input', nth: 0 });
 
 /** Open an order by code on a list whose labels may be translated. */
@@ -80,12 +70,12 @@ async function openByCodeAnyLang(code: string): Promise<string> {
   return P.pageText('main');
 }
 
-async function staffIncomeRow(name: string): Promise<{ orders: number; tip: number }> {
-  await openStaffIncome();
-  await waitUntil(async () => (await staffList()).rows.length > 0, 30_000, 1_000);
-  const row = (await staffList()).rows.find((r) => r.name === name);
-  return { orders: row?.orders ?? 0, tip: row?.tip ?? 0 };
-}
+// async function staffIncomeRow(name: string): Promise<{ orders: number; tip: number }> {
+//   await openStaffIncome();
+//   await waitUntil(async () => (await staffList()).rows.length > 0, 30_000, 1_000);
+//   const row = (await staffList()).rows.find((r) => r.name === name);
+//   return { orders: row?.orders ?? 0, tip: row?.tip ?? 0 };
+// }
 
 describe('volt-qc 07 ORDER HISTORY — gift card, split, reports, settings, Vietnamese (write)', () => {
   afterEach(async () => {
@@ -94,41 +84,42 @@ describe('volt-qc 07 ORDER HISTORY — gift card, split, reports, settings, Viet
 
   /* ---------------- gift card ---------------- */
 
-  // PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bỏ .skip để chạy lại.
-  it.skip(
-    title(
-      'A gift-card top-up order lists "Gift Card [****-****-xxxx]" under Store; in reopen that line is read-only (OH-071, OH-163)',
-      Tag.REGRESSION,
-      Tag.WRITE,
-    ),
-    async function () {
-      this.timeout(6 * 60_000);
-      if (!GC()) this.skip();
-      const id = await app.topUpGiftCard(GC(), 10);
-      const d = await freshDetail(id);
-      const svc = d.slice(d.indexOf('Service Details'), d.indexOf('Payment Details'));
-      expect(svc).toMatch(/\| Store \|/);
-      expect(svc).toMatch(GC_LINE);
-      expect(svc).toContain(GC().slice(-4));
-      await reopenToHome(id);
-      const rows = await P.count({ css: 'main div.pr-11' });
-      await P.clickQ(inMain({ textRe: '^Gift Card \\[', nth: 0 })).catch(() => undefined);
-      await settle(1_000);
-      const sell = { role: 'dialog' as const, name: 'Sell Gift Card', nth: -1 };
-      if (await visible(sell)) {
-        expect(await P.isDisabled([sell, { role: 'textbox', name: 'Enter gift card code' }])).toBe(true);
-        expect(await P.has([sell, btn('Add')])).toBe(false);
-        await P.clickQ([sell, btn('Close', 0)]);
-      }
-      expect(await P.count({ css: 'main div.pr-11' })).toBe(rows);
-      const del = [
-        { css: 'main div.pr-11', hasText: 'Gift Card', nth: 0 },
-        { css: 'button.text-destructive', nth: 0 },
-      ] as const;
-      if (await P.has(del)) expect(await P.isDisabled(del)).toBe(true);
-      await payAndReopenDone();
-    },
-  );
+  // [TẮT 2026-11-08] Tạm không test (đã đánh dấu skip/MANUAL: cần thiết bị/điều kiện không tự động được, hoặc Re-Open tạm dừng theo yêu cầu) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // // PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bỏ .skip để chạy lại.
+  // it.skip(
+  //   title(
+  //     'A gift-card top-up order lists "Gift Card [****-****-xxxx]" under Store; in reopen that line is read-only (OH-071, OH-163)',
+  //     Tag.REGRESSION,
+  //     Tag.WRITE,
+  //   ),
+  //   async function () {
+  //     this.timeout(6 * 60_000);
+  //     if (!GC()) this.skip();
+  //     const id = await app.topUpGiftCard(GC(), 10);
+  //     const d = await freshDetail(id);
+  //     const svc = d.slice(d.indexOf('Service Details'), d.indexOf('Payment Details'));
+  //     expect(svc).toMatch(/\| Store \|/);
+  //     expect(svc).toMatch(GC_LINE);
+  //     expect(svc).toContain(GC().slice(-4));
+  //     await reopenToHome(id);
+  //     const rows = await P.count({ css: 'main div.pr-11' });
+  //     await P.clickQ(inMain({ textRe: '^Gift Card \\[', nth: 0 })).catch(() => undefined);
+  //     await settle(1_000);
+  //     const sell = { role: 'dialog' as const, name: 'Sell Gift Card', nth: -1 };
+  //     if (await visible(sell)) {
+  //       expect(await P.isDisabled([sell, { role: 'textbox', name: 'Enter gift card code' }])).toBe(true);
+  //       expect(await P.has([sell, btn('Add')])).toBe(false);
+  //       await P.clickQ([sell, btn('Close', 0)]);
+  //     }
+  //     expect(await P.count({ css: 'main div.pr-11' })).toBe(rows);
+  //     const del = [
+  //       { css: 'main div.pr-11', hasText: 'Gift Card', nth: 0 },
+  //       { css: 'button.text-destructive', nth: 0 },
+  //     ] as const;
+  //     if (await P.has(del)) expect(await P.isDisabled(del)).toBe(true);
+  //     await payAndReopenDone();
+  //   },
+  // );
 
   it(
     title(
@@ -202,35 +193,36 @@ describe('volt-qc 07 ORDER HISTORY — gift card, split, reports, settings, Viet
 
   /* ---------------- reports ---------------- */
 
-  // PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bỏ .skip để chạy lại.
-  it.skip(
-    title(
-      'After moving an order to another staff through reopen, Staff Income shows its order and tip under the new staff (OH-162)',
-      Tag.REGRESSION,
-      Tag.WRITE,
-    ),
-    async function () {
-      this.timeout(8 * 60_000);
-      const t0 = await staffIncomeRow(vqEnv.testStaff2);
-      const { id } = await app.createPaidOrder({ method: 'Cash' });
-      await app.openHistoryOrder(id);
-      await adjustTipTo('200');
-      await waitUntil(async () => field(await app.historyDetail(id), 'Tip') === '$2.00', 15_000);
-      await reopenToHome(id);
-      await app.changeStaff(vqEnv.testStaff2);
-      await payAndReopenDone();
-      const d = await freshDetail(id);
-      expect(staffSegment(d, vqEnv.testStaff2)).not.toBe('');
-      const ok = await waitUntil(
-        async () => (await staffIncomeRow(vqEnv.testStaff2)).orders > t0.orders,
-        180_000,
-        5_000,
-      );
-      expect(ok).toBe(true);
-      const t1 = await staffIncomeRow(vqEnv.testStaff2);
-      expect(t1.tip - t0.tip).toBeGreaterThanOrEqual(200);
-    },
-  );
+  // [TẮT 2026-11-08] Tạm không test (đã đánh dấu skip/MANUAL: cần thiết bị/điều kiện không tự động được, hoặc Re-Open tạm dừng theo yêu cầu) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // // PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bỏ .skip để chạy lại.
+  // it.skip(
+  //   title(
+  //     'After moving an order to another staff through reopen, Staff Income shows its order and tip under the new staff (OH-162)',
+  //     Tag.REGRESSION,
+  //     Tag.WRITE,
+  //   ),
+  //   async function () {
+  //     this.timeout(8 * 60_000);
+  //     const t0 = await staffIncomeRow(vqEnv.testStaff2);
+  //     const { id } = await app.createPaidOrder({ method: 'Cash' });
+  //     await app.openHistoryOrder(id);
+  //     await adjustTipTo('200');
+  //     await waitUntil(async () => field(await app.historyDetail(id), 'Tip') === '$2.00', 15_000);
+  //     await reopenToHome(id);
+  //     await app.changeStaff(vqEnv.testStaff2);
+  //     await payAndReopenDone();
+  //     const d = await freshDetail(id);
+  //     expect(staffSegment(d, vqEnv.testStaff2)).not.toBe('');
+  //     const ok = await waitUntil(
+  //       async () => (await staffIncomeRow(vqEnv.testStaff2)).orders > t0.orders,
+  //       180_000,
+  //       5_000,
+  //     );
+  //     expect(ok).toBe(true);
+  //     const t1 = await staffIncomeRow(vqEnv.testStaff2);
+  //     expect(t1.tip - t0.tip).toBeGreaterThanOrEqual(200);
+  //   },
+  // );
 
   it(
     title(

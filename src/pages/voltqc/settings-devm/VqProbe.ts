@@ -328,7 +328,16 @@ export class VqProbe extends UiObject {
     const el = await this.marked(query, timeout);
     await el.waitForClickable({ timeout: Timeouts.SHORT }).catch(() => undefined);
     this.log.debug(`press ${query.name}`);
-    await el.click();
+    try {
+      await el.click();
+    } catch (error) {
+      // 1.1.109's sticky settings header can sit over a button mid-scroll ("element
+      // click intercepted" by `div.flex.shrink-0.items-center.gap-6`): bring the
+      // button to the middle of the view and click it in the page.
+      if (!/click intercepted/i.test(String(error))) throw error;
+      await el.scrollIntoView({ block: 'center' });
+      await browser.execute((b: HTMLElement) => b.click(), el as unknown as HTMLElement);
+    }
     await settle(250);
   }
 

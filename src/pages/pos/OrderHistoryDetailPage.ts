@@ -536,6 +536,15 @@ export class OrderHistoryDetailPage extends BasePage {
 
   /** Pick the tender to adjust and wait for the amount-entry dialog. */
   async chooseTender(index: number): Promise<this> {
+    // 1.1.109: an order with ONE tender opens straight on the amount keypad
+    // ("Current Tip … Enter Amount") — there is no tender picker to choose from.
+    const direct = await browser.execute(() => {
+      const d = Array.from(document.querySelectorAll('[role="dialog"]'))
+        .filter((e) => e.getClientRects().length > 0)
+        .pop();
+      return !!d && /Enter Amount/.test(d.textContent ?? '');
+    });
+    if (direct && index === 0) return this;
     await this.click(adjustTipPaymentItemBtn(index));
     await this.find(OrderHistoryDetailIds.adjustTipTransactionDialog, {
       timeout: Timeouts.MEDIUM,

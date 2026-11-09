@@ -337,16 +337,16 @@ describe('volt-qc 14 E2E — points, promotions, journey', () => {
       });
       await step('Charge & Fee › Discount Setting', async () => {
         await app.openReport('/settings/charge-fee');
-        const owner = { css: '#discount-setting-owner', nth: 0 };
-        const staff = { css: '#discount-setting-staff', nth: 0 };
+        const owner = { css: '#discount-setting-available-owner', nth: 0 };
+        const staff = { css: '#discount-setting-available-staff', nth: 0 };
         if (!(await app.waitFor(owner)))
-          throw new Error('#discount-setting-owner not on /settings/charge-fee');
+          throw new Error('#discount-setting-available-owner not on /settings/charge-fee');
         const [o0, s0] = [await app.value(owner), await app.value(staff)];
         await app.fill(owner, '60');
         await app.fill(staff, '30');
         expect(await app.waitFor({ text: 'Owner and staff percent must total 100%', nth: 0 })).toBe(true);
         const save = [
-          { css: 'div,section,form', hasCss: '#discount-setting-owner', hasText: 'Save', nth: -1 },
+          { css: 'div,section,form', hasCss: '#discount-setting-available-owner', hasText: 'Save', nth: -1 },
           { role: 'button' as const, name: 'Save', nth: 0 },
         ];
         expect(await app.isDisabled(save)).toBe(true);

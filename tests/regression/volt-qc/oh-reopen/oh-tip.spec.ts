@@ -20,21 +20,14 @@ import {
   adjustTipTo,
   centsIn,
   closeTipDialog,
-  countPayments,
   createPaidOrder,
   detailText,
-  enteredFor,
   field,
-  freshDetail,
   freshTill,
-  leaveReopen,
   openAdjustTip,
   openHistoryOrder,
   passcodeIfAsked,
-  payDifference,
-  payFromEdit,
   paymentSection,
-  reopenToHome,
   saveTip,
   serviceSection,
   staffInDetail,
@@ -42,7 +35,6 @@ import {
   tipCurrentCents,
   tipEnteredCents,
   tipKey,
-  tryAddService,
   type PaidOrder,
 } from '../../../../src/pages/voltqc/oh-reopen/ohReopen.js';
 import { voltQcProbe as P } from '../../../../src/pages/voltqc/pos/VoltQcProbe.js';
@@ -367,36 +359,37 @@ describe('volt-qc 07 ORDER HISTORY — Adjust Tip / Split Tip (write)', () => {
     },
   );
 
-  // PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bỏ .skip để chạy lại.
-  it.skip(
-    title(
-      'Two Other txns after a reopen: Adjust Tip opens the "Adjust Order Tip" list, one Adjust Tip per txn, the chosen one gets the tip (OH-192, RO-512)',
-      Tag.REGRESSION,
-      Tag.WRITE,
-    ),
-    async function () {
-      this.timeout(8 * 60_000);
-      const { orderId, code } = await createPaidOrder({ method: 'other' });
-      try {
-        await reopenToHome(orderId);
-        expect(await tryAddService(1)).toBe(true);
-        await payFromEdit();
-        await enteredFor('other');
-        await payDifference(orderId, 'other', 'E2E Other 2');
-      } finally {
-        await leaveReopen();
-      }
-      await freshDetail(orderId, (x) => countPayments(x, 'Other') === 2);
-      await openAdjustTip();
-      expect(await P.has(D.adjustOrderTipList)).toBe(true);
-      expect(await P.count([D.adjustOrderTipList, btn('Adjust Tip')])).toBe(2);
-      await P.clickQ([D.adjustOrderTipList, btn('Adjust Tip', 1)]);
-      await P.waitFor(D.adjustTip, Timeouts.SHORT, 'Adjust Tip dialog');
-      for (const k of '100') await tipKey(k);
-      await saveTip();
-      await P.escape();
-      await openHistoryOrder(orderId);
-      expect(field(await waitTip(code, '$1.00'), 'Tip')).toBe('$1.00');
-    },
-  );
+  // [TẮT 2026-11-08] Tạm không test (đã đánh dấu skip/MANUAL: cần thiết bị/điều kiện không tự động được, hoặc Re-Open tạm dừng theo yêu cầu) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+  // // PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bỏ .skip để chạy lại.
+  // it.skip(
+  //   title(
+  //     'Two Other txns after a reopen: Adjust Tip opens the "Adjust Order Tip" list, one Adjust Tip per txn, the chosen one gets the tip (OH-192, RO-512)',
+  //     Tag.REGRESSION,
+  //     Tag.WRITE,
+  //   ),
+  //   async function () {
+  //     this.timeout(8 * 60_000);
+  //     const { orderId, code } = await createPaidOrder({ method: 'other' });
+  //     try {
+  //       await reopenToHome(orderId);
+  //       expect(await tryAddService(1)).toBe(true);
+  //       await payFromEdit();
+  //       await enteredFor('other');
+  //       await payDifference(orderId, 'other', 'E2E Other 2');
+  //     } finally {
+  //       await leaveReopen();
+  //     }
+  //     await freshDetail(orderId, (x) => countPayments(x, 'Other') === 2);
+  //     await openAdjustTip();
+  //     expect(await P.has(D.adjustOrderTipList)).toBe(true);
+  //     expect(await P.count([D.adjustOrderTipList, btn('Adjust Tip')])).toBe(2);
+  //     await P.clickQ([D.adjustOrderTipList, btn('Adjust Tip', 1)]);
+  //     await P.waitFor(D.adjustTip, Timeouts.SHORT, 'Adjust Tip dialog');
+  //     for (const k of '100') await tipKey(k);
+  //     await saveTip();
+  //     await P.escape();
+  //     await openHistoryOrder(orderId);
+  //     expect(field(await waitTip(code, '$1.00'), 'Tip')).toBe('$1.00');
+  //   },
+  // );
 });

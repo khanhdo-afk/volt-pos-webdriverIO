@@ -89,6 +89,24 @@ async function chooseYear(year: number): Promise<void> {
   await waitNoSkeleton(L).catch(() => undefined);
 }
 
+/** Presets whose date range equals `preset`'s range today (weeks start Monday). */
+function samePresets(preset: string): string[] {
+  const d = new Date();
+  const day = (x: Date): number => new Date(x.getFullYear(), x.getMonth(), x.getDate()).getTime();
+  const today = day(d);
+  const monday = day(new Date(d.getFullYear(), d.getMonth(), d.getDate() - ((d.getDay() + 6) % 7)));
+  const ranges: Record<string, [number, number]> = {
+    Today: [today, today],
+    'This Week': [monday, today],
+    'Last 7 Days': [day(new Date(d.getFullYear(), d.getMonth(), d.getDate() - 6)), today],
+    'This Month': [day(new Date(d.getFullYear(), d.getMonth(), 1)), today],
+    'This Year': [day(new Date(d.getFullYear(), 0, 1)), today],
+  };
+  const r = ranges[preset];
+  if (!r) return [preset];
+  return Object.keys(ranges).filter((k) => ranges[k]?.[0] === r[0] && ranges[k]?.[1] === r[1]);
+}
+
 describe('volt-qc RPT — Income Summary: filters & grouping (read-only)', () => {
   it(
     title(
@@ -128,7 +146,11 @@ describe('volt-qc RPT — Income Summary: filters & grouping (read-only)', () =>
           const s = await summaryState();
           // A preset can coincide with another (Monday: This Week = Today) — compare by what the combobox shows.
           if (s.preset !== p) note(`RPT-058: chose "${p}", combobox shows "${s.preset}" (same range)`);
-          expect(s.comparison).toBe(`vs. ${SUMMARY_COMPARISON[s.preset] ?? '?'}`);
+          // Presets that cover the SAME days today (Monday: This Week = Today; Sunday:
+          // This Week = Last 7 Days; the 1st: This Month = Today…) may be labelled and
+          // compared either way by the app — accept any of them.
+          const ok = samePresets(s.preset).map((x) => `vs. ${SUMMARY_COMPARISON[x] ?? '?'}`);
+          expect(ok).toContain(s.comparison);
           if (p === 'Last 7 Days') expect(s.rows).toHaveLength(7);
         });
       }
@@ -192,11 +214,17 @@ describe('volt-qc RPT — Income Summary: filters & grouping (read-only)', () =>
           await clickIn(L, RptCss.dateRange);
           await clickCalendarDay(start);
           await clickPopoverButton('Apply');
-          await browser.waitUntil(async () => (await summaryState()).preset === 'Last 7 Days', {
-            timeout: Timeouts.MEDIUM,
-            interval: 300,
-            timeoutMsg: 'A 7-day range ending today was not recognised as Last 7 Days',
-          });
+          await browser.waitUntil(
+            async () =>
+              ['Last 7 Days', ...(new Date().getDay() === 0 ? ['This Week'] : [])].includes(
+                (await summaryState()).preset,
+              ),
+            {
+              timeout: Timeouts.MEDIUM,
+              interval: 300,
+              timeoutMsg: 'A 7-day range ending today was not recognised as Last 7 Days',
+            },
+          );
         },
       );
     },

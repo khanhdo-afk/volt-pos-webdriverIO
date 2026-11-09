@@ -56,6 +56,7 @@ import {
   turnOf,
   waitTurn,
   withTurnStaff,
+  ensureTurnOn,
 } from '../../../../src/pages/voltqc/appt-time-turn/turnKit.js';
 import { voltQcProbe as P } from '../../../../src/pages/voltqc/pos/VoltQcProbe.js';
 import { Tag, title } from '../../../../src/types/testTags.js';
@@ -303,6 +304,7 @@ describe('volt-qc 15 TURN — board with staff clocked in (write)', () => {
     async function () {
       this.timeout(5 * 60_000);
       await returnToHome();
+      await ensureTurnOn();
       if ((await readCfg()).turnValueCents <= 0) this.skip();
       const inNow = (await todayRows()).map((r) => r.staff);
       const past = await findPastDayWithRows();
@@ -497,6 +499,7 @@ describe('volt-qc 15 TURN — board with staff clocked in (write)', () => {
     async function () {
       this.timeout(4 * 60_000);
       await returnToHome();
+      await ensureTurnOn();
       if ((await readCfg()).turnValueCents <= 0) this.skip();
       const rows = await todayRows();
       if (rows.length > 0) {

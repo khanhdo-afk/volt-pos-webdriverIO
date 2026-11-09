@@ -253,11 +253,12 @@ describe('VP-4809 — Font Size + Print All Staff Income', () => {
       },
     );
 
-    it(
-      title(
-        'TC-VP4809-09: the choice survives a reload / app restart — PENDING (attach mode cannot restart the shared POS; passed manually 02/11 on 1.1.86)',
-      ),
-    );
+    // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+    // it(
+    //   title(
+    //     'TC-VP4809-09: the choice survives a reload / app restart — PENDING (attach mode cannot restart the shared POS; passed manually 02/11 on 1.1.86)',
+    //   ),
+    // );
 
     it(
       title(
@@ -280,11 +281,12 @@ describe('VP-4809 — Font Size + Print All Staff Income', () => {
       },
     );
 
-    it(
-      title(
-        'TC-VP4809-11: a merchant without the setting defaults to Medium — PENDING (needs a merchant with no merchant_theme_pos_style row; the DEV shop already has one)',
-      ),
-    );
+    // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+    // it(
+    //   title(
+    //     'TC-VP4809-11: a merchant without the setting defaults to Medium — PENDING (needs a merchant with no merchant_theme_pos_style row; the DEV shop already has one)',
+    //   ),
+    // );
 
     it(
       title(
@@ -314,12 +316,12 @@ describe('VP-4809 — Font Size + Print All Staff Income', () => {
 
   describe('2. Font Size — Portal', () => {
     // TC-VP4809-13 runs on the Portal web lane: tests/web/portal-vp-4809-font-size.spec.ts (npm run portal:vp-4809).
-
-    it(
-      title(
-        'TC-VP4809-14: a Portal change reaches POS after sync without a restart — PENDING (cross-surface: Portal change + POS check in one run; Portal lane is ready (`.portal-profile`), POS side not wired)',
-      ),
-    );
+    // [TẮT 2026-11-08] Test chưa hoàn thiện (PENDING — chỉ có tiêu đề) — mở lại (bỏ comment) khi tính năng hoàn thiện.
+    // it(
+    //   title(
+    //     'TC-VP4809-14: a Portal change reaches POS after sync without a restart — PENDING (cross-surface: Portal change + POS check in one run; Portal lane is ready (`.portal-profile`), POS side not wired)',
+    //   ),
+    // );
   });
 
   /* ------------------------------------------------------------------ *
