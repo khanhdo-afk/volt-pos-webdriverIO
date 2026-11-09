@@ -21,10 +21,11 @@ const ITEMS: [keyof PreflightStatus['stores'][number]['sites'] | 'terminal', str
 const ICON: Record<string, string> = { ok: '✓', login: '!', closed: '○', nocreds: '✕', down: '✕', unknown: '?' };
 
 /**
- * "Chạy tất cả" gate: per store under test, GoCheckin / GAP Checkin / Portal
- * open + signed in and the card terminal connected (dashboard/server/preflight.mjs).
- * Pressing Run on every spec runs the same check (and opens / signs in what is
- * missing) before it starts; this bar shows the state and does it on demand.
+ * Run gate (Staging and Production): per store under test, GoCheckin / GAP
+ * Checkin / Portal open + signed in and its Volt POS app open; the card terminal
+ * must also be connected for "Chạy tất cả" (dashboard/server/preflight.mjs).
+ * Every Run runs the same check (and opens / signs in what is missing) before it
+ * starts; this bar shows the state and does it on demand.
  */
 export function PreflightBar({ env, storesKey, disabled, pushed }: Props): JSX.Element | null {
   const [status, setStatus] = useState<PreflightStatus | null>(null);
@@ -64,14 +65,17 @@ export function PreflightBar({ env, storesKey, disabled, pushed }: Props): JSX.E
     if (pushed) setStatus(pushed);
   }, [pushed]);
 
-  if (env !== 'dev') return null;
-
   const ok = !!status?.ok;
   return (
-    <section className={`preflight ${ok ? 'ok' : 'bad'}`} aria-label="Điều kiện Chạy tất cả">
+    <section className={`preflight ${ok ? 'ok' : 'bad'}`} aria-label="Điều kiện trước khi chạy">
       <div className="pf-head">
-        <b>{ok ? '✓ Đủ điều kiện "Chạy tất cả"' : '⛔ "Chạy tất cả" cần đủ:'}</b>
-        <span className="muted small">GoCheckin · GAP Checkin · Portal đã mở + đăng nhập, Terminal đã kết nối</span>
+        <b>
+          {ok ? '✓ Sẵn sàng chạy' : '⛔ Mỗi lần Chạy sẽ mở & kiểm tra:'} ({env === 'prod' ? 'Production' : 'Staging'})
+        </b>
+        <span className="muted small">
+          GoCheckin · GAP Checkin · Portal đã mở + đăng nhập, app Volt POS đang mở (Terminal bắt buộc kết nối khi
+          &quot;Chạy tất cả&quot;)
+        </span>
       </div>
       <div className="pf-stores">
         {(status?.stores ?? []).map((s) => (

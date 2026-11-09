@@ -32,6 +32,7 @@ const FEATURE_NAMES = {
   smoke: 'Kiểm tra nhanh toàn app (Smoke) — chỉ xem',
   _recovery: 'Khôi phục app (Recovery)',
   web: 'Web GoPOS / GoCheckin (tạo lịch hẹn, check-in)',
+  'web/portal': 'Portal — Store Settings (chạy trên Portal + kiểm tra app POS từng tiệm)',
   'regression/app': 'Tải lại app (Reload)',
   'regression/appointment': 'Lịch hẹn (Appointment)',
   'regression/checkout': 'Thanh toán tiền mặt (Checkout)',
@@ -169,7 +170,9 @@ export function buildCatalog(repoRoot) {
   for (const full of files.sort()) {
     const rel = path.relative(repoRoot, full).replace(/\\/g, '/');
     const insideTests = path.relative(testsDir, path.dirname(full)).replace(/\\/g, '/');
-    const key = insideTests || 'root';
+    // Portal specs run their own way (Edge on the Portal, once per store — runner.mjs
+    // startPortalRun), so they get their own feature instead of sitting under "Web".
+    const key = insideTests === 'web' && path.basename(full).startsWith('portal-') ? 'web/portal' : insideTests || 'root';
     let parsed;
     try {
       parsed = parseSpec(readFileSync(full, 'utf8'));
@@ -189,6 +192,6 @@ export function buildCatalog(repoRoot) {
 
   // Smoke first, then regression features, then the rest — the order people reach for.
   const rank = (k) =>
-    k === 'smoke' ? 0 : k.startsWith('regression/volt-qc') ? 2 : k.startsWith('regression') ? 1 : 3;
+    k === 'smoke' ? 0 : k.startsWith('regression/volt-qc') ? 2 : k.startsWith('regression') ? 1 : k === 'web/portal' ? 3 : 4;
   return [...features.values()].sort((a, b) => rank(a.key) - rank(b.key) || a.name.localeCompare(b.name));
 }

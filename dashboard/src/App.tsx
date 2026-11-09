@@ -78,7 +78,7 @@ export function App(): JSX.Element {
   const [failedOnly, setFailedOnly] = useState(false);
   const [notifyPrefs, setNotifyPrefs] = usePersisted<NotifyPrefs>('gui-notify', DEFAULT_NOTIFY);
   const [startError, setStartError] = useState<string | null>(null);
-  /** Gate result pushed back by a refused "Chạy tất cả" (PreflightBar shows it). */
+  /** Gate result pushed back by a refused Run (PreflightBar shows it). */
   const [pushedPf, setPushedPf] = useState<PreflightStatus | null>(null);
   const [now, setNow] = useState(Date.now());
   const [, toggleTheme] = useThemeToggle();
@@ -193,7 +193,7 @@ export function App(): JSX.Element {
     const err = await runner.start({ env, ...req });
     if (err) {
       setStartError(err);
-      if (req.all) void fetchPreflight(env).then(setPushedPf).catch(() => undefined);
+      void fetchPreflight(env).then(setPushedPf).catch(() => undefined);
     } else setTab('results');
   };
 

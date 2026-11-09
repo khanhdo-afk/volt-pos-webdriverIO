@@ -70,6 +70,9 @@ async function settledWarm() {
 
 /** Preflight for a run that opens with `firstMode`; false = stop. Skipped when the warm already ran it. */
 function preflightFirst(warm, firstMode) {
+  // Portal phases drive Edge on the Portal (wdio.web.conf.ts), not the app: the app
+  // preflight would `app:kill` the very POS they read over CDP (TC "Portal → POS").
+  if (firstMode === 'portal') return true;
   const warmReady = warm?.state === 'ready';
   if (firstMode === 'attach' && warmReady && warm.preflightOk) {
     console.log(
@@ -111,6 +114,8 @@ async function runPhases() {
       DASHBOARD_RUN_MODES: runModes,
       // GUI attach workers reset the webviews unless the pre-warm left them fresh.
       ...(phase.mode === 'attach' ? { ATTACH_RESET: '1' } : {}),
+      // Per-phase env (portal: which store / Portal merchant / POS CDP ports).
+      ...(phase.env ?? {}),
     });
     // A launch phase after this one starts its own app; an attach-only run leaves
     // the app up, so the next Run attaches to it again (warm.mjs reloads it first).

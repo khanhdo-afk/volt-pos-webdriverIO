@@ -56,7 +56,7 @@ import { fileURLToPath } from 'node:url';
 import { fastGrep, laneClass, needsLaunch, planFast, planLanes, specSourceWithKits } from './fast-plan.mjs';
 import { buildCatalog } from './catalog.mjs';
 import { createWarm } from './warm.mjs';
-import { createApps, normEnv } from './apps.mjs';
+import { createApps, normEnv, PROFILES } from './apps.mjs';
 import { createPreflight } from './preflight.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -613,13 +613,26 @@ function isFullRun(body) {
  */
 async function startRunGated(body) {
   const env = normEnv(body.env);
-  if (env === 'dev' && isFullRun(body) && !body.skipPreflight) {
+  // Every Run (Staging and Production) first opens + checks each picked store's
+  // GoCheckin, GAP Checkin and Portal and its Volt POS app. The card terminal must
+  // also be CONNECTED only for "Chạy tất cả" (card specs are in it); on a smaller run
+  // a disconnected terminal is shown but does not block.
+  if (!body.skipPreflight) {
     if (current && current.exitCode === null) return { ok: false, error: 'Đang có một lần chạy khác.' };
+    const full = isFullRun(body);
     const pf = await preflight.check(env, { open: true, stores: preflight.runStores(env, body.apps ?? {}) });
-    if (!pf.ok) {
+    const blocking = pf.stores.flatMap((s) =>
+      [...Object.values(s.sites), s.terminal]
+        .filter((x) => x.state !== 'ok' && (full || x !== s.terminal || x.state !== 'down'))
+        .map((x) => `Tiệm ${s.store}: ${x.detail}`),
+    );
+    if (blocking.length) {
       return {
         ok: false,
-        error: ['Chưa đủ điều kiện "Chạy tất cả":', ...pf.problems.map((p) => `• ${p}`)].join('\n'),
+        error: [
+          `Chưa đủ điều kiện ${full ? '"Chạy tất cả"' : 'để chạy'} (${env === 'prod' ? 'Production' : 'Staging'}):`,
+          ...blocking.map((p) => `• ${p}`),
+        ].join('\n'),
         preflight: pf,
       };
     }
@@ -644,6 +657,19 @@ function startRun(body) {
     };
   }
   const grep = buildGrep({ tags: body.tags ?? [], titles: body.titles ?? [] });
+
+  // Portal specs drive the Fastboy Portal in Edge (web config), not the app lanes.
+  const portalSpecs = specs.filter(isPortalSpec);
+  if (portalSpecs.length) {
+    if (portalSpecs.length !== specs.length) {
+      return {
+        ok: false,
+        error:
+          'Spec Portal (tests/web/portal-*) chạy riêng với spec app: bỏ tick một trong hai nhóm rồi bấm Chạy lại.',
+      };
+    }
+    return startPortalRun(body, env, specs, grep);
+  }
 
   // Which apps (apps.mjs). One test / one file runs on App 1 only.
   const appOverride =
@@ -849,6 +875,125 @@ function startRun(body) {
         FREEZE_SCRIPT,
         FREEZE_STATE,
       },
+    });
+    child.on('error', (err) => logCrash('run-job spawn', err));
+    child.unref();
+    current.pid = child.pid ?? null;
+  } finally {
+    closeSync(out);
+  }
+  saveRunState();
+  return { ok: true };
+}
+
+/* ── Portal runs (tests/web/portal-*) ───────────────────────────────────── */
+
+const isPortalSpec = (p) => /^tests\/web\/portal-[^/]+\.spec\.ts$/.test(p);
+
+/** Store → its Portal account (configs/web-accounts.json: url, merchantId, cdpPort). */
+function portalAccount(env, store) {
+  try {
+    const all = JSON.parse(readFileSync(path.join(REPO_ROOT, 'configs', 'web-accounts.json'), 'utf8'));
+    return (Array.isArray(all[env]) ? all[env] : []).find((s) => s.id === store)?.portal ?? null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Every DevTools port a Volt POS of `store` may be on: its instances' ports
+ * (apps.mjs), plus 9223 for the installed app — on this machine TeamViewer can
+ * hold 9222, so the installed POS is launched with REMOTE_DEBUG_PORT=9223. The
+ * spec keeps only a POS signed in to `store` (tests/web/vp-5723.helpers.ts findPos).
+ */
+function posCdpCandidates(env, store) {
+  const ns = PROFILES[env]?.stores.find((x) => x.id === store)?.instances ?? [];
+  const ports = ns.map((n) => Number(apps.instanceEnv(n).REMOTE_DEBUG_PORT));
+  if (ns.includes(0)) ports.push(9223);
+  return [...new Set(ports)].map((p) => `http://127.0.0.1:${p}`).join(',');
+}
+
+/**
+ * One phase per store picked in the App bar: the spec ATTACHES to that store's
+ * Portal window, which the run gate (preflight) opened and checked signed in,
+ * and reads that store's POS over CDP. Phases run one after the other.
+ */
+function startPortalRun(body, env, specs, grep) {
+  const stores = preflight.runStores(env, body.apps ?? {});
+  const missing = stores.filter((st) => !portalAccount(env, st)?.cdpPort);
+  if (missing.length) {
+    return {
+      ok: false,
+      error: `Thiếu cấu hình Portal cho tiệm ${missing.join(', ')} trong configs/web-accounts.json (${env}).`,
+    };
+  }
+  mkdirSync(TMP, { recursive: true });
+  mkdirSync(path.dirname(LIVE_FILE), { recursive: true });
+  archiveLastRun();
+  pruneEvidence();
+  writeFileSync(LIVE_FILE, '');
+  const retries = Number.isInteger(body.retries) && body.retries > 0 ? body.retries : 0;
+  const conf = path.join(TMP, 'wdio.gui.portal.conf.ts');
+  writeGuiConf(conf, 'configs/wdio/wdio.web.conf.ts', specs, grep, retries);
+  const phases = stores.map((store) => {
+    const acc = portalAccount(env, store);
+    return {
+      name: `portal tiệm ${store}`,
+      mode: 'portal',
+      conf,
+      files: specs.length,
+      env: {
+        PORTAL_PROFILE: '1',
+        PORTAL_URL: acc.url,
+        PORTAL_MERCHANT_ID: store,
+        PORTAL_DEBUGGER_ADDRESS: `127.0.0.1:${acc.cdpPort}`,
+        POS_CDP_CANDIDATES: posCdpCandidates(env, store),
+        SPEC_RETRIES: String(retries),
+      },
+    };
+  });
+  writeFileSync(PLAN_FILE, JSON.stringify({ phases, warmFile: WARM_FILE }, null, 2));
+
+  const files = getCatalog()
+    .flatMap((f) => f.files)
+    .filter((f) => specs.includes(f.path));
+  const tags = body.tags ?? [];
+  const perStore = files.reduce((n, f) => {
+    if (body.titles?.length) return n + f.tests.filter((t) => body.titles.includes(t.title)).length;
+    if (!tags.length) return n + f.tests.length;
+    return n + f.tests.filter((t) => t.tags.some((g) => tags.includes(g))).length;
+  }, 0);
+  const cmd = `node "${FAST_RUN}" "${PLAN_FILE}"`;
+  current = freshRunState({
+    id: new Date().toISOString(),
+    env,
+    label: body.label ?? `Portal ${specs.length} spec × ${stores.length} tiệm`,
+    specs,
+    grep,
+    pid: null,
+    startedAt: new Date().toISOString(),
+    finishedAt: null,
+    exitCode: null,
+    planned: perStore * stores.length,
+    estimateMs: estimate(specs) * stores.length,
+  });
+  writeFileSync(
+    RUN_LOG,
+    `$ ENV=${env} ${cmd}\n# Portal: ${specs.length} spec${grep ? `, grep ${grep}` : ''} · ` +
+      phases
+        .map((p) => `${p.name} (Portal :${p.env.PORTAL_DEBUGGER_ADDRESS.split(':')[1]}, POS ${p.env.POS_CDP_CANDIDATES})`)
+        .join(' → ') +
+      '\n',
+  );
+  saveRunState();
+  const out = openSync(RUN_LOG, 'a');
+  try {
+    const child = spawn(process.execPath, [RUN_JOB, RUN_STATE, cmd], {
+      cwd: REPO_ROOT,
+      detached: true,
+      windowsHide: true,
+      stdio: ['ignore', out, out],
+      env: { ...process.env, ENV: env, GUI_LIVE_FILE: LIVE_FILE, FORCE_COLOR: '0', FREEZE_SCRIPT, FREEZE_STATE },
     });
     child.on('error', (err) => logCrash('run-job spawn', err));
     child.unref();
@@ -1160,7 +1305,7 @@ warm = createWarm({
   isRunning: () => !!current && current.exitCode === null,
   logCrash,
 });
-preflight = createPreflight({ repoRoot: REPO_ROOT, apps, warm, logCrash });
+preflight = createPreflight({ repoRoot: REPO_ROOT, apps, warm, logCrash, envFileValue });
 adoptLastRun();
 
 // `node server/runner.mjs` → listen right away; importing (desktop.mjs) leaves it to the caller.

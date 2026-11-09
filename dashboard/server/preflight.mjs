@@ -161,7 +161,15 @@ async function loginGoCheckin(s, acc) {
     const id = await until(() => input(/(^|[^a-z])id([^a-z]|$)|merchant/) || input(/user/), 10000);
     if (!id || input(/user/)) return false;
     setVal(id, ${JSON.stringify(acc.merchantId)}); return true; })()`);
-  if (idOnly) await s.clickButton('^log ?in$');
+  if (idOnly) {
+    // The first Log In right after the page opens is sometimes swallowed (the SPA is
+    // still settling): click again until the username step shows (09/11).
+    for (let attempt = 0; attempt < 3; attempt++) {
+      await s.clickButton('^log ?in$');
+      const next = await s.ev(`(async () => { ${PAGE_HELPERS} return !!(await until(() => input(/user/), 6000)); })()`, 10_000);
+      if (next) break;
+    }
+  }
   const filled = await s.ev(`(async () => { ${PAGE_HELPERS}
     const user = await until(() => input(/user/), 15000); if (!user) return 'no username field';
     setVal(user, ${JSON.stringify(acc.username)});
@@ -214,7 +222,7 @@ const READ_DEVICES = `(async () => {
 
 /* ── The module ─────────────────────────────────────────────────────────── */
 
-export function createPreflight({ repoRoot, apps, warm, logCrash }) {
+export function createPreflight({ repoRoot, apps, warm, logCrash, envFileValue }) {
   const ACCOUNTS_FILE = path.join(repoRoot, 'configs', 'web-accounts.json');
   /** env → store → { sites: {site: {...}}, terminal: {...}, checkedAt } */
   const cache = {};
@@ -223,7 +231,20 @@ export function createPreflight({ repoRoot, apps, warm, logCrash }) {
   function accounts(env) {
     try {
       const all = JSON.parse(readFileSync(ACCOUNTS_FILE, 'utf8'));
-      return Array.isArray(all[env]) ? all[env] : [];
+      const list = Array.isArray(all[env]) ? all[env] : [];
+      // Store 14 on Staging keeps working from configs/env/.env.dev when its JSON
+      // entry is blank — the same fallback as scripts/web-open.ts.
+      return list.map((store) => {
+        if (env !== 'dev' || store.id !== '14' || !envFileValue) return store;
+        const fill = (site) =>
+          site && {
+            ...site,
+            merchantId: site.merchantId || envFileValue('dev', 'WEB_MERCHANT_ID'),
+            username: site.username || envFileValue('dev', 'WEB_USERNAME'),
+            password: site.password || envFileValue('dev', 'WEB_PASSWORD'),
+          };
+        return { ...store, gocheckin: fill(store.gocheckin), gap: fill(store.gap) };
+      });
     } catch (err) {
       logCrash('preflight accounts', err);
       return [];
@@ -367,12 +388,18 @@ export function createPreflight({ repoRoot, apps, warm, logCrash }) {
     let page = null;
     let slot = null;
     for (const s of slots) {
-      const p = await appPage(Number(apps.instanceEnv(s.n).REMOTE_DEBUG_PORT));
-      if (p) {
-        page = p;
-        slot = s;
-        break;
+      // The installed app (instance 0) may sit on 9223: TeamViewer can hold 9222 on
+      // this machine, so it is then launched with REMOTE_DEBUG_PORT=9223.
+      const ports = s.n === 0 ? [9222, 9223] : [Number(apps.instanceEnv(s.n).REMOTE_DEBUG_PORT)];
+      for (const port of ports) {
+        const p = await appPage(port);
+        if (p) {
+          page = p;
+          slot = { ...s, port };
+          break;
+        }
       }
+      if (page) break;
     }
     // The installed app (instance 0) can be booted by the pre-warm.
     if (!page && wake && slots.some((s) => s.n === 0) && warm) {
@@ -396,7 +423,7 @@ export function createPreflight({ repoRoot, apps, warm, logCrash }) {
       // The app may still be rendering (just booted / reloaded): retry a few times.
       let r = null;
       for (let attempt = 0; attempt < 4; attempt++) {
-        const live = (await appPage(Number(apps.instanceEnv(slot?.n ?? 0).REMOTE_DEBUG_PORT))) ?? page;
+        const live = (await appPage(slot?.port ?? Number(apps.instanceEnv(slot?.n ?? 0).REMOTE_DEBUG_PORT))) ?? page;
         r = await evaluate(live.webSocketDebuggerUrl, READ_DEVICES, 15_000).catch((e) => ({ error: String(e.message || e) }));
         if (!r?.error) break;
         await sleep(3_000);
@@ -447,7 +474,9 @@ export function createPreflight({ repoRoot, apps, warm, logCrash }) {
               } else await sleep(3_000);
               st = await siteState(env, id, site, a);
               // After Login the page navigates: give it up to 25 s to land signed in.
-              for (let t = 0; t < 25 && st.state === 'login' && site !== 'portal'; t++) {
+              // The Portal is never typed into, but a just-opened window reads as
+              // "login" until the SPA has rendered: give it 20 s too.
+              for (let t = 0; t < (site === 'portal' ? 20 : 25) && st.state === 'login'; t++) {
                 await sleep(1_000);
                 st = await siteState(env, id, site, a);
               }

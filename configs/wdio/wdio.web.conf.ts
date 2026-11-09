@@ -14,6 +14,14 @@ const env = loadEnv();
 const PORTAL_PROFILE = process.env.PORTAL_PROFILE === '1' ? path.join(Paths.ROOT, '.portal-profile') : '';
 
 /**
+ * GUI runner Portal runs (dashboard/server/runner.mjs): the run gate already opened
+ * and signed in this store's Portal in its own Edge window (DevTools on the
+ * store's `cdpPort`, configs/web-accounts.json). Edge cannot open one profile
+ * twice, so the spec ATTACHES to that window instead of launching Edge.
+ */
+const PORTAL_DEBUGGER_ADDRESS = process.env.PORTAL_DEBUGGER_ADDRESS?.trim() ?? '';
+
+/**
  * WEB lane — drive the GoPOS web POS in a real browser.
  *
  * ## Why this is its own config
@@ -47,13 +55,15 @@ export const config: WebdriverIO.Config = {
   capabilities: [
     {
       browserName: 'MicrosoftEdge',
-      'ms:edgeOptions': {
-        args: [
-          '--disable-popup-blocking',
-          '--start-maximized',
-          ...(PORTAL_PROFILE ? [`--user-data-dir=${PORTAL_PROFILE}`] : []),
-        ],
-      },
+      'ms:edgeOptions': PORTAL_DEBUGGER_ADDRESS
+        ? { debuggerAddress: PORTAL_DEBUGGER_ADDRESS }
+        : {
+            args: [
+              '--disable-popup-blocking',
+              '--start-maximized',
+              ...(PORTAL_PROFILE ? [`--user-data-dir=${PORTAL_PROFILE}`] : []),
+            ],
+          },
     },
   ],
 
