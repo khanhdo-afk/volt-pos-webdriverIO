@@ -1,6 +1,113 @@
 {
-  "updatedAt": "2026-11-09T08:06:08.032Z",
+  "updatedAt": "2026-11-09T09:00:29.359Z",
   "runs": [
+    {
+      "runId": "2026-11-09T08-56-57-365Z",
+      "startedAt": "2026-11-09T08:56:57.365Z",
+      "finishedAt": "2026-11-09T09:00:29.359Z",
+      "durationMs": 211994,
+      "env": {
+        "name": "dev",
+        "mode": "launch",
+        "merchant": "14",
+        "app": "volt-pos.exe",
+        "upstream": "https://volt-pos.v2.dev-fastboypay.com"
+      },
+      "totals": {
+        "tests": 4,
+        "passed": 0,
+        "failed": 3,
+        "skipped": 1,
+        "passRate": 0
+      },
+      "passed": false,
+      "specs": [
+        {
+          "cid": "0-0",
+          "file": "file:///D:/2.POS/e2e_volt_pos_webdriverIO/tests/regression/volt-qc/oh-reopen/reopen-core.spec.ts",
+          "specName": "reopen-core",
+          "startedAt": "2026-11-09T08:58:40.030Z",
+          "finishedAt": "2026-11-09T08:58:43.668Z",
+          "durationMs": 3638,
+          "retry": 1,
+          "suites": [],
+          "totals": {
+            "tests": 0,
+            "passed": 0,
+            "failed": 0,
+            "skipped": 0,
+            "passRate": 100
+          }
+        },
+        {
+          "cid": "0-2",
+          "file": "file:///D:/2.POS/e2e_volt_pos_webdriverIO/tests/regression/volt-qc/oh-reopen/reopen-vq.spec.ts",
+          "specName": "reopen-vq",
+          "startedAt": "2026-11-09T08:57:22.366Z",
+          "finishedAt": "2026-11-09T09:00:24.638Z",
+          "durationMs": 182272,
+          "retry": 1,
+          "suites": [
+            {
+              "title": "volt-qc 17 RE-OPEN — fixtures, customers, split, gift card, reports (write)",
+              "tests": [
+                {
+                  "title": "Add a service and pay Cash: the difference is base × (1 + tax), no service fee (RO-010) @regression @write",
+                  "fullTitle": "volt-qc 17 RE-OPEN — fixtures, customers, split, gift card, reports (write).Add a service and pay Cash: the difference is base × (1 + tax), no service fee (RO-010) @regression @write",
+                  "state": "failed",
+                  "durationMs": 53925,
+                  "retries": 0,
+                  "error": "WebDriverError: element click intercepted: Element <button data-slot=\"button\" data-variant=\"default\" class=\"inline-flex cursor-pointer items-center justify-center rounded px-4 text-base whitespace-nowrap outline-none transition-opacity active:opacity-80 disabled:pointer-events-none disabled:bg-button-disabled disabled:text-button-disabled-foreground disabled:stroke-button-disabled-foreground aria-invalid:border-destructive [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 [&amp;_svg:not([class*='size-'])]:size-4 text-primary-foreground h-14 gap-1.5 has-[&gt;svg]:px-2.5 flex-1 bg-green font-bold\" data-testid=\"cart-pay\" data-pack-part=\"ticket.pay\" data-vqc-hit=\"t17\">...</button> is not clickable at point (991, 1036). Other element would receive the click: <div data-state=\"open\" data-slot=\"dialog-overlay\" class=\"fixed inset-0 z-50 bg-overlay data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0\" data-aria-hidden=\"true\" aria-hidden=\"true\" style=\"pointer-events: auto;\"></div>",
+                  "message": "WebDriverError: element click intercepted: Element <button data-slot=\"button\" data-variant=\"default\" class=\"inline-flex cursor-pointer items-center justify-center rounded px-4 text-base whitespace-nowrap outline-none transition-opacity active:opacity-80 disabled:pointer-events-none disabled:bg-button-disabled disabled:text-button-disabled-foreground disabled:stroke-button-disabled-foreground aria-invalid:border-destructive [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 [&amp;_svg:not([class*='size-'])]:size-4 text-primary-foreground h-14 gap-1.5 has-[&gt;svg]:px-2.5 flex-1 bg-green font-bold\" data-testid=\"cart-pay\" data-pack-part=\"ticket.pay\" data-vqc-hit=\"t17\">...</button> is not clickable at point (991, 1036). Other element would receive the click: <div data-state=\"open\" data-slot=\"dialog-overlay\" class=\"fixed inset-0 z-50 bg-overlay data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0\" data-aria-hidden=\"true\" aria-hidden=\"true\" style=\"pointer-events: auto;\"></div>\n  (Session info: MicrosoftEdge=157.0.4341.42) when running \"element/f.B289E0A7DD1866336F32270F021F4D1F.d.26795F42D8AB1B5E019FBEC3F4CD67F7.e.1722/click\" with method \"POST\"",
+                  "stack": "element click intercepted: WebDriverError: element click intercepted: Element <button data-slot=\"button\" data-variant=\"default\" class=\"inline-flex cursor-pointer items-center justify-center rounded px-4 text-base whitespace-nowrap outline-none transition-opacity active:opacity-80 disabled:pointer-events-none disabled:bg-button-disabled disabled:text-button-disabled-foreground disabled:stroke-button-disabled-foreground aria-invalid:border-destructive [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 [&amp;_svg:not([class*='size-'])]:size-4 text-primary-foreground h-14 gap-1.5 has-[&gt;svg]:px-2.5 flex-1 bg-green font-bold\" data-testid=\"cart-pay\" data-pack-part=\"ticket.pay\" data-vqc-hit=\"t17\">...</button> is not clickable at point (991, 1036). Other element would receive the click: <div data-state=\"open\" data-slot=\"dialog-overlay\" class=\"fixed inset-0 z-50 bg-overlay data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0\" data-aria-hidden=\"true\" aria-hidden=\"true\" style=\"pointer-events: auto;\"></div>\n  (Session info: MicrosoftEdge=157.0.4341.42) when running \"element/f.B289E0A7DD1866336F32270F021F4D1F.d.26795F42D8AB1B5E019FBEC3F4CD67F7.e.1722/click\" with method \"POST\"\n    at async Element.wrapCommandFn (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\@wdio\\utils\\build\\index.js:1007:23)\n    at async Element.wrapCommandFn (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\@wdio\\utils\\build\\index.js:1007:23)\n    at async Element.elementErrorHandlerCallbackFn (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\webdriverio\\build\\node.js:9963:24)\n    at async Element.wrapCommandFn (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\@wdio\\utils\\build\\index.js:1007:23)\n    at async Element.wrapCommandFn (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\@wdio\\utils\\build\\index.js:1007:23)\n    at async Element.elementErrorHandlerCallbackFn (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\webdriverio\\build\\node.js:9963:24)\n    at async Element.wrapCommandFn (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\@wdio\\utils\\build\\index.js:1007:23)\n    at async VoltQcProbe.clickQ (D:\\2.POS\\e2e_volt_pos_webdriverIO\\src\\pages\\voltqc\\pos\\VoltQcProbe.ts:293:9)",
+                  "evidence": "regression-volt-qc-oh-reopen-reopen-vq__add-a-service-and-pay-cash-the-difference-is-base-1-tax-no-service-fee-ro-010-re__2026-11-09T08-58-20-061Z"
+                },
+                {
+                  "title": "Order with a gift-card top-up line, add a service: Cash / Other = base × (1 + tax) with no stray cent; the gift-card line is read-only (RO-013, RO-032, RO-408) @regression @write",
+                  "fullTitle": "volt-qc 17 RE-OPEN — fixtures, customers, split, gift card, reports (write).Order with a gift-card top-up line, add a service: Cash / Other = base × (1 + tax) with no stray cent; the gift-card line is read-only (RO-013, RO-032, RO-408) @regression @write",
+                  "state": "failed",
+                  "durationMs": 5748,
+                  "retries": 0,
+                  "error": "WebDriverError: invalid session id when running \"execute/sync\" with method \"POST\"",
+                  "message": "WebDriverError: invalid session id when running \"execute/sync\" with method \"POST\"",
+                  "stack": "invalid session id: WebDriverError: invalid session id when running \"execute/sync\" with method \"POST\"\n    at async Browser.wrapCommandFn (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\@wdio\\utils\\build\\index.js:1007:23)\n    at async Browser.wrapCommandFn (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\@wdio\\utils\\build\\index.js:1007:23)\n    at async VoltQcProbe.textOf (D:\\2.POS\\e2e_volt_pos_webdriverIO\\src\\pages\\voltqc\\pos\\VoltQcProbe.ts:224:13)\n    at async VqApp.basePrice (D:\\2.POS\\e2e_volt_pos_webdriverIO\\src\\pages\\voltqc\\promo-split\\vqApp.ts:499:35)\n    at async Context.<anonymous> (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\volt-qc\\oh-reopen\\reopen-vq.spec.ts:196:18)\n    at async Context.executeAsync (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\@wdio\\utils\\build\\index.js:1133:20)\n    at async Context.testFrameworkFnWrapper (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\@wdio\\utils\\build\\index.js:1214:14)",
+                  "evidence": "regression-volt-qc-oh-reopen-reopen-vq__order-with-a-gift-card-top-up-line-add-a-service-cash-other-base-1-tax-with-no-s__2026-11-09T08-58-38-729Z"
+                },
+                {
+                  "title": "Add a taxable Product in reopen: Card carries product tax; a higher total with lower tax is still charged (RO-014, RO-086) @regression @write",
+                  "fullTitle": "volt-qc 17 RE-OPEN — fixtures, customers, split, gift card, reports (write).Add a taxable Product in reopen: Card carries product tax; a higher total with lower tax is still charged (RO-014, RO-086) @regression @write",
+                  "state": "skipped",
+                  "durationMs": 0,
+                  "retries": 0,
+                  "skip": {
+                    "kind": "hook-failed",
+                    "text": "Không chạy vì hook \"\"before each\" hook: beforeEach for \"Add a taxable Product in reopen: Card carries product tax; a higher total with lower tax is still charged (RO-014, RO-086) @regression @write\"\" lỗi trước đó: switch to the main window failed after 3 attempt(s). Last error: WebDriverError: invalid session id when running \"window/handles\" with method \"GET\""
+                  }
+                },
+                {
+                  "title": "\"before each\" hook: beforeEach for \"Add a taxable Product in reopen: Card carries product tax; a higher total with lower tax is still charged (RO-014, RO-086) @regression @write\"",
+                  "fullTitle": "\"before each\" hook: beforeEach for \"Add a taxable Product in reopen: Card carries product tax; a higher total with lower tax is still charged (RO-014, RO-086) @regression @write\"",
+                  "state": "failed",
+                  "durationMs": 1111,
+                  "retries": 0,
+                  "error": "switch to the main window failed after 3 attempt(s). Last error: WebDriverError: invalid session id when running \"window/handles\" with method \"GET\"",
+                  "message": "switch to the main window failed after 3 attempt(s). Last error: WebDriverError: invalid session id when running \"window/handles\" with method \"GET\"",
+                  "stack": "Error: switch to the main window failed after 3 attempt(s). Last error: WebDriverError: invalid session id when running \"window/handles\" with method \"GET\"\n    at retry (D:\\2.POS\\e2e_volt_pos_webdriverIO\\src\\helpers\\wait.ts:90:9)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async switchToMain (D:\\2.POS\\e2e_volt_pos_webdriverIO\\src\\helpers\\window.ts:160:3)\n    at async Context.beforeEach (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\setup\\rootHooks.ts:258:5)"
+                }
+              ],
+              "suites": []
+            }
+          ],
+          "totals": {
+            "tests": 4,
+            "passed": 0,
+            "failed": 3,
+            "skipped": 1,
+            "passRate": 0
+          }
+        }
+      ]
+    },
     {
       "runId": "2026-11-09T08-02-21-214Z",
       "startedAt": "2026-11-09T08:02:21.214Z",
@@ -8080,46 +8187,6 @@
             "failed": 4,
             "skipped": 3,
             "passRate": 60
-          }
-        }
-      ]
-    },
-    {
-      "runId": "2026-11-05T04-08-07-869Z",
-      "startedAt": "2026-11-05T04:08:07.869Z",
-      "finishedAt": "2026-11-05T04:08:12.506Z",
-      "durationMs": 4637,
-      "env": {
-        "name": "dev",
-        "mode": "attach",
-        "merchant": "14",
-        "app": "volt-pos.exe",
-        "upstream": "https://volt-pos.v2.dev-fastboypay.com"
-      },
-      "totals": {
-        "tests": 0,
-        "passed": 0,
-        "failed": 0,
-        "skipped": 0,
-        "passRate": 100
-      },
-      "passed": true,
-      "specs": [
-        {
-          "cid": "0-0",
-          "file": "file:///D:/2.POS/e2e_volt_pos_webdriverIO/tests/regression/customer-display/vp-5195-phone-reject.spec.ts",
-          "specName": "vp-5195-phone-reject",
-          "startedAt": "2026-11-05T04:08:09.750Z",
-          "finishedAt": "2026-11-05T04:08:12.095Z",
-          "durationMs": 2345,
-          "retry": 1,
-          "suites": [],
-          "totals": {
-            "tests": 0,
-            "passed": 0,
-            "failed": 0,
-            "skipped": 0,
-            "passRate": 100
           }
         }
       ]
