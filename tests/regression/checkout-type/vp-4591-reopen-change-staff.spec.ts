@@ -29,6 +29,7 @@
  */
 
 import { mkdirSync } from 'node:fs';
+import { describeReopen } from '../../../src/helpers/reopenGate.js';
 import { join } from 'node:path';
 import { browser, expect } from '@wdio/globals';
 import { assertWritesAllowed } from '../../../configs/env/loadEnv.js';
@@ -197,8 +198,8 @@ interface ManualRun {
   staff: [string, string];
 }
 
-// PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bỏ .skip để chạy lại.
-describe.skip('Checkout Type — Re-Open change staff (VP-4591)', () => {
+// PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bật lại bằng RUN_REOPEN=1 (npm run test:reopen).
+describeReopen('Checkout Type — Re-Open change staff (VP-4591)', () => {
   let orderId = '';
 
   before(() => {
@@ -273,8 +274,8 @@ describe.skip('Checkout Type — Re-Open change staff (VP-4591)', () => {
   );
 });
 
-// PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bỏ .skip để chạy lại.
-describe.skip('Checkout Type — Re-Open locks, change staff with tip, resume (VP-4591, manual 03/11)', () => {
+// PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bật lại bằng RUN_REOPEN=1 (npm run test:reopen).
+describeReopen('Checkout Type — Re-Open locks, change staff with tip, resume (VP-4591, manual 03/11)', () => {
   const TIP_CENTS = 2_000;
   let run: ManualRun | null = null;
   let reopened = false;

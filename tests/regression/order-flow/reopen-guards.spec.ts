@@ -22,14 +22,15 @@
  */
 
 import { expect } from '@wdio/globals';
+import { describeReopen } from '../../../src/helpers/reopenGate.js';
 import { Timeouts } from '../../../configs/constants/timeouts.js';
 import { returnToHome } from '../../../src/flows/index.js';
 import { homePage, orderHistoryDetailPage } from '../../../src/pages/index.js';
 import { Tag, title } from '../../../src/types/testTags.js';
 import { createAndSettleCashOrder } from './payment-flows.helpers.js';
 
-// PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bỏ .skip để chạy lại.
-describe.skip('Payment flows — Reopen Order', () => {
+// PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bật lại bằng RUN_REOPEN=1 (npm run test:reopen).
+describeReopen('Payment flows — Reopen Order', () => {
   before(async function (this: Mocha.Context): Promise<void> {
     this.timeout(Timeouts.MOCHA_HOOK);
     await createAndSettleCashOrder();

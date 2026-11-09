@@ -17,6 +17,7 @@
  */
 
 import { browser, expect } from '@wdio/globals';
+import { describeReopen } from '../../../../src/helpers/reopenGate.js';
 import { Timeouts } from '../../../../configs/constants/timeouts.js';
 import { btn, inMain } from '../../../../src/constants/testids.voltqc-pos.js';
 import {
@@ -96,8 +97,8 @@ async function linesAddUp(): Promise<{ sum: number; subtotal: number }> {
   return { sum: lines.reduce((a, b) => a + b, 0), subtotal: await homePage.cartSubtotal() };
 }
 
-// PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bỏ .skip để chạy lại.
-describe.skip('volt-qc 17 RE-OPEN — cash / other orders (write)', () => {
+// PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bật lại bằng RUN_REOPEN=1 (npm run test:reopen).
+describeReopen('volt-qc 17 RE-OPEN — cash / other orders (write)', () => {
   afterEach(async () => {
     await leaveReopen();
   });

@@ -15,6 +15,7 @@
  */
 
 import { expect } from '@wdio/globals';
+import { itReopen } from '../../../../src/helpers/reopenGate.js';
 import { CdCustomer, CdMain } from '../../../../src/constants/testids.voltqc-cd-e2e.js';
 import { returnToHome } from '../../../../src/flows/index.js';
 import { step } from '../../../../src/helpers/steps.js';
@@ -47,8 +48,8 @@ describe('volt-qc 14 E2E — re-open & split', () => {
     await resetTill();
   });
 
-  // PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bỏ .skip để chạy lại.
-  it.skip(
+  // PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bật lại bằng RUN_REOPEN=1 (npm run test:reopen).
+  itReopen(
     title(
       'Re-Open restriction mode: other service/staff tiles do nothing, remove buttons disabled, line editor note-only, no Split / Promo → Re-Open Done adds no transaction (E2E-027)',
       Tag.REGRESSION,
@@ -123,8 +124,8 @@ describe('volt-qc 14 E2E — re-open & split', () => {
     },
   );
 
-  // PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bỏ .skip để chạy lại.
-  it.skip(
+  // PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bật lại bằng RUN_REOPEN=1 (npm run test:reopen).
+  itReopen(
     title(
       'Leave a re-open midway → history shows "Re-open" with only Continue Re-open → Continue → Re-Open Done → Successful - Unsettled, Daily Sale keeps ONE row (E2E-028)',
       Tag.REGRESSION,
@@ -397,8 +398,8 @@ describe('volt-qc 14 E2E — re-open & split', () => {
     },
   );
 
-  // PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bỏ .skip để chạy lại.
-  it.skip(
+  // PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bật lại bằng RUN_REOPEN=1 (npm run test:reopen).
+  itReopen(
     title(
       'Re-open a split order (Cash + $1 tip, Other + $1 tip) with no change → every tender $0.00, no stray cent; history keeps #-1/#-2 and Tip $2.00 (E2E-029)',
       Tag.REGRESSION,

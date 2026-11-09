@@ -9,6 +9,7 @@
  */
 
 import { expect } from '@wdio/globals';
+import { describeReopen } from '../../../../src/helpers/reopenGate.js';
 import { VqcOrderHistory as OH, btn, inMain } from '../../../../src/constants/testids.voltqc-pos.js';
 import { goToOrderHistory, returnToHome } from '../../../../src/flows/index.js';
 import { orderHistoryPage } from '../../../../src/pages/index.js';
@@ -50,8 +51,8 @@ async function openSettled(code: string): Promise<void> {
   expect(status).toContain('Successful - Settled');
 }
 
-// PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bỏ .skip để chạy lại.
-describe.skip('volt-qc 19 RE-OPEN — settled orders (read-only)', () => {
+// PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bật lại bằng RUN_REOPEN=1 (npm run test:reopen).
+describeReopen('volt-qc 19 RE-OPEN — settled orders (read-only)', () => {
   after(async () => {
     await returnToHome().catch(() => undefined);
   });

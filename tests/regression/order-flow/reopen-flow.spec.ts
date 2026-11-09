@@ -28,6 +28,7 @@
  */
 
 import { expect } from '@wdio/globals';
+import { describeReopen } from '../../../src/helpers/reopenGate.js';
 import { Timeouts } from '../../../configs/constants/timeouts.js';
 import { payInCash, returnToHome } from '../../../src/flows/index.js';
 import { checkoutPage, homePage, orderHistoryDetailPage } from '../../../src/pages/index.js';
@@ -47,8 +48,8 @@ import {
   reopenOrder,
 } from './reopen-flow.helpers.js';
 
-// PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bỏ .skip để chạy lại.
-describe.skip('Order flow — Re-open Order lifecycle (VP-2585)', () => {
+// PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bật lại bằng RUN_REOPEN=1 (npm run test:reopen).
+describeReopen('Order flow — Re-open Order lifecycle (VP-2585)', () => {
   let orderId = '';
   let paidCents = 0;
 

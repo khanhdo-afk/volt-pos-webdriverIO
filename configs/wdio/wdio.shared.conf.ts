@@ -62,6 +62,27 @@ export const shared: WebdriverIO.Config = {
     checkoutType: [spec('regression', 'checkout-type', '**', '*.spec.ts')],
     /** Ports of the volt-qc catalogue (docs/qc/volt-qc/). Coverage: `npm run coverage:volt-qc`. */
     voltQc: [spec('regression', 'volt-qc', '**', '*.spec.ts')],
+    /**
+     * Every Re-Open Order case (79-case checklist, docs/screens/reopen/reopen-master-test-cases.md).
+     * Needs RUN_REOPEN=1 so the parked describeReopen / itReopen blocks run: `npm run test:reopen`.
+     */
+    reopen: [
+      spec('regression', 'volt-qc', 'oh-reopen', 'reopen-core.spec.ts'),
+      spec('regression', 'volt-qc', 'oh-reopen', 'reopen-methods.spec.ts'),
+      spec('regression', 'volt-qc', 'oh-reopen', 'reopen-vq.spec.ts'),
+      spec('regression', 'volt-qc', 'pos', 'reopen.spec.ts'),
+      spec('regression', 'volt-qc', 'card-terminal', 'card-reopen.spec.ts'),
+      spec('regression', 'volt-qc', 'cd-e2e', 'e2e-reopen-split.spec.ts'),
+      spec('regression', 'order-flow', 'reopen-flow.spec.ts'),
+      spec('regression', 'order-flow', 'reopen-guards.spec.ts'),
+      spec('regression', 'order-flow', 'reopen.spec.ts'),
+      spec('regression', 'order-flow', 'vp-4912-reopen-split-close-ticket.spec.ts'),
+      spec('regression', 'order-flow', 'vp-5020-reopen-split-no-forced-void.spec.ts'),
+      spec('regression', 'order-flow', 'vp-5297-reopen-split-card-cash-subtotal.spec.ts'),
+      spec('regression', 'checkout-type', 'vp-4591-reopen-change-staff.spec.ts'),
+      spec('regression', 'checkout-type', 'vp-5293-reopen-recomplete-points.spec.ts'),
+      spec('regression', 'reopen', 'reopen-gaps.spec.ts'),
+    ],
   },
 
   /**

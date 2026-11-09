@@ -24,6 +24,7 @@
  */
 
 import { expect } from '@wdio/globals';
+import { describeReopen } from '../../../../src/helpers/reopenGate.js';
 import { Timeouts } from '../../../../configs/constants/timeouts.js';
 import { assertWritesAllowed } from '../../../../configs/env/loadEnv.js';
 import {
@@ -116,8 +117,8 @@ async function chargeDifferenceByCard(ctx: Mocha.Context): Promise<number> {
   return due;
 }
 
-// PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bỏ .skip để chạy lại.
-describe.skip('volt-qc card terminal — re-open with a card on either side', function () {
+// PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bật lại bằng RUN_REOPEN=1 (npm run test:reopen).
+describeReopen('volt-qc card terminal — re-open with a card on either side', function () {
   this.timeout(ONE_CHARGE_MS + 3 * 60_000);
 
   before(() => assertWritesAllowed('take card payments (volt-qc card terminal)'));

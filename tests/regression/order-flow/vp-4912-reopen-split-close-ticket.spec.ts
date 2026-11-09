@@ -18,6 +18,7 @@
  */
 
 import { expect } from '@wdio/globals';
+import { describeReopen } from '../../../src/helpers/reopenGate.js';
 import { assertWritesAllowed } from '../../../configs/env/loadEnv.js';
 import { OhRoText as T } from '../../../src/constants/testids.voltqc-oh-reopen.js';
 import { VqpsCheckout } from '../../../src/constants/testids.voltqc-promo-split.js';
@@ -92,8 +93,8 @@ async function ensureReopenedCheckout(id: string): Promise<void> {
   if (!onCheckout) await reopenToCheckout(id);
 }
 
-// PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bỏ .skip để chạy lại.
-describe.skip('VP-4912 — Re-Open after a split payment: Close Ticket, no forced Void', () => {
+// PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bật lại bằng RUN_REOPEN=1 (npm run test:reopen).
+describeReopen('VP-4912 — Re-Open after a split payment: Close Ticket, no forced Void', () => {
   before(async () => {
     assertWritesAllowed('settle and re-open split orders');
     await returnToHome();

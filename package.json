@@ -82,6 +82,7 @@
     "audit:testids": "tsx scripts/audit-testids.ts",
     "coverage:volt-qc": "tsx scripts/volt-qc-coverage.ts",
     "test:volt-qc": "npm run preflight && cross-env ENV=dev SPEC_RETRIES=0 SKIP_MANUAL=1 wdio run configs/wdio/wdio.dev.conf.ts --suite voltQc",
+    "test:reopen": "npm run preflight && cross-env ENV=dev RUN_REOPEN=1 SPEC_RETRIES=0 wdio run configs/wdio/wdio.dev.conf.ts --suite reopen",
     "report:allure": "allure generate reports/allure-results --clean -o reports/allure-report",
     "report:open": "allure open reports/allure-report",
     "report:serve": "allure serve reports/allure-results",

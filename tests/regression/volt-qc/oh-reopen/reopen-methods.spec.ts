@@ -14,6 +14,7 @@
  */
 
 import { expect } from '@wdio/globals';
+import { describeReopen } from '../../../../src/helpers/reopenGate.js';
 import { Timeouts } from '../../../../configs/constants/timeouts.js';
 import { OhRoDialogs } from '../../../../src/constants/testids.voltqc-oh-reopen.js';
 import { giftCard } from '../../../../src/data/index.js';
@@ -49,8 +50,8 @@ import { Tag, title } from '../../../../src/types/testTags.js';
 const HAS_GIFT_CARD = giftCard.code !== '';
 const INVALID_GC = '000000000000';
 
-// PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bỏ .skip để chạy lại.
-describe.skip('volt-qc 17 RE-OPEN — difference by tender (write)', () => {
+// PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bật lại bằng RUN_REOPEN=1 (npm run test:reopen).
+describeReopen('volt-qc 17 RE-OPEN — difference by tender (write)', () => {
   afterEach(async () => {
     await leaveReopen();
   });
