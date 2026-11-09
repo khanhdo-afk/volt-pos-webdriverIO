@@ -1,6 +1,412 @@
 {
-  "updatedAt": "2026-11-05T09:59:06.394Z",
+  "updatedAt": "2026-11-09T08:06:08.032Z",
   "runs": [
+    {
+      "runId": "2026-11-09T08-02-21-214Z",
+      "startedAt": "2026-11-09T08:02:21.214Z",
+      "finishedAt": "2026-11-09T08:06:08.032Z",
+      "durationMs": 226818,
+      "env": {
+        "name": "dev",
+        "mode": "launch",
+        "merchant": "14",
+        "app": "volt-pos.exe",
+        "upstream": "https://volt-pos.v2.dev-fastboypay.com"
+      },
+      "totals": {
+        "tests": 2,
+        "passed": 2,
+        "failed": 0,
+        "skipped": 0,
+        "passRate": 100
+      },
+      "passed": true,
+      "specs": [
+        {
+          "cid": "0-0",
+          "file": "file:///D:/2.POS/e2e_volt_pos_webdriverIO/tests/regression/sync/vp-4856-stale-echo.spec.ts",
+          "specName": "vp-4856-stale-echo",
+          "startedAt": "2026-11-09T08:02:25.141Z",
+          "finishedAt": "2026-11-09T08:06:03.098Z",
+          "durationMs": 217957,
+          "retry": 2,
+          "suites": [
+            {
+              "title": "VP-4856 — a just-completed order keeps successful / tip / customer through the sync echo",
+              "tests": [],
+              "suites": [
+                {
+                  "title": "1. Card, tip chosen on the customer display (prod scenario)",
+                  "tests": [
+                    {
+                      "title": "TC-VP4856-02: Card → Adjust Tip after complete → new tip lands, row stays successful @regression @write @payment @dual-window",
+                      "fullTitle": "VP-4856 — a just-completed order keeps successful / tip / customer through the sync echo.1. Card, tip chosen on the customer display (prod scenario).TC-VP4856-02: Card → Adjust Tip after complete → new tip lands, row stays successful @regression @write @payment @dual-window",
+                      "state": "passed",
+                      "durationMs": 109496,
+                      "retries": 0
+                    }
+                  ],
+                  "suites": []
+                },
+                {
+                  "title": "2. Cash, tip chosen on the customer display (regression)",
+                  "tests": [
+                    {
+                      "title": "TC-VP4856-05: Cash → Adjust Tip after complete → new tip lands, row stays successful @regression @write @payment @dual-window",
+                      "fullTitle": "VP-4856 — a just-completed order keeps successful / tip / customer through the sync echo.2. Cash, tip chosen on the customer display (regression).TC-VP4856-05: Cash → Adjust Tip after complete → new tip lands, row stays successful @regression @write @payment @dual-window",
+                      "state": "passed",
+                      "durationMs": 98272,
+                      "retries": 0
+                    }
+                  ],
+                  "suites": []
+                }
+              ]
+            }
+          ],
+          "totals": {
+            "tests": 2,
+            "passed": 2,
+            "failed": 0,
+            "skipped": 0,
+            "passRate": 100
+          }
+        }
+      ]
+    },
+    {
+      "runId": "2026-11-09T07-49-20-401Z",
+      "startedAt": "2026-11-09T07:49:20.401Z",
+      "finishedAt": "2026-11-09T08:01:29.509Z",
+      "durationMs": 729108,
+      "env": {
+        "name": "dev",
+        "mode": "launch",
+        "merchant": "14",
+        "app": "volt-pos.exe",
+        "upstream": "https://volt-pos.v2.dev-fastboypay.com"
+      },
+      "totals": {
+        "tests": 7,
+        "passed": 5,
+        "failed": 2,
+        "skipped": 0,
+        "passRate": 71.4
+      },
+      "passed": false,
+      "specs": [
+        {
+          "cid": "0-0",
+          "file": "file:///D:/2.POS/e2e_volt_pos_webdriverIO/tests/regression/sync/vp-4856-stale-echo.spec.ts",
+          "specName": "vp-4856-stale-echo",
+          "startedAt": "2026-11-09T07:51:10.769Z",
+          "finishedAt": "2026-11-09T08:01:06.955Z",
+          "durationMs": 596186,
+          "retry": 1,
+          "suites": [
+            {
+              "title": "VP-4856 — a just-completed order keeps successful / tip / customer through the sync echo",
+              "tests": [],
+              "suites": [
+                {
+                  "title": "1. Card, tip chosen on the customer display (prod scenario)",
+                  "tests": [
+                    {
+                      "title": "TC-VP4856-01: Card + display tip → row stays successful with tip and customer through the echo @regression @critical @write @payment @dual-window",
+                      "fullTitle": "VP-4856 — a just-completed order keeps successful / tip / customer through the sync echo.1. Card, tip chosen on the customer display (prod scenario).TC-VP4856-01: Card + display tip → row stays successful with tip and customer through the echo @regression @critical @write @payment @dual-window",
+                      "state": "passed",
+                      "durationMs": 71655,
+                      "retries": 0
+                    },
+                    {
+                      "title": "TC-VP4856-02: Card → Adjust Tip after complete → new tip lands, row stays successful @regression @write @payment @dual-window",
+                      "fullTitle": "VP-4856 — a just-completed order keeps successful / tip / customer through the sync echo.1. Card, tip chosen on the customer display (prod scenario).TC-VP4856-02: Card → Adjust Tip after complete → new tip lands, row stays successful @regression @write @payment @dual-window",
+                      "state": "failed",
+                      "durationMs": 86241,
+                      "retries": 0,
+                      "error": "Passcode was not accepted: the guard is still prompting 15000ms after 4 digit(s) were entered. Check the staff passcode and that the staff holds the permission this action needs.",
+                      "stack": "Error: Passcode was not accepted: the guard is still prompting 15000ms after 4 digit(s) were entered. Check the staff passcode and that the staff holds the permission this action needs.\n    at PasscodeDialog.waitAccepted (D:\\2.POS\\e2e_volt_pos_webdriverIO\\src\\components\\modal\\PasscodeDialog.ts:369:11)\n    at async PasscodeDialog.enter (D:\\2.POS\\e2e_volt_pos_webdriverIO\\src\\components\\modal\\PasscodeDialog.ts:144:5)\n    at async PasscodeDialog.enterIfPresent (D:\\2.POS\\e2e_volt_pos_webdriverIO\\src\\components\\modal\\PasscodeDialog.ts:162:5)\n    at async CdApp.adjustTip (D:\\2.POS\\e2e_volt_pos_webdriverIO\\src\\pages\\voltqc\\cd-e2e\\cdApp.ts:393:5)\n    at async adjustTipOnSuccess (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\sync\\vp-4856.helpers.ts:178:3)\n    at async adjustAndHold (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\sync\\vp-4856-stale-echo.spec.ts:142:3)\n    at async Context.<anonymous> (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\sync\\vp-4856-stale-echo.spec.ts:205:9)\n    at async Context.executeAsync (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\@wdio\\utils\\build\\index.js:1133:20)\n    at async Context.testFrameworkFnWrapper (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\@wdio\\utils\\build\\index.js:1214:14)"
+                    },
+                    {
+                      "title": "TC-VP4856-03: Card twice in a row → both rows hold @regression @write @payment @dual-window",
+                      "fullTitle": "VP-4856 — a just-completed order keeps successful / tip / customer through the sync echo.1. Card, tip chosen on the customer display (prod scenario).TC-VP4856-03: Card twice in a row → both rows hold @regression @write @payment @dual-window",
+                      "state": "passed",
+                      "durationMs": 134989,
+                      "retries": 0
+                    }
+                  ],
+                  "suites": []
+                },
+                {
+                  "title": "2. Cash, tip chosen on the customer display (regression)",
+                  "tests": [
+                    {
+                      "title": "TC-VP4856-04: Cash + display tip → row stays successful with tip and customer @regression @write @payment @dual-window",
+                      "fullTitle": "VP-4856 — a just-completed order keeps successful / tip / customer through the sync echo.2. Cash, tip chosen on the customer display (regression).TC-VP4856-04: Cash + display tip → row stays successful with tip and customer @regression @write @payment @dual-window",
+                      "state": "passed",
+                      "durationMs": 59620,
+                      "retries": 0
+                    },
+                    {
+                      "title": "TC-VP4856-05: Cash → Adjust Tip after complete → new tip lands, row stays successful @regression @write @payment @dual-window",
+                      "fullTitle": "VP-4856 — a just-completed order keeps successful / tip / customer through the sync echo.2. Cash, tip chosen on the customer display (regression).TC-VP4856-05: Cash → Adjust Tip after complete → new tip lands, row stays successful @regression @write @payment @dual-window",
+                      "state": "failed",
+                      "durationMs": 79285,
+                      "retries": 0,
+                      "error": "Passcode was not accepted: the guard is still prompting 15000ms after 4 digit(s) were entered. Check the staff passcode and that the staff holds the permission this action needs.",
+                      "stack": "Error: Passcode was not accepted: the guard is still prompting 15000ms after 4 digit(s) were entered. Check the staff passcode and that the staff holds the permission this action needs.\n    at PasscodeDialog.waitAccepted (D:\\2.POS\\e2e_volt_pos_webdriverIO\\src\\components\\modal\\PasscodeDialog.ts:369:11)\n    at async PasscodeDialog.enter (D:\\2.POS\\e2e_volt_pos_webdriverIO\\src\\components\\modal\\PasscodeDialog.ts:144:5)\n    at async PasscodeDialog.enterIfPresent (D:\\2.POS\\e2e_volt_pos_webdriverIO\\src\\components\\modal\\PasscodeDialog.ts:162:5)\n    at async CdApp.adjustTip (D:\\2.POS\\e2e_volt_pos_webdriverIO\\src\\pages\\voltqc\\cd-e2e\\cdApp.ts:393:5)\n    at async adjustTipOnSuccess (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\sync\\vp-4856.helpers.ts:178:3)\n    at async adjustAndHold (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\sync\\vp-4856-stale-echo.spec.ts:142:3)\n    at async Context.<anonymous> (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\sync\\vp-4856-stale-echo.spec.ts:253:9)\n    at async Context.executeAsync (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\@wdio\\utils\\build\\index.js:1133:20)\n    at async Context.testFrameworkFnWrapper (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\@wdio\\utils\\build\\index.js:1214:14)"
+                    },
+                    {
+                      "title": "TC-VP4856-06: Cash twice in a row → both rows hold @regression @write @payment @dual-window",
+                      "fullTitle": "VP-4856 — a just-completed order keeps successful / tip / customer through the sync echo.2. Cash, tip chosen on the customer display (regression).TC-VP4856-06: Cash twice in a row → both rows hold @regression @write @payment @dual-window",
+                      "state": "passed",
+                      "durationMs": 120011,
+                      "retries": 0
+                    }
+                  ],
+                  "suites": []
+                },
+                {
+                  "title": "3. Order History",
+                  "tests": [
+                    {
+                      "title": "TC-VP4856-07: Order History lists every order this run paid as Successful @regression @dual-window",
+                      "fullTitle": "VP-4856 — a just-completed order keeps successful / tip / customer through the sync echo.3. Order History.TC-VP4856-07: Order History lists every order this run paid as Successful @regression @dual-window",
+                      "state": "passed",
+                      "durationMs": 17142,
+                      "retries": 0
+                    }
+                  ],
+                  "suites": []
+                }
+              ]
+            }
+          ],
+          "totals": {
+            "tests": 7,
+            "passed": 5,
+            "failed": 2,
+            "skipped": 0,
+            "passRate": 71.4
+          }
+        }
+      ]
+    },
+    {
+      "runId": "2026-11-09T07-46-16-775Z",
+      "startedAt": "2026-11-09T07:46:16.775Z",
+      "finishedAt": "2026-11-09T07:49:39.744Z",
+      "durationMs": 202969,
+      "env": {
+        "name": "dev",
+        "mode": "launch",
+        "merchant": "14",
+        "app": "volt-pos.exe",
+        "upstream": "https://volt-pos.v2.dev-fastboypay.com"
+      },
+      "totals": {
+        "tests": 8,
+        "passed": 0,
+        "failed": 7,
+        "skipped": 1,
+        "passRate": 0
+      },
+      "passed": false,
+      "specs": [
+        {
+          "cid": "0-0",
+          "file": "file:///D:/2.POS/e2e_volt_pos_webdriverIO/tests/regression/sync/vp-4856-stale-echo.spec.ts",
+          "specName": "vp-4856-stale-echo",
+          "startedAt": "2026-11-09T07:46:20.618Z",
+          "finishedAt": "2026-11-09T07:49:27.072Z",
+          "durationMs": 186454,
+          "retry": 2,
+          "suites": [
+            {
+              "title": "VP-4856 — a just-completed order keeps successful / tip / customer through the sync echo",
+              "tests": [],
+              "suites": [
+                {
+                  "title": "1. Card, tip chosen on the customer display (prod scenario)",
+                  "tests": [
+                    {
+                      "title": "TC-VP4856-01: Card + display tip → row stays successful with tip and customer through the echo @regression @critical @write @payment @dual-window",
+                      "fullTitle": "VP-4856 — a just-completed order keeps successful / tip / customer through the sync echo.1. Card, tip chosen on the customer display (prod scenario).TC-VP4856-01: Card + display tip → row stays successful with tip and customer through the echo @regression @critical @write @payment @dual-window",
+                      "state": "failed",
+                      "durationMs": 30612,
+                      "retries": 0,
+                      "error": "expect(received).toBe(expected) // Object.is equality",
+                      "stack": "Error: expect(received).toBe(expected) // Object.is equality\n\nExpected: \"ok\"\nReceived: \"no tip on Payment Successful (NaN)\"\n    at ensure (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\volt-qc\\cd-e2e\\cd-e2e.helpers.ts:66:38)\n    at payWithDisplayTip (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\sync\\vp-4856-stale-echo.spec.ts:93:3)\n    at async payAndHold (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\sync\\vp-4856-stale-echo.spec.ts:123:13)\n    at async Context.<anonymous> (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\sync\\vp-4856-stale-echo.spec.ts:190:9)\n    at async Context.executeAsync (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\@wdio\\utils\\build\\index.js:1133:20)\n    at async Context.testFrameworkFnWrapper (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\@wdio\\utils\\build\\index.js:1214:14)"
+                    },
+                    {
+                      "title": "TC-VP4856-02: Card → Adjust Tip after complete → new tip lands, row stays successful @regression @write @payment @dual-window",
+                      "fullTitle": "VP-4856 — a just-completed order keeps successful / tip / customer through the sync echo.1. Card, tip chosen on the customer display (prod scenario).TC-VP4856-02: Card → Adjust Tip after complete → new tip lands, row stays successful @regression @write @payment @dual-window",
+                      "state": "failed",
+                      "durationMs": 27000,
+                      "retries": 0,
+                      "error": "expect(received).toBe(expected) // Object.is equality",
+                      "stack": "Error: expect(received).toBe(expected) // Object.is equality\n\nExpected: \"ok\"\nReceived: \"no tip on Payment Successful (NaN)\"\n    at ensure (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\volt-qc\\cd-e2e\\cd-e2e.helpers.ts:66:38)\n    at payWithDisplayTip (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\sync\\vp-4856-stale-echo.spec.ts:93:3)\n    at async payAndHold (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\sync\\vp-4856-stale-echo.spec.ts:123:13)\n    at async Context.<anonymous> (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\sync\\vp-4856-stale-echo.spec.ts:204:19)\n    at async Context.executeAsync (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\@wdio\\utils\\build\\index.js:1133:20)\n    at async Context.testFrameworkFnWrapper (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\@wdio\\utils\\build\\index.js:1214:14)"
+                    },
+                    {
+                      "title": "TC-VP4856-03: Card twice in a row → both rows hold @regression @write @payment @dual-window",
+                      "fullTitle": "VP-4856 — a just-completed order keeps successful / tip / customer through the sync echo.1. Card, tip chosen on the customer display (prod scenario).TC-VP4856-03: Card twice in a row → both rows hold @regression @write @payment @dual-window",
+                      "state": "failed",
+                      "durationMs": 28417,
+                      "retries": 0,
+                      "error": "expect(received).toBe(expected) // Object.is equality",
+                      "stack": "Error: expect(received).toBe(expected) // Object.is equality\n\nExpected: \"ok\"\nReceived: \"no tip on Payment Successful (NaN)\"\n    at ensure (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\volt-qc\\cd-e2e\\cd-e2e.helpers.ts:66:38)\n    at payWithDisplayTip (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\sync\\vp-4856-stale-echo.spec.ts:93:3)\n    at async payAndHold (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\sync\\vp-4856-stale-echo.spec.ts:123:13)\n    at async Context.<anonymous> (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\sync\\vp-4856-stale-echo.spec.ts:219:9)\n    at async Context.executeAsync (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\@wdio\\utils\\build\\index.js:1133:20)\n    at async Context.testFrameworkFnWrapper (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\@wdio\\utils\\build\\index.js:1214:14)"
+                    }
+                  ],
+                  "suites": []
+                },
+                {
+                  "title": "2. Cash, tip chosen on the customer display (regression)",
+                  "tests": [
+                    {
+                      "title": "TC-VP4856-04: Cash + display tip → row stays successful with tip and customer @regression @write @payment @dual-window",
+                      "fullTitle": "VP-4856 — a just-completed order keeps successful / tip / customer through the sync echo.2. Cash, tip chosen on the customer display (regression).TC-VP4856-04: Cash + display tip → row stays successful with tip and customer @regression @write @payment @dual-window",
+                      "state": "failed",
+                      "durationMs": 19572,
+                      "retries": 0,
+                      "error": "expect(received).toBe(expected) // Object.is equality",
+                      "stack": "Error: expect(received).toBe(expected) // Object.is equality\n\nExpected: \"ok\"\nReceived: \"no tip on Payment Successful (NaN)\"\n    at ensure (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\volt-qc\\cd-e2e\\cd-e2e.helpers.ts:66:38)\n    at payWithDisplayTip (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\sync\\vp-4856-stale-echo.spec.ts:93:3)\n    at async payAndHold (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\sync\\vp-4856-stale-echo.spec.ts:123:13)\n    at async Context.<anonymous> (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\sync\\vp-4856-stale-echo.spec.ts:238:9)\n    at async Context.executeAsync (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\@wdio\\utils\\build\\index.js:1133:20)\n    at async Context.testFrameworkFnWrapper (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\@wdio\\utils\\build\\index.js:1214:14)"
+                    },
+                    {
+                      "title": "TC-VP4856-05: Cash → Adjust Tip after complete → new tip lands, row stays successful @regression @write @payment @dual-window",
+                      "fullTitle": "VP-4856 — a just-completed order keeps successful / tip / customer through the sync echo.2. Cash, tip chosen on the customer display (regression).TC-VP4856-05: Cash → Adjust Tip after complete → new tip lands, row stays successful @regression @write @payment @dual-window",
+                      "state": "failed",
+                      "durationMs": 19490,
+                      "retries": 0,
+                      "error": "expect(received).toBe(expected) // Object.is equality",
+                      "stack": "Error: expect(received).toBe(expected) // Object.is equality\n\nExpected: \"ok\"\nReceived: \"no tip on Payment Successful (NaN)\"\n    at ensure (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\volt-qc\\cd-e2e\\cd-e2e.helpers.ts:66:38)\n    at payWithDisplayTip (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\sync\\vp-4856-stale-echo.spec.ts:93:3)\n    at async payAndHold (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\sync\\vp-4856-stale-echo.spec.ts:123:13)\n    at async Context.<anonymous> (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\sync\\vp-4856-stale-echo.spec.ts:252:19)\n    at async Context.executeAsync (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\@wdio\\utils\\build\\index.js:1133:20)\n    at async Context.testFrameworkFnWrapper (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\@wdio\\utils\\build\\index.js:1214:14)"
+                    },
+                    {
+                      "title": "TC-VP4856-06: Cash twice in a row → both rows hold @regression @write @payment @dual-window",
+                      "fullTitle": "VP-4856 — a just-completed order keeps successful / tip / customer through the sync echo.2. Cash, tip chosen on the customer display (regression).TC-VP4856-06: Cash twice in a row → both rows hold @regression @write @payment @dual-window",
+                      "state": "failed",
+                      "durationMs": 19507,
+                      "retries": 0,
+                      "error": "expect(received).toBe(expected) // Object.is equality",
+                      "stack": "Error: expect(received).toBe(expected) // Object.is equality\n\nExpected: \"ok\"\nReceived: \"no tip on Payment Successful (NaN)\"\n    at ensure (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\volt-qc\\cd-e2e\\cd-e2e.helpers.ts:66:38)\n    at payWithDisplayTip (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\sync\\vp-4856-stale-echo.spec.ts:93:3)\n    at async payAndHold (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\sync\\vp-4856-stale-echo.spec.ts:123:13)\n    at async Context.<anonymous> (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\sync\\vp-4856-stale-echo.spec.ts:267:9)\n    at async Context.executeAsync (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\@wdio\\utils\\build\\index.js:1133:20)\n    at async Context.testFrameworkFnWrapper (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\@wdio\\utils\\build\\index.js:1214:14)"
+                    }
+                  ],
+                  "suites": []
+                },
+                {
+                  "title": "3. Order History",
+                  "tests": [
+                    {
+                      "title": "TC-VP4856-07: Order History lists every order this run paid as Successful @regression @dual-window",
+                      "fullTitle": "VP-4856 — a just-completed order keeps successful / tip / customer through the sync echo.3. Order History.TC-VP4856-07: Order History lists every order this run paid as Successful @regression @dual-window",
+                      "state": "skipped",
+                      "durationMs": 0,
+                      "retries": 0
+                    },
+                    {
+                      "title": "\"before each\" hook: beforeEach for \"TC-VP4856-07: Order History lists every order this run paid as Successful @regression @dual-window\"",
+                      "fullTitle": "\"before each\" hook: beforeEach for \"TC-VP4856-07: Order History lists every order this run paid as Successful @regression @dual-window\"",
+                      "state": "failed",
+                      "durationMs": 1090,
+                      "retries": 0,
+                      "error": "switch to the main window failed after 3 attempt(s). Last error: WebDriverError: invalid session id when running \"window/handles\" with method \"GET\"",
+                      "stack": "Error: switch to the main window failed after 3 attempt(s). Last error: WebDriverError: invalid session id when running \"window/handles\" with method \"GET\"\n    at retry (D:\\2.POS\\e2e_volt_pos_webdriverIO\\src\\helpers\\wait.ts:90:9)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async switchToMain (D:\\2.POS\\e2e_volt_pos_webdriverIO\\src\\helpers\\window.ts:160:3)\n    at async Context.beforeEach (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\setup\\rootHooks.ts:256:5)"
+                    }
+                  ],
+                  "suites": []
+                }
+              ]
+            }
+          ],
+          "totals": {
+            "tests": 8,
+            "passed": 0,
+            "failed": 7,
+            "skipped": 1,
+            "passRate": 0
+          }
+        }
+      ]
+    },
+    {
+      "runId": "2026-11-09T07-45-16-853Z",
+      "startedAt": "2026-11-09T07:45:16.853Z",
+      "finishedAt": "2026-11-09T07:45:49.328Z",
+      "durationMs": 32475,
+      "env": {
+        "name": "dev",
+        "mode": "attach",
+        "merchant": "14",
+        "app": "(unresolved)",
+        "upstream": "https://volt-pos.v2.dev-fastboypay.com"
+      },
+      "totals": {
+        "tests": 0,
+        "passed": 0,
+        "failed": 0,
+        "skipped": 0,
+        "passRate": 100
+      },
+      "passed": true,
+      "specs": [
+        {
+          "cid": "0-0",
+          "file": "file:///D:/2.POS/e2e_volt_pos_webdriverIO/tests/regression/sync/vp-4856-stale-echo.spec.ts",
+          "specName": "vp-4856-stale-echo",
+          "startedAt": "2026-11-09T07:45:18.670Z",
+          "finishedAt": "2026-11-09T07:45:48.933Z",
+          "durationMs": 30263,
+          "retry": 1,
+          "suites": [],
+          "totals": {
+            "tests": 0,
+            "passed": 0,
+            "failed": 0,
+            "skipped": 0,
+            "passRate": 100
+          }
+        }
+      ]
+    },
+    {
+      "runId": "2026-11-09T07-43-53-746Z",
+      "startedAt": "2026-11-09T07:43:53.746Z",
+      "finishedAt": "2026-11-09T07:44:27.708Z",
+      "durationMs": 33962,
+      "env": {
+        "name": "dev",
+        "mode": "attach",
+        "merchant": "14",
+        "app": "(unresolved)",
+        "upstream": "https://volt-pos.v2.dev-fastboypay.com"
+      },
+      "totals": {
+        "tests": 0,
+        "passed": 0,
+        "failed": 0,
+        "skipped": 0,
+        "passRate": 100
+      },
+      "passed": true,
+      "specs": [
+        {
+          "cid": "0-0",
+          "file": "file:///D:/2.POS/e2e_volt_pos_webdriverIO/tests/regression/sync/vp-4856-stale-echo.spec.ts",
+          "specName": "vp-4856-stale-echo",
+          "startedAt": "2026-11-09T07:43:56.936Z",
+          "finishedAt": "2026-11-09T07:44:27.294Z",
+          "durationMs": 30358,
+          "retry": 1,
+          "suites": [],
+          "totals": {
+            "tests": 0,
+            "passed": 0,
+            "failed": 0,
+            "skipped": 0,
+            "passRate": 100
+          }
+        }
+      ]
+    },
     {
       "runId": "2026-11-05T09-58-36-857Z",
       "startedAt": "2026-11-05T09:58:36.857Z",
@@ -6413,651 +6819,6 @@
           "totals": {
             "tests": 8,
             "passed": 7,
-            "failed": 0,
-            "skipped": 1,
-            "passRate": 100
-          }
-        }
-      ]
-    },
-    {
-      "runId": "2026-11-03T05-52-16-153Z",
-      "startedAt": "2026-11-03T05:52:16.153Z",
-      "finishedAt": "2026-11-03T05:54:50.911Z",
-      "durationMs": 154758,
-      "env": {
-        "name": "dev",
-        "mode": "attach",
-        "merchant": "14",
-        "app": "volt-pos.exe",
-        "upstream": "https://volt-pos.v2.dev-fastboypay.com"
-      },
-      "totals": {
-        "tests": 8,
-        "passed": 7,
-        "failed": 0,
-        "skipped": 1,
-        "passRate": 100
-      },
-      "passed": true,
-      "specs": [
-        {
-          "cid": "0-0",
-          "file": "file:///D:/2.POS/e2e_volt_pos_webdriverIO/tests/regression/home/vp-4035-staff-checkin-sort.spec.ts",
-          "specName": "vp-4035-staff-checkin-sort",
-          "startedAt": "2026-11-03T05:52:17.871Z",
-          "finishedAt": "2026-11-03T05:54:49.622Z",
-          "durationMs": 151751,
-          "retry": 1,
-          "suites": [
-            {
-              "title": "VP-4035 — Home staff sort \"Staff Checked In\"",
-              "tests": [
-                {
-                  "title": "TC-VP4035-01: Ascending puts checked-in staff first, in check-in order @regression",
-                  "fullTitle": "VP-4035 — Home staff sort \"Staff Checked In\".TC-VP4035-01: Ascending puts checked-in staff first, in check-in order @regression",
-                  "state": "passed",
-                  "durationMs": 12747,
-                  "retries": 0
-                },
-                {
-                  "title": "TC-VP4035-02: staff checking in later are appended after the checked-in group @regression @write",
-                  "fullTitle": "VP-4035 — Home staff sort \"Staff Checked In\".TC-VP4035-02: staff checking in later are appended after the checked-in group @regression @write",
-                  "state": "passed",
-                  "durationMs": 22891,
-                  "retries": 0
-                },
-                {
-                  "title": "TC-VP4035-03: staff not checked in come after the group, in default order @regression",
-                  "fullTitle": "VP-4035 — Home staff sort \"Staff Checked In\".TC-VP4035-03: staff not checked in come after the group, in default order @regression",
-                  "state": "passed",
-                  "durationMs": 24962,
-                  "retries": 0
-                },
-                {
-                  "title": "TC-VP4035-04: Descending puts not-checked-in first, then checked-in newest → earliest @regression",
-                  "fullTitle": "VP-4035 — Home staff sort \"Staff Checked In\".TC-VP4035-04: Descending puts not-checked-in first, then checked-in newest → earliest @regression",
-                  "state": "passed",
-                  "durationMs": 25205,
-                  "retries": 0
-                },
-                {
-                  "title": "TC-VP4035-05: a staff who checks out leaves the checked-in group @regression @write",
-                  "fullTitle": "VP-4035 — Home staff sort \"Staff Checked In\".TC-VP4035-05: a staff who checks out leaves the checked-in group @regression @write",
-                  "state": "passed",
-                  "durationMs": 18793,
-                  "retries": 0
-                },
-                {
-                  "title": "TC-VP4035-06: checking in again the same day keeps the FIRST check-in position @regression @write",
-                  "fullTitle": "VP-4035 — Home staff sort \"Staff Checked In\".TC-VP4035-06: checking in again the same day keeps the FIRST check-in position @regression @write",
-                  "state": "passed",
-                  "durationMs": 17523,
-                  "retries": 0
-                },
-                {
-                  "title": "TC-VP4035-07: the Ascending order matches the IN times in Time Keeping @regression",
-                  "fullTitle": "VP-4035 — Home staff sort \"Staff Checked In\".TC-VP4035-07: the Ascending order matches the IN times in Time Keeping @regression",
-                  "state": "passed",
-                  "durationMs": 12605,
-                  "retries": 0
-                },
-                {
-                  "title": "TC-VP4035-08: after an app reload the sort falls back to \"Default Order\" — PENDING (doc-only observation outside the ticket scope; needs an app reload on the shared till)",
-                  "fullTitle": "VP-4035 — Home staff sort \"Staff Checked In\".TC-VP4035-08: after an app reload the sort falls back to \"Default Order\" — PENDING (doc-only observation outside the ticket scope; needs an app reload on the shared till)",
-                  "state": "skipped",
-                  "durationMs": 0,
-                  "retries": 0
-                }
-              ],
-              "suites": []
-            }
-          ],
-          "totals": {
-            "tests": 8,
-            "passed": 7,
-            "failed": 0,
-            "skipped": 1,
-            "passRate": 100
-          }
-        }
-      ]
-    },
-    {
-      "runId": "2026-11-03T05-51-31-854Z",
-      "startedAt": "2026-11-03T05:51:31.854Z",
-      "finishedAt": "2026-11-03T05:52:14.119Z",
-      "durationMs": 42265,
-      "env": {
-        "name": "dev",
-        "mode": "attach",
-        "merchant": "14",
-        "app": "volt-pos.exe",
-        "upstream": "https://volt-pos.v2.dev-fastboypay.com"
-      },
-      "totals": {
-        "tests": 12,
-        "passed": 4,
-        "failed": 0,
-        "skipped": 8,
-        "passRate": 100
-      },
-      "passed": true,
-      "specs": [
-        {
-          "cid": "0-0",
-          "file": "file:///D:/2.POS/e2e_volt_pos_webdriverIO/tests/regression/checkout-type/vp-4489-checkin-point-display.spec.ts",
-          "specName": "vp-4489-checkin-point-display",
-          "startedAt": "2026-11-03T05:51:33.639Z",
-          "finishedAt": "2026-11-03T05:52:13.054Z",
-          "durationMs": 39415,
-          "retry": 1,
-          "suites": [
-            {
-              "title": "VP-4489 — check-in point vs $1 = 1 point (+ VP-5112 \"1 point\" label)",
-              "tests": [],
-              "suites": [
-                {
-                  "title": "1. Point awarded per check-in (VP-4489)",
-                  "tests": [
-                    {
-                      "title": "TC-VP4489-01: Auto + Point Bonus 1 with $1 = 1 point configured → +1 point, not +amount @regression @critical @write @payment",
-                      "fullTitle": "VP-4489 — check-in point vs $1 = 1 point (+ VP-5112 \"1 point\" label).1. Point awarded per check-in (VP-4489).TC-VP4489-01: Auto + Point Bonus 1 with $1 = 1 point configured → +1 point, not +amount @regression @critical @write @payment",
-                      "state": "skipped",
-                      "durationMs": 0,
-                      "retries": 0
-                    },
-                    {
-                      "title": "TC-VP4489-02: Auto + Point Bonus 1 with every method \"No points\" still awards +1 (the store's case) @regression @critical @write @payment",
-                      "fullTitle": "VP-4489 — check-in point vs $1 = 1 point (+ VP-5112 \"1 point\" label).1. Point awarded per check-in (VP-4489).TC-VP4489-02: Auto + Point Bonus 1 with every method \"No points\" still awards +1 (the store's case) @regression @critical @write @payment",
-                      "state": "skipped",
-                      "durationMs": 0,
-                      "retries": 0
-                    },
-                    {
-                      "title": "TC-VP4489-03: Manual with every method \"No points\" awards 0 (no bonus fallback) @regression @write @payment",
-                      "fullTitle": "VP-4489 — check-in point vs $1 = 1 point (+ VP-5112 \"1 point\" label).1. Point awarded per check-in (VP-4489).TC-VP4489-03: Manual with every method \"No points\" awards 0 (no bonus fallback) @regression @write @payment",
-                      "state": "skipped",
-                      "durationMs": 0,
-                      "retries": 0
-                    },
-                    {
-                      "title": "TC-VP4489-04: Manual $1 = 1 point is unaffected → +points by amount paid @regression @critical @write @payment",
-                      "fullTitle": "VP-4489 — check-in point vs $1 = 1 point (+ VP-5112 \"1 point\" label).1. Point awarded per check-in (VP-4489).TC-VP4489-04: Manual $1 = 1 point is unaffected → +points by amount paid @regression @critical @write @payment",
-                      "state": "passed",
-                      "durationMs": 10554,
-                      "retries": 0
-                    },
-                    {
-                      "title": "TC-VP4489-05: Auto $0 order (full redeem) awards nothing and hides the earned block @regression @write @payment",
-                      "fullTitle": "VP-4489 — check-in point vs $1 = 1 point (+ VP-5112 \"1 point\" label).1. Point awarded per check-in (VP-4489).TC-VP4489-05: Auto $0 order (full redeem) awards nothing and hides the earned block @regression @write @payment",
-                      "state": "skipped",
-                      "durationMs": 0,
-                      "retries": 0
-                    },
-                    {
-                      "title": "TC-VP4489-06: a Portal setting change applies on POS without a restart — PENDING (cross-surface: Portal change + POS check in one run; Portal lane is ready (`.portal-profile`), POS side not wired)",
-                      "fullTitle": "VP-4489 — check-in point vs $1 = 1 point (+ VP-5112 \"1 point\" label).1. Point awarded per check-in (VP-4489).TC-VP4489-06: a Portal setting change applies on POS without a restart — PENDING (cross-surface: Portal change + POS check in one run; Portal lane is ready (`.portal-profile`), POS side not wired)",
-                      "state": "skipped",
-                      "durationMs": 0,
-                      "retries": 0
-                    }
-                  ],
-                  "suites": []
-                },
-                {
-                  "title": "2. Customer display label (VP-5112)",
-                  "tests": [
-                    {
-                      "title": "TC-VP4489-07: Auto + Point Bonus 1 → customer display says \"1 point\" (singular) @regression @write @payment @dual-window",
-                      "fullTitle": "VP-4489 — check-in point vs $1 = 1 point (+ VP-5112 \"1 point\" label).2. Customer display label (VP-5112).TC-VP4489-07: Auto + Point Bonus 1 → customer display says \"1 point\" (singular) @regression @write @payment @dual-window",
-                      "state": "skipped",
-                      "durationMs": 0,
-                      "retries": 0
-                    },
-                    {
-                      "title": "TC-VP4489-08: POS runs a build with the VP-5112 fix (>= 1.1.64) @regression",
-                      "fullTitle": "VP-4489 — check-in point vs $1 = 1 point (+ VP-5112 \"1 point\" label).2. Customer display label (VP-5112).TC-VP4489-08: POS runs a build with the VP-5112 fix (>= 1.1.64) @regression",
-                      "state": "passed",
-                      "durationMs": 2369,
-                      "retries": 0
-                    },
-                    {
-                      "title": "TC-VP4489-09: more than 1 point earned → customer display says \"N points\" (plural) @regression @write @payment @dual-window",
-                      "fullTitle": "VP-4489 — check-in point vs $1 = 1 point (+ VP-5112 \"1 point\" label).2. Customer display label (VP-5112).TC-VP4489-09: more than 1 point earned → customer display says \"N points\" (plural) @regression @write @payment @dual-window",
-                      "state": "passed",
-                      "durationMs": 11186,
-                      "retries": 0
-                    },
-                    {
-                      "title": "TC-VP4489-10: \"Your current points\" on the display = balance before + points earned @regression @write @payment @dual-window",
-                      "fullTitle": "VP-4489 — check-in point vs $1 = 1 point (+ VP-5112 \"1 point\" label).2. Customer display label (VP-5112).TC-VP4489-10: \"Your current points\" on the display = balance before + points earned @regression @write @payment @dual-window",
-                      "state": "passed",
-                      "durationMs": 12702,
-                      "retries": 0
-                    },
-                    {
-                      "title": "TC-VP4489-11: POS in Vietnamese — the earned-points line is not broken — PENDING (switching the app language is merchant-global @exclusive state; run by hand)",
-                      "fullTitle": "VP-4489 — check-in point vs $1 = 1 point (+ VP-5112 \"1 point\" label).2. Customer display label (VP-5112).TC-VP4489-11: POS in Vietnamese — the earned-points line is not broken — PENDING (switching the app language is merchant-global @exclusive state; run by hand)",
-                      "state": "skipped",
-                      "durationMs": 0,
-                      "retries": 0
-                    },
-                    {
-                      "title": "TC-VP4489-12: Manual with 0 points shows \"0 points\" while Auto hides the block — PENDING (doc-only: waiting on a PO decision, no expected behaviour to assert)",
-                      "fullTitle": "VP-4489 — check-in point vs $1 = 1 point (+ VP-5112 \"1 point\" label).2. Customer display label (VP-5112).TC-VP4489-12: Manual with 0 points shows \"0 points\" while Auto hides the block — PENDING (doc-only: waiting on a PO decision, no expected behaviour to assert)",
-                      "state": "skipped",
-                      "durationMs": 0,
-                      "retries": 0
-                    }
-                  ],
-                  "suites": []
-                }
-              ]
-            }
-          ],
-          "totals": {
-            "tests": 12,
-            "passed": 4,
-            "failed": 0,
-            "skipped": 8,
-            "passRate": 100
-          }
-        }
-      ]
-    },
-    {
-      "runId": "2026-11-03T05-50-35-955Z",
-      "startedAt": "2026-11-03T05:50:35.955Z",
-      "finishedAt": "2026-11-03T05:51:29.878Z",
-      "durationMs": 53923,
-      "env": {
-        "name": "dev",
-        "mode": "attach",
-        "merchant": "14",
-        "app": "volt-pos.exe",
-        "upstream": "https://volt-pos.v2.dev-fastboypay.com"
-      },
-      "totals": {
-        "tests": 16,
-        "passed": 7,
-        "failed": 4,
-        "skipped": 5,
-        "passRate": 63.6
-      },
-      "passed": false,
-      "specs": [
-        {
-          "cid": "0-0",
-          "file": "file:///D:/2.POS/e2e_volt_pos_webdriverIO/tests/regression/appointment/vp-4402-staff-column-order-color.spec.ts",
-          "specName": "vp-4402-staff-column-order-color",
-          "startedAt": "2026-11-03T05:50:37.664Z",
-          "finishedAt": "2026-11-03T05:51:28.639Z",
-          "durationMs": 50975,
-          "retry": 1,
-          "suites": [
-            {
-              "title": "VP-4402 — Appointment board: GAP staff order + staff-coloured cards (+ VP-5479, VP-5481)",
-              "tests": [
-                {
-                  "title": "TC-VP4402-01: the installed build carries the feature (≥ 1.1.87) @regression",
-                  "fullTitle": "VP-4402 — Appointment board: GAP staff order + staff-coloured cards (+ VP-5479, VP-5481).TC-VP4402-01: the installed build carries the feature (≥ 1.1.87) @regression",
-                  "state": "passed",
-                  "durationMs": 116,
-                  "retries": 0
-                },
-                {
-                  "title": "TC-VP4402-02: board columns follow the staff_appointment (GAP) priority order @regression",
-                  "fullTitle": "VP-4402 — Appointment board: GAP staff order + staff-coloured cards (+ VP-5479, VP-5481).TC-VP4402-02: board columns follow the staff_appointment (GAP) priority order @regression",
-                  "state": "passed",
-                  "durationMs": 126,
-                  "retries": 0
-                },
-                {
-                  "title": "TC-VP4402-03: priority = 0 staff sit after every ranked staff @regression",
-                  "fullTitle": "VP-4402 — Appointment board: GAP staff order + staff-coloured cards (+ VP-5479, VP-5481).TC-VP4402-03: priority = 0 staff sit after every ranked staff @regression",
-                  "state": "skipped",
-                  "durationMs": 0,
-                  "retries": 0
-                },
-                {
-                  "title": "TC-VP4402-04: staff without a staff_appointment row are the board tail @regression",
-                  "fullTitle": "VP-4402 — Appointment board: GAP staff order + staff-coloured cards (+ VP-5479, VP-5481).TC-VP4402-04: staff without a staff_appointment row are the board tail @regression",
-                  "state": "passed",
-                  "durationMs": 135,
-                  "retries": 0
-                },
-                {
-                  "title": "TC-VP4402-05: VP-5479 — 1001vvv is column 2 like GAP (every staff has a row) @regression @broken",
-                  "fullTitle": "VP-4402 — Appointment board: GAP staff order + staff-coloured cards (+ VP-5479, VP-5481).TC-VP4402-05: VP-5479 — 1001vvv is column 2 like GAP (every staff has a row) @regression @broken",
-                  "state": "failed",
-                  "durationMs": 283,
-                  "retries": 0,
-                  "error": "expect(received).toEqual(expected) // deep equality",
-                  "stack": "Error: expect(received).toEqual(expected) // deep equality\n\n- Expected  -  1\n+ Received  + 12\n\n- Array []\n+ Array [\n+   \"1001vvv\",\n+   \"333\",\n+   \"Bell\",\n+   \"Ben\",\n+   \"Delete\","
-                },
-                {
-                  "title": "TC-VP4402-06: the Staffs filter dropdown keeps its A→Z order @regression",
-                  "fullTitle": "VP-4402 — Appointment board: GAP staff order + staff-coloured cards (+ VP-5479, VP-5481).TC-VP4402-06: the Staffs filter dropdown keeps its A→Z order @regression",
-                  "state": "passed",
-                  "durationMs": 7348,
-                  "retries": 0
-                },
-                {
-                  "title": "TC-VP4402-07: the column order does not change with the day @regression",
-                  "fullTitle": "VP-4402 — Appointment board: GAP staff order + staff-coloured cards (+ VP-5479, VP-5481).TC-VP4402-07: the column order does not change with the day @regression",
-                  "state": "passed",
-                  "durationMs": 10286,
-                  "retries": 0
-                },
-                {
-                  "title": "TC-VP4402-08: an assigned card is tinted with its staff colour and bordered in it @regression",
-                  "fullTitle": "VP-4402 — Appointment board: GAP staff order + staff-coloured cards (+ VP-5479, VP-5481).TC-VP4402-08: an assigned card is tinted with its staff colour and bordered in it @regression",
-                  "state": "passed",
-                  "durationMs": 6010,
-                  "retries": 0
-                },
-                {
-                  "title": "TC-VP4402-09: an unassigned appointment sits in Unassigned without a staff tint @regression",
-                  "fullTitle": "VP-4402 — Appointment board: GAP staff order + staff-coloured cards (+ VP-5479, VP-5481).TC-VP4402-09: an unassigned appointment sits in Unassigned without a staff tint @regression",
-                  "state": "skipped",
-                  "durationMs": 0,
-                  "retries": 0
-                },
-                {
-                  "title": "TC-VP4402-10: a card on another day sits in its staff column, tinted, order unchanged @regression",
-                  "fullTitle": "VP-4402 — Appointment board: GAP staff order + staff-coloured cards (+ VP-5479, VP-5481).TC-VP4402-10: a card on another day sits in its staff column, tinted, order unchanged @regression",
-                  "state": "skipped",
-                  "durationMs": 0,
-                  "retries": 0
-                },
-                {
-                  "title": "TC-VP4402-11: each column header is drawn in its staff colour @regression",
-                  "fullTitle": "VP-4402 — Appointment board: GAP staff order + staff-coloured cards (+ VP-5479, VP-5481).TC-VP4402-11: each column header is drawn in its staff colour @regression",
-                  "state": "passed",
-                  "durationMs": 153,
-                  "retries": 0
-                },
-                {
-                  "title": "TC-VP4402-12: VP-5481 — no board column falls back to the default grey @regression @broken",
-                  "fullTitle": "VP-4402 — Appointment board: GAP staff order + staff-coloured cards (+ VP-5479, VP-5481).TC-VP4402-12: VP-5481 — no board column falls back to the default grey @regression @broken",
-                  "state": "failed",
-                  "durationMs": 287,
-                  "retries": 0,
-                  "error": "expect(received).toEqual(expected) // deep equality",
-                  "stack": "Error: expect(received).toEqual(expected) // deep equality\n\n- Expected  -   1\n+ Received  + 143\n\n- Array []\n+ Array [\n+   \"Teri Jennings\",\n+   \"Lizzie Wade\",\n+   \"Ramona Dunn\",\n+   \"May\",\n+   \"Jerry Quynh\","
-                },
-                {
-                  "title": "TC-VP4402-13: VP-5481 — the Unassigned column is blue #5669FF like GAP @regression @broken",
-                  "fullTitle": "VP-4402 — Appointment board: GAP staff order + staff-coloured cards (+ VP-5479, VP-5481).TC-VP4402-13: VP-5481 — the Unassigned column is blue #5669FF like GAP @regression @broken",
-                  "state": "failed",
-                  "durationMs": 427,
-                  "retries": 0,
-                  "error": "expect(received).toBe(expected) // Object.is equality",
-                  "stack": "Error: expect(received).toBe(expected) // Object.is equality\n\nExpected: \"#5669FF\"\nReceived: \"#4D4A5B\"\n    at Context.<anonymous> (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\appointment\\vp-4402-staff-column-order-color.spec.ts:284:39)\n    at Context.executeAsync (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\@wdio\\utils\\build\\index.js:1134:10)\n    at Context.testFrameworkFnWrapper (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\@wdio\\utils\\build\\index.js:1214:34)\n    at process.processImmediate (node:internal/timers:541:9)"
-                },
-                {
-                  "title": "TC-VP4402-14: VP-5481 — Anna carries her GAP colour #96BDF5 @regression @broken",
-                  "fullTitle": "VP-4402 — Appointment board: GAP staff order + staff-coloured cards (+ VP-5479, VP-5481).TC-VP4402-14: VP-5481 — Anna carries her GAP colour #96BDF5 @regression @broken",
-                  "state": "failed",
-                  "durationMs": 313,
-                  "retries": 0,
-                  "error": "expect(received).toBe(expected) // Object.is equality",
-                  "stack": "Error: expect(received).toBe(expected) // Object.is equality\n\nExpected: \"#96BDF5\"\nReceived: \"#E3AA8A\"\n    at Context.<anonymous> (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\appointment\\vp-4402-staff-column-order-color.spec.ts:293:26)\n    at Context.executeAsync (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\@wdio\\utils\\build\\index.js:1134:10)\n    at Context.testFrameworkFnWrapper (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\@wdio\\utils\\build\\index.js:1214:34)\n    at process.processImmediate (node:internal/timers:541:9)"
-                },
-                {
-                  "title": "TC-VP4402-15: visual GAP vs POS board comparison — PENDING (GAP web pos.gocheckin.net) @regression",
-                  "fullTitle": "VP-4402 — Appointment board: GAP staff order + staff-coloured cards (+ VP-5479, VP-5481).TC-VP4402-15: visual GAP vs POS board comparison — PENDING (GAP web pos.gocheckin.net) @regression",
-                  "state": "skipped",
-                  "durationMs": 0,
-                  "retries": 0
-                },
-                {
-                  "title": "TC-VP4402-16: the API refuses staff_appointment writes (422/403) — PENDING (BE-only) @regression",
-                  "fullTitle": "VP-4402 — Appointment board: GAP staff order + staff-coloured cards (+ VP-5479, VP-5481).TC-VP4402-16: the API refuses staff_appointment writes (422/403) — PENDING (BE-only) @regression",
-                  "state": "skipped",
-                  "durationMs": 0,
-                  "retries": 0
-                }
-              ],
-              "suites": []
-            }
-          ],
-          "totals": {
-            "tests": 16,
-            "passed": 7,
-            "failed": 4,
-            "skipped": 5,
-            "passRate": 63.6
-          }
-        }
-      ]
-    },
-    {
-      "runId": "2026-11-03T05-50-27-854Z",
-      "startedAt": "2026-11-03T05:50:27.854Z",
-      "finishedAt": "2026-11-03T05:50:33.908Z",
-      "durationMs": 6054,
-      "env": {
-        "name": "dev",
-        "mode": "attach",
-        "merchant": "14",
-        "app": "volt-pos.exe",
-        "upstream": "https://volt-pos.v2.dev-fastboypay.com"
-      },
-      "totals": {
-        "tests": 8,
-        "passed": 7,
-        "failed": 0,
-        "skipped": 1,
-        "passRate": 100
-      },
-      "passed": true,
-      "specs": [
-        {
-          "cid": "0-0",
-          "file": "file:///D:/2.POS/e2e_volt_pos_webdriverIO/tests/regression/home/vp-4039-menu-service-ink-text.spec.ts",
-          "specName": "vp-4039-menu-service-ink-text",
-          "startedAt": "2026-11-03T05:50:29.517Z",
-          "finishedAt": "2026-11-03T05:50:33.408Z",
-          "durationMs": 3891,
-          "retry": 1,
-          "suites": [
-            {
-              "title": "VP-4039 — Menu service text in ink like the staff name",
-              "tests": [
-                {
-                  "title": "TC-VP4039-01: the installed build carries the fix (≥ 1.1.58) @regression",
-                  "fullTitle": "VP-4039 — Menu service text in ink like the staff name.TC-VP4039-01: the installed build carries the fix (≥ 1.1.58) @regression",
-                  "state": "passed",
-                  "durationMs": 140,
-                  "retries": 0
-                },
-                {
-                  "title": "TC-VP4039-02: service tiles show name, description and price in ink @regression",
-                  "fullTitle": "VP-4039 — Menu service text in ink like the staff name.TC-VP4039-02: service tiles show name, description and price in ink @regression",
-                  "state": "passed",
-                  "durationMs": 151,
-                  "retries": 0
-                },
-                {
-                  "title": "TC-VP4039-03: category tiles (Quick Pay and Gift Card included) show text in ink @regression",
-                  "fullTitle": "VP-4039 — Menu service text in ink like the staff name.TC-VP4039-03: category tiles (Quick Pay and Gift Card included) show text in ink @regression",
-                  "state": "passed",
-                  "durationMs": 137,
-                  "retries": 0
-                },
-                {
-                  "title": "TC-VP4039-04: service text uses the same colour as the staff name @regression",
-                  "fullTitle": "VP-4039 — Menu service text in ink like the staff name.TC-VP4039-04: service text uses the same colour as the staff name @regression",
-                  "state": "passed",
-                  "durationMs": 155,
-                  "retries": 0
-                },
-                {
-                  "title": "TC-VP4039-05: service search results are also in ink @regression",
-                  "fullTitle": "VP-4039 — Menu service text in ink like the staff name.TC-VP4039-05: service search results are also in ink @regression",
-                  "state": "passed",
-                  "durationMs": 2187,
-                  "retries": 0
-                },
-                {
-                  "title": "TC-VP4039-06: ink text on a dark category tile (needs a dark category) @regression",
-                  "fullTitle": "VP-4039 — Menu service text in ink like the staff name.TC-VP4039-06: ink text on a dark category tile (needs a dark category) @regression",
-                  "state": "passed",
-                  "durationMs": 124,
-                  "retries": 0
-                },
-                {
-                  "title": "TC-VP4039-07: tile backgrounds still carry the category colour @regression",
-                  "fullTitle": "VP-4039 — Menu service text in ink like the staff name.TC-VP4039-07: tile backgrounds still carry the category colour @regression",
-                  "state": "passed",
-                  "durationMs": 166,
-                  "retries": 0
-                },
-                {
-                  "title": "TC-VP4039-08: Settings/Employees remembers the Active filter — PENDING (request 2 struck from the ticket, not in PR #3133) @regression",
-                  "fullTitle": "VP-4039 — Menu service text in ink like the staff name.TC-VP4039-08: Settings/Employees remembers the Active filter — PENDING (request 2 struck from the ticket, not in PR #3133) @regression",
-                  "state": "skipped",
-                  "durationMs": 0,
-                  "retries": 0
-                }
-              ],
-              "suites": []
-            }
-          ],
-          "totals": {
-            "tests": 8,
-            "passed": 7,
-            "failed": 0,
-            "skipped": 1,
-            "passRate": 100
-          }
-        }
-      ]
-    },
-    {
-      "runId": "2026-11-03T05-49-39-363Z",
-      "startedAt": "2026-11-03T05:49:39.363Z",
-      "finishedAt": "2026-11-03T05:50:25.887Z",
-      "durationMs": 46524,
-      "env": {
-        "name": "dev",
-        "mode": "attach",
-        "merchant": "14",
-        "app": "volt-pos.exe",
-        "upstream": "https://volt-pos.v2.dev-fastboypay.com"
-      },
-      "totals": {
-        "tests": 10,
-        "passed": 9,
-        "failed": 0,
-        "skipped": 1,
-        "passRate": 100
-      },
-      "passed": true,
-      "specs": [
-        {
-          "cid": "0-0",
-          "file": "file:///D:/2.POS/e2e_volt_pos_webdriverIO/tests/regression/order-history/vp-2105-date-range-calendar.spec.ts",
-          "specName": "vp-2105-date-range-calendar",
-          "startedAt": "2026-11-03T05:49:40.995Z",
-          "finishedAt": "2026-11-03T05:50:25.268Z",
-          "durationMs": 44273,
-          "retry": 1,
-          "suites": [
-            {
-              "title": "VP-2105 — Order History date range: no duplicate / overlapping days",
-              "tests": [],
-              "suites": [
-                {
-                  "title": "1. Two calendars",
-                  "tests": [
-                    {
-                      "title": "TC-VP2105-01: POS version carries the fix (Menu › Version Update) — PENDING (doc-only)",
-                      "fullTitle": "VP-2105 — Order History date range: no duplicate / overlapping days.1. Two calendars.TC-VP2105-01: POS version carries the fix (Menu › Version Update) — PENDING (doc-only)",
-                      "state": "skipped",
-                      "durationMs": 0,
-                      "retries": 0
-                    },
-                    {
-                      "title": "TC-VP2105-02: default popover — each calendar shows only its own month, no shared day @regression",
-                      "fullTitle": "VP-2105 — Order History date range: no duplicate / overlapping days.1. Two calendars.TC-VP2105-02: default popover — each calendar shows only its own month, no shared day @regression",
-                      "state": "passed",
-                      "durationMs": 1514,
-                      "retries": 0
-                    },
-                    {
-                      "title": "TC-VP2105-03: Jun 15 → Jun 30 2026 on June / July — Jun 29/30 only in June, July starts on the 1st @regression",
-                      "fullTitle": "VP-2105 — Order History date range: no duplicate / overlapping days.1. Two calendars.TC-VP2105-03: Jun 15 → Jun 30 2026 on June / July — Jun 29/30 only in June, July starts on the 1st @regression",
-                      "state": "passed",
-                      "durationMs": 7350,
-                      "retries": 0
-                    },
-                    {
-                      "title": "TC-VP2105-04: the range end Jun 30 is painted once — only in June; July paints nothing @regression",
-                      "fullTitle": "VP-2105 — Order History date range: no duplicate / overlapping days.1. Two calendars.TC-VP2105-04: the range end Jun 30 is painted once — only in June; July paints nothing @regression",
-                      "state": "passed",
-                      "durationMs": 143,
-                      "retries": 0
-                    },
-                    {
-                      "title": "TC-VP2105-05: Apply 06/15/2026 – 06/30/2026 filters the list to the range @regression",
-                      "fullTitle": "VP-2105 — Order History date range: no duplicate / overlapping days.1. Two calendars.TC-VP2105-05: Apply 06/15/2026 – 06/30/2026 filters the list to the range @regression",
-                      "state": "passed",
-                      "durationMs": 1396,
-                      "retries": 0
-                    },
-                    {
-                      "title": "TC-VP2105-06: reopening after Apply shows June / July with the range kept, painted only in June @regression",
-                      "fullTitle": "VP-2105 — Order History date range: no duplicate / overlapping days.1. Two calendars.TC-VP2105-06: reopening after Apply shows June / July with the range kept, painted only in June @regression",
-                      "state": "passed",
-                      "durationMs": 418,
-                      "retries": 0
-                    }
-                  ],
-                  "suites": []
-                },
-                {
-                  "title": "2. Across months, years, short months",
-                  "tests": [
-                    {
-                      "title": "TC-VP2105-07: Sep 28 → Oct 3 2026 across both calendars — each paints its own days; Apply filters @regression",
-                      "fullTitle": "VP-2105 — Order History date range: no duplicate / overlapping days.2. Across months, years, short months.TC-VP2105-07: Sep 28 → Oct 3 2026 across both calendars — each paints its own days; Apply filters @regression",
-                      "state": "passed",
-                      "durationMs": 6466,
-                      "retries": 0
-                    },
-                    {
-                      "title": "TC-VP2105-08: Dec 29 2025 → Jan 4 2026 across the year — each calendar its own month, days painted in their own calendar @regression",
-                      "fullTitle": "VP-2105 — Order History date range: no duplicate / overlapping days.2. Across months, years, short months.TC-VP2105-08: Dec 29 2025 → Jan 4 2026 across the year — each calendar its own month, days painted in their own calendar @regression",
-                      "state": "passed",
-                      "durationMs": 11524,
-                      "retries": 0
-                    },
-                    {
-                      "title": "TC-VP2105-09: February / March 2026 — Feb shows only 1–28, March only 1–31 @regression",
-                      "fullTitle": "VP-2105 — Order History date range: no duplicate / overlapping days.2. Across months, years, short months.TC-VP2105-09: February / March 2026 — Feb shows only 1–28, March only 1–31 @regression",
-                      "state": "passed",
-                      "durationMs": 7293,
-                      "retries": 0
-                    },
-                    {
-                      "title": "TC-VP2105-10: Today filters today; Cancel after paging and picking keeps the applied range @regression",
-                      "fullTitle": "VP-2105 — Order History date range: no duplicate / overlapping days.2. Across months, years, short months.TC-VP2105-10: Today filters today; Cancel after paging and picking keeps the applied range @regression",
-                      "state": "passed",
-                      "durationMs": 5486,
-                      "retries": 0
-                    }
-                  ],
-                  "suites": []
-                }
-              ]
-            }
-          ],
-          "totals": {
-            "tests": 10,
-            "passed": 9,
             "failed": 0,
             "skipped": 1,
             "passRate": 100

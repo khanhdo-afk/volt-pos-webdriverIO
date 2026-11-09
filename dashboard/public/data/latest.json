@@ -1,18 +1,18 @@
 {
-  "runId": "2026-11-05T09-58-36-857Z",
-  "startedAt": "2026-11-05T09:58:36.857Z",
-  "finishedAt": "2026-11-05T09:59:06.394Z",
-  "durationMs": 29537,
+  "runId": "2026-11-09T08-02-21-214Z",
+  "startedAt": "2026-11-09T08:02:21.214Z",
+  "finishedAt": "2026-11-09T08:06:08.032Z",
+  "durationMs": 226818,
   "env": {
     "name": "dev",
-    "mode": "attach",
+    "mode": "launch",
     "merchant": "14",
     "app": "volt-pos.exe",
     "upstream": "https://volt-pos.v2.dev-fastboypay.com"
   },
   "totals": {
-    "tests": 1,
-    "passed": 1,
+    "tests": 2,
+    "passed": 2,
     "failed": 0,
     "skipped": 0,
     "passRate": 100
@@ -21,30 +21,49 @@
   "specs": [
     {
       "cid": "0-0",
-      "file": "file:///D:/2.POS/e2e_volt_pos_webdriverIO/tests/regression/settings/vp-4815-passcode-gates.spec.ts",
-      "specName": "vp-4815-passcode-gates",
-      "startedAt": "2026-11-05T09:58:38.677Z",
-      "finishedAt": "2026-11-05T09:59:05.770Z",
-      "durationMs": 27093,
-      "retry": 1,
+      "file": "file:///D:/2.POS/e2e_volt_pos_webdriverIO/tests/regression/sync/vp-4856-stale-echo.spec.ts",
+      "specName": "vp-4856-stale-echo",
+      "startedAt": "2026-11-09T08:02:25.141Z",
+      "finishedAt": "2026-11-09T08:06:03.098Z",
+      "durationMs": 217957,
+      "retry": 2,
       "suites": [
         {
-          "title": "VP-4815 — passcode gates + customer status",
-          "tests": [
+          "title": "VP-4856 — a just-completed order keeps successful / tip / customer through the sync echo",
+          "tests": [],
+          "suites": [
             {
-              "title": "TC-VP4815-07 Scanner → Add Funds asks Quick Checkout (Staff refused), then Sell Gift Card @regression @write @exclusive",
-              "fullTitle": "VP-4815 — passcode gates + customer status.TC-VP4815-07 Scanner → Add Funds asks Quick Checkout (Staff refused), then Sell Gift Card @regression @write @exclusive",
-              "state": "passed",
-              "durationMs": 12470,
-              "retries": 0
+              "title": "1. Card, tip chosen on the customer display (prod scenario)",
+              "tests": [
+                {
+                  "title": "TC-VP4856-02: Card → Adjust Tip after complete → new tip lands, row stays successful @regression @write @payment @dual-window",
+                  "fullTitle": "VP-4856 — a just-completed order keeps successful / tip / customer through the sync echo.1. Card, tip chosen on the customer display (prod scenario).TC-VP4856-02: Card → Adjust Tip after complete → new tip lands, row stays successful @regression @write @payment @dual-window",
+                  "state": "passed",
+                  "durationMs": 109496,
+                  "retries": 0
+                }
+              ],
+              "suites": []
+            },
+            {
+              "title": "2. Cash, tip chosen on the customer display (regression)",
+              "tests": [
+                {
+                  "title": "TC-VP4856-05: Cash → Adjust Tip after complete → new tip lands, row stays successful @regression @write @payment @dual-window",
+                  "fullTitle": "VP-4856 — a just-completed order keeps successful / tip / customer through the sync echo.2. Cash, tip chosen on the customer display (regression).TC-VP4856-05: Cash → Adjust Tip after complete → new tip lands, row stays successful @regression @write @payment @dual-window",
+                  "state": "passed",
+                  "durationMs": 98272,
+                  "retries": 0
+                }
+              ],
+              "suites": []
             }
-          ],
-          "suites": []
+          ]
         }
       ],
       "totals": {
-        "tests": 1,
-        "passed": 1,
+        "tests": 2,
+        "passed": 2,
         "failed": 0,
         "skipped": 0,
         "passRate": 100
