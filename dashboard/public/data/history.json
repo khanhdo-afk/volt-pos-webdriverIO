@@ -1,6 +1,412 @@
 {
-  "updatedAt": "2026-11-07T09:19:49.396Z",
+  "updatedAt": "2026-11-09T08:06:08.032Z",
   "runs": [
+    {
+      "runId": "2026-11-09T08-02-21-214Z",
+      "startedAt": "2026-11-09T08:02:21.214Z",
+      "finishedAt": "2026-11-09T08:06:08.032Z",
+      "durationMs": 226818,
+      "env": {
+        "name": "dev",
+        "mode": "launch",
+        "merchant": "14",
+        "app": "volt-pos.exe",
+        "upstream": "https://volt-pos.v2.dev-fastboypay.com"
+      },
+      "totals": {
+        "tests": 2,
+        "passed": 2,
+        "failed": 0,
+        "skipped": 0,
+        "passRate": 100
+      },
+      "passed": true,
+      "specs": [
+        {
+          "cid": "0-0",
+          "file": "file:///D:/2.POS/e2e_volt_pos_webdriverIO/tests/regression/sync/vp-4856-stale-echo.spec.ts",
+          "specName": "vp-4856-stale-echo",
+          "startedAt": "2026-11-09T08:02:25.141Z",
+          "finishedAt": "2026-11-09T08:06:03.098Z",
+          "durationMs": 217957,
+          "retry": 2,
+          "suites": [
+            {
+              "title": "VP-4856 — a just-completed order keeps successful / tip / customer through the sync echo",
+              "tests": [],
+              "suites": [
+                {
+                  "title": "1. Card, tip chosen on the customer display (prod scenario)",
+                  "tests": [
+                    {
+                      "title": "TC-VP4856-02: Card → Adjust Tip after complete → new tip lands, row stays successful @regression @write @payment @dual-window",
+                      "fullTitle": "VP-4856 — a just-completed order keeps successful / tip / customer through the sync echo.1. Card, tip chosen on the customer display (prod scenario).TC-VP4856-02: Card → Adjust Tip after complete → new tip lands, row stays successful @regression @write @payment @dual-window",
+                      "state": "passed",
+                      "durationMs": 109496,
+                      "retries": 0
+                    }
+                  ],
+                  "suites": []
+                },
+                {
+                  "title": "2. Cash, tip chosen on the customer display (regression)",
+                  "tests": [
+                    {
+                      "title": "TC-VP4856-05: Cash → Adjust Tip after complete → new tip lands, row stays successful @regression @write @payment @dual-window",
+                      "fullTitle": "VP-4856 — a just-completed order keeps successful / tip / customer through the sync echo.2. Cash, tip chosen on the customer display (regression).TC-VP4856-05: Cash → Adjust Tip after complete → new tip lands, row stays successful @regression @write @payment @dual-window",
+                      "state": "passed",
+                      "durationMs": 98272,
+                      "retries": 0
+                    }
+                  ],
+                  "suites": []
+                }
+              ]
+            }
+          ],
+          "totals": {
+            "tests": 2,
+            "passed": 2,
+            "failed": 0,
+            "skipped": 0,
+            "passRate": 100
+          }
+        }
+      ]
+    },
+    {
+      "runId": "2026-11-09T07-49-20-401Z",
+      "startedAt": "2026-11-09T07:49:20.401Z",
+      "finishedAt": "2026-11-09T08:01:29.509Z",
+      "durationMs": 729108,
+      "env": {
+        "name": "dev",
+        "mode": "launch",
+        "merchant": "14",
+        "app": "volt-pos.exe",
+        "upstream": "https://volt-pos.v2.dev-fastboypay.com"
+      },
+      "totals": {
+        "tests": 7,
+        "passed": 5,
+        "failed": 2,
+        "skipped": 0,
+        "passRate": 71.4
+      },
+      "passed": false,
+      "specs": [
+        {
+          "cid": "0-0",
+          "file": "file:///D:/2.POS/e2e_volt_pos_webdriverIO/tests/regression/sync/vp-4856-stale-echo.spec.ts",
+          "specName": "vp-4856-stale-echo",
+          "startedAt": "2026-11-09T07:51:10.769Z",
+          "finishedAt": "2026-11-09T08:01:06.955Z",
+          "durationMs": 596186,
+          "retry": 1,
+          "suites": [
+            {
+              "title": "VP-4856 — a just-completed order keeps successful / tip / customer through the sync echo",
+              "tests": [],
+              "suites": [
+                {
+                  "title": "1. Card, tip chosen on the customer display (prod scenario)",
+                  "tests": [
+                    {
+                      "title": "TC-VP4856-01: Card + display tip → row stays successful with tip and customer through the echo @regression @critical @write @payment @dual-window",
+                      "fullTitle": "VP-4856 — a just-completed order keeps successful / tip / customer through the sync echo.1. Card, tip chosen on the customer display (prod scenario).TC-VP4856-01: Card + display tip → row stays successful with tip and customer through the echo @regression @critical @write @payment @dual-window",
+                      "state": "passed",
+                      "durationMs": 71655,
+                      "retries": 0
+                    },
+                    {
+                      "title": "TC-VP4856-02: Card → Adjust Tip after complete → new tip lands, row stays successful @regression @write @payment @dual-window",
+                      "fullTitle": "VP-4856 — a just-completed order keeps successful / tip / customer through the sync echo.1. Card, tip chosen on the customer display (prod scenario).TC-VP4856-02: Card → Adjust Tip after complete → new tip lands, row stays successful @regression @write @payment @dual-window",
+                      "state": "failed",
+                      "durationMs": 86241,
+                      "retries": 0,
+                      "error": "Passcode was not accepted: the guard is still prompting 15000ms after 4 digit(s) were entered. Check the staff passcode and that the staff holds the permission this action needs.",
+                      "stack": "Error: Passcode was not accepted: the guard is still prompting 15000ms after 4 digit(s) were entered. Check the staff passcode and that the staff holds the permission this action needs.\n    at PasscodeDialog.waitAccepted (D:\\2.POS\\e2e_volt_pos_webdriverIO\\src\\components\\modal\\PasscodeDialog.ts:369:11)\n    at async PasscodeDialog.enter (D:\\2.POS\\e2e_volt_pos_webdriverIO\\src\\components\\modal\\PasscodeDialog.ts:144:5)\n    at async PasscodeDialog.enterIfPresent (D:\\2.POS\\e2e_volt_pos_webdriverIO\\src\\components\\modal\\PasscodeDialog.ts:162:5)\n    at async CdApp.adjustTip (D:\\2.POS\\e2e_volt_pos_webdriverIO\\src\\pages\\voltqc\\cd-e2e\\cdApp.ts:393:5)\n    at async adjustTipOnSuccess (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\sync\\vp-4856.helpers.ts:178:3)\n    at async adjustAndHold (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\sync\\vp-4856-stale-echo.spec.ts:142:3)\n    at async Context.<anonymous> (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\sync\\vp-4856-stale-echo.spec.ts:205:9)\n    at async Context.executeAsync (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\@wdio\\utils\\build\\index.js:1133:20)\n    at async Context.testFrameworkFnWrapper (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\@wdio\\utils\\build\\index.js:1214:14)"
+                    },
+                    {
+                      "title": "TC-VP4856-03: Card twice in a row → both rows hold @regression @write @payment @dual-window",
+                      "fullTitle": "VP-4856 — a just-completed order keeps successful / tip / customer through the sync echo.1. Card, tip chosen on the customer display (prod scenario).TC-VP4856-03: Card twice in a row → both rows hold @regression @write @payment @dual-window",
+                      "state": "passed",
+                      "durationMs": 134989,
+                      "retries": 0
+                    }
+                  ],
+                  "suites": []
+                },
+                {
+                  "title": "2. Cash, tip chosen on the customer display (regression)",
+                  "tests": [
+                    {
+                      "title": "TC-VP4856-04: Cash + display tip → row stays successful with tip and customer @regression @write @payment @dual-window",
+                      "fullTitle": "VP-4856 — a just-completed order keeps successful / tip / customer through the sync echo.2. Cash, tip chosen on the customer display (regression).TC-VP4856-04: Cash + display tip → row stays successful with tip and customer @regression @write @payment @dual-window",
+                      "state": "passed",
+                      "durationMs": 59620,
+                      "retries": 0
+                    },
+                    {
+                      "title": "TC-VP4856-05: Cash → Adjust Tip after complete → new tip lands, row stays successful @regression @write @payment @dual-window",
+                      "fullTitle": "VP-4856 — a just-completed order keeps successful / tip / customer through the sync echo.2. Cash, tip chosen on the customer display (regression).TC-VP4856-05: Cash → Adjust Tip after complete → new tip lands, row stays successful @regression @write @payment @dual-window",
+                      "state": "failed",
+                      "durationMs": 79285,
+                      "retries": 0,
+                      "error": "Passcode was not accepted: the guard is still prompting 15000ms after 4 digit(s) were entered. Check the staff passcode and that the staff holds the permission this action needs.",
+                      "stack": "Error: Passcode was not accepted: the guard is still prompting 15000ms after 4 digit(s) were entered. Check the staff passcode and that the staff holds the permission this action needs.\n    at PasscodeDialog.waitAccepted (D:\\2.POS\\e2e_volt_pos_webdriverIO\\src\\components\\modal\\PasscodeDialog.ts:369:11)\n    at async PasscodeDialog.enter (D:\\2.POS\\e2e_volt_pos_webdriverIO\\src\\components\\modal\\PasscodeDialog.ts:144:5)\n    at async PasscodeDialog.enterIfPresent (D:\\2.POS\\e2e_volt_pos_webdriverIO\\src\\components\\modal\\PasscodeDialog.ts:162:5)\n    at async CdApp.adjustTip (D:\\2.POS\\e2e_volt_pos_webdriverIO\\src\\pages\\voltqc\\cd-e2e\\cdApp.ts:393:5)\n    at async adjustTipOnSuccess (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\sync\\vp-4856.helpers.ts:178:3)\n    at async adjustAndHold (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\sync\\vp-4856-stale-echo.spec.ts:142:3)\n    at async Context.<anonymous> (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\sync\\vp-4856-stale-echo.spec.ts:253:9)\n    at async Context.executeAsync (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\@wdio\\utils\\build\\index.js:1133:20)\n    at async Context.testFrameworkFnWrapper (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\@wdio\\utils\\build\\index.js:1214:14)"
+                    },
+                    {
+                      "title": "TC-VP4856-06: Cash twice in a row → both rows hold @regression @write @payment @dual-window",
+                      "fullTitle": "VP-4856 — a just-completed order keeps successful / tip / customer through the sync echo.2. Cash, tip chosen on the customer display (regression).TC-VP4856-06: Cash twice in a row → both rows hold @regression @write @payment @dual-window",
+                      "state": "passed",
+                      "durationMs": 120011,
+                      "retries": 0
+                    }
+                  ],
+                  "suites": []
+                },
+                {
+                  "title": "3. Order History",
+                  "tests": [
+                    {
+                      "title": "TC-VP4856-07: Order History lists every order this run paid as Successful @regression @dual-window",
+                      "fullTitle": "VP-4856 — a just-completed order keeps successful / tip / customer through the sync echo.3. Order History.TC-VP4856-07: Order History lists every order this run paid as Successful @regression @dual-window",
+                      "state": "passed",
+                      "durationMs": 17142,
+                      "retries": 0
+                    }
+                  ],
+                  "suites": []
+                }
+              ]
+            }
+          ],
+          "totals": {
+            "tests": 7,
+            "passed": 5,
+            "failed": 2,
+            "skipped": 0,
+            "passRate": 71.4
+          }
+        }
+      ]
+    },
+    {
+      "runId": "2026-11-09T07-46-16-775Z",
+      "startedAt": "2026-11-09T07:46:16.775Z",
+      "finishedAt": "2026-11-09T07:49:39.744Z",
+      "durationMs": 202969,
+      "env": {
+        "name": "dev",
+        "mode": "launch",
+        "merchant": "14",
+        "app": "volt-pos.exe",
+        "upstream": "https://volt-pos.v2.dev-fastboypay.com"
+      },
+      "totals": {
+        "tests": 8,
+        "passed": 0,
+        "failed": 7,
+        "skipped": 1,
+        "passRate": 0
+      },
+      "passed": false,
+      "specs": [
+        {
+          "cid": "0-0",
+          "file": "file:///D:/2.POS/e2e_volt_pos_webdriverIO/tests/regression/sync/vp-4856-stale-echo.spec.ts",
+          "specName": "vp-4856-stale-echo",
+          "startedAt": "2026-11-09T07:46:20.618Z",
+          "finishedAt": "2026-11-09T07:49:27.072Z",
+          "durationMs": 186454,
+          "retry": 2,
+          "suites": [
+            {
+              "title": "VP-4856 — a just-completed order keeps successful / tip / customer through the sync echo",
+              "tests": [],
+              "suites": [
+                {
+                  "title": "1. Card, tip chosen on the customer display (prod scenario)",
+                  "tests": [
+                    {
+                      "title": "TC-VP4856-01: Card + display tip → row stays successful with tip and customer through the echo @regression @critical @write @payment @dual-window",
+                      "fullTitle": "VP-4856 — a just-completed order keeps successful / tip / customer through the sync echo.1. Card, tip chosen on the customer display (prod scenario).TC-VP4856-01: Card + display tip → row stays successful with tip and customer through the echo @regression @critical @write @payment @dual-window",
+                      "state": "failed",
+                      "durationMs": 30612,
+                      "retries": 0,
+                      "error": "expect(received).toBe(expected) // Object.is equality",
+                      "stack": "Error: expect(received).toBe(expected) // Object.is equality\n\nExpected: \"ok\"\nReceived: \"no tip on Payment Successful (NaN)\"\n    at ensure (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\volt-qc\\cd-e2e\\cd-e2e.helpers.ts:66:38)\n    at payWithDisplayTip (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\sync\\vp-4856-stale-echo.spec.ts:93:3)\n    at async payAndHold (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\sync\\vp-4856-stale-echo.spec.ts:123:13)\n    at async Context.<anonymous> (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\sync\\vp-4856-stale-echo.spec.ts:190:9)\n    at async Context.executeAsync (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\@wdio\\utils\\build\\index.js:1133:20)\n    at async Context.testFrameworkFnWrapper (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\@wdio\\utils\\build\\index.js:1214:14)"
+                    },
+                    {
+                      "title": "TC-VP4856-02: Card → Adjust Tip after complete → new tip lands, row stays successful @regression @write @payment @dual-window",
+                      "fullTitle": "VP-4856 — a just-completed order keeps successful / tip / customer through the sync echo.1. Card, tip chosen on the customer display (prod scenario).TC-VP4856-02: Card → Adjust Tip after complete → new tip lands, row stays successful @regression @write @payment @dual-window",
+                      "state": "failed",
+                      "durationMs": 27000,
+                      "retries": 0,
+                      "error": "expect(received).toBe(expected) // Object.is equality",
+                      "stack": "Error: expect(received).toBe(expected) // Object.is equality\n\nExpected: \"ok\"\nReceived: \"no tip on Payment Successful (NaN)\"\n    at ensure (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\volt-qc\\cd-e2e\\cd-e2e.helpers.ts:66:38)\n    at payWithDisplayTip (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\sync\\vp-4856-stale-echo.spec.ts:93:3)\n    at async payAndHold (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\sync\\vp-4856-stale-echo.spec.ts:123:13)\n    at async Context.<anonymous> (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\sync\\vp-4856-stale-echo.spec.ts:204:19)\n    at async Context.executeAsync (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\@wdio\\utils\\build\\index.js:1133:20)\n    at async Context.testFrameworkFnWrapper (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\@wdio\\utils\\build\\index.js:1214:14)"
+                    },
+                    {
+                      "title": "TC-VP4856-03: Card twice in a row → both rows hold @regression @write @payment @dual-window",
+                      "fullTitle": "VP-4856 — a just-completed order keeps successful / tip / customer through the sync echo.1. Card, tip chosen on the customer display (prod scenario).TC-VP4856-03: Card twice in a row → both rows hold @regression @write @payment @dual-window",
+                      "state": "failed",
+                      "durationMs": 28417,
+                      "retries": 0,
+                      "error": "expect(received).toBe(expected) // Object.is equality",
+                      "stack": "Error: expect(received).toBe(expected) // Object.is equality\n\nExpected: \"ok\"\nReceived: \"no tip on Payment Successful (NaN)\"\n    at ensure (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\volt-qc\\cd-e2e\\cd-e2e.helpers.ts:66:38)\n    at payWithDisplayTip (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\sync\\vp-4856-stale-echo.spec.ts:93:3)\n    at async payAndHold (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\sync\\vp-4856-stale-echo.spec.ts:123:13)\n    at async Context.<anonymous> (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\sync\\vp-4856-stale-echo.spec.ts:219:9)\n    at async Context.executeAsync (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\@wdio\\utils\\build\\index.js:1133:20)\n    at async Context.testFrameworkFnWrapper (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\@wdio\\utils\\build\\index.js:1214:14)"
+                    }
+                  ],
+                  "suites": []
+                },
+                {
+                  "title": "2. Cash, tip chosen on the customer display (regression)",
+                  "tests": [
+                    {
+                      "title": "TC-VP4856-04: Cash + display tip → row stays successful with tip and customer @regression @write @payment @dual-window",
+                      "fullTitle": "VP-4856 — a just-completed order keeps successful / tip / customer through the sync echo.2. Cash, tip chosen on the customer display (regression).TC-VP4856-04: Cash + display tip → row stays successful with tip and customer @regression @write @payment @dual-window",
+                      "state": "failed",
+                      "durationMs": 19572,
+                      "retries": 0,
+                      "error": "expect(received).toBe(expected) // Object.is equality",
+                      "stack": "Error: expect(received).toBe(expected) // Object.is equality\n\nExpected: \"ok\"\nReceived: \"no tip on Payment Successful (NaN)\"\n    at ensure (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\volt-qc\\cd-e2e\\cd-e2e.helpers.ts:66:38)\n    at payWithDisplayTip (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\sync\\vp-4856-stale-echo.spec.ts:93:3)\n    at async payAndHold (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\sync\\vp-4856-stale-echo.spec.ts:123:13)\n    at async Context.<anonymous> (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\sync\\vp-4856-stale-echo.spec.ts:238:9)\n    at async Context.executeAsync (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\@wdio\\utils\\build\\index.js:1133:20)\n    at async Context.testFrameworkFnWrapper (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\@wdio\\utils\\build\\index.js:1214:14)"
+                    },
+                    {
+                      "title": "TC-VP4856-05: Cash → Adjust Tip after complete → new tip lands, row stays successful @regression @write @payment @dual-window",
+                      "fullTitle": "VP-4856 — a just-completed order keeps successful / tip / customer through the sync echo.2. Cash, tip chosen on the customer display (regression).TC-VP4856-05: Cash → Adjust Tip after complete → new tip lands, row stays successful @regression @write @payment @dual-window",
+                      "state": "failed",
+                      "durationMs": 19490,
+                      "retries": 0,
+                      "error": "expect(received).toBe(expected) // Object.is equality",
+                      "stack": "Error: expect(received).toBe(expected) // Object.is equality\n\nExpected: \"ok\"\nReceived: \"no tip on Payment Successful (NaN)\"\n    at ensure (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\volt-qc\\cd-e2e\\cd-e2e.helpers.ts:66:38)\n    at payWithDisplayTip (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\sync\\vp-4856-stale-echo.spec.ts:93:3)\n    at async payAndHold (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\sync\\vp-4856-stale-echo.spec.ts:123:13)\n    at async Context.<anonymous> (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\sync\\vp-4856-stale-echo.spec.ts:252:19)\n    at async Context.executeAsync (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\@wdio\\utils\\build\\index.js:1133:20)\n    at async Context.testFrameworkFnWrapper (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\@wdio\\utils\\build\\index.js:1214:14)"
+                    },
+                    {
+                      "title": "TC-VP4856-06: Cash twice in a row → both rows hold @regression @write @payment @dual-window",
+                      "fullTitle": "VP-4856 — a just-completed order keeps successful / tip / customer through the sync echo.2. Cash, tip chosen on the customer display (regression).TC-VP4856-06: Cash twice in a row → both rows hold @regression @write @payment @dual-window",
+                      "state": "failed",
+                      "durationMs": 19507,
+                      "retries": 0,
+                      "error": "expect(received).toBe(expected) // Object.is equality",
+                      "stack": "Error: expect(received).toBe(expected) // Object.is equality\n\nExpected: \"ok\"\nReceived: \"no tip on Payment Successful (NaN)\"\n    at ensure (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\volt-qc\\cd-e2e\\cd-e2e.helpers.ts:66:38)\n    at payWithDisplayTip (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\sync\\vp-4856-stale-echo.spec.ts:93:3)\n    at async payAndHold (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\sync\\vp-4856-stale-echo.spec.ts:123:13)\n    at async Context.<anonymous> (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\sync\\vp-4856-stale-echo.spec.ts:267:9)\n    at async Context.executeAsync (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\@wdio\\utils\\build\\index.js:1133:20)\n    at async Context.testFrameworkFnWrapper (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\@wdio\\utils\\build\\index.js:1214:14)"
+                    }
+                  ],
+                  "suites": []
+                },
+                {
+                  "title": "3. Order History",
+                  "tests": [
+                    {
+                      "title": "TC-VP4856-07: Order History lists every order this run paid as Successful @regression @dual-window",
+                      "fullTitle": "VP-4856 — a just-completed order keeps successful / tip / customer through the sync echo.3. Order History.TC-VP4856-07: Order History lists every order this run paid as Successful @regression @dual-window",
+                      "state": "skipped",
+                      "durationMs": 0,
+                      "retries": 0
+                    },
+                    {
+                      "title": "\"before each\" hook: beforeEach for \"TC-VP4856-07: Order History lists every order this run paid as Successful @regression @dual-window\"",
+                      "fullTitle": "\"before each\" hook: beforeEach for \"TC-VP4856-07: Order History lists every order this run paid as Successful @regression @dual-window\"",
+                      "state": "failed",
+                      "durationMs": 1090,
+                      "retries": 0,
+                      "error": "switch to the main window failed after 3 attempt(s). Last error: WebDriverError: invalid session id when running \"window/handles\" with method \"GET\"",
+                      "stack": "Error: switch to the main window failed after 3 attempt(s). Last error: WebDriverError: invalid session id when running \"window/handles\" with method \"GET\"\n    at retry (D:\\2.POS\\e2e_volt_pos_webdriverIO\\src\\helpers\\wait.ts:90:9)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async switchToMain (D:\\2.POS\\e2e_volt_pos_webdriverIO\\src\\helpers\\window.ts:160:3)\n    at async Context.beforeEach (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\setup\\rootHooks.ts:256:5)"
+                    }
+                  ],
+                  "suites": []
+                }
+              ]
+            }
+          ],
+          "totals": {
+            "tests": 8,
+            "passed": 0,
+            "failed": 7,
+            "skipped": 1,
+            "passRate": 0
+          }
+        }
+      ]
+    },
+    {
+      "runId": "2026-11-09T07-45-16-853Z",
+      "startedAt": "2026-11-09T07:45:16.853Z",
+      "finishedAt": "2026-11-09T07:45:49.328Z",
+      "durationMs": 32475,
+      "env": {
+        "name": "dev",
+        "mode": "attach",
+        "merchant": "14",
+        "app": "(unresolved)",
+        "upstream": "https://volt-pos.v2.dev-fastboypay.com"
+      },
+      "totals": {
+        "tests": 0,
+        "passed": 0,
+        "failed": 0,
+        "skipped": 0,
+        "passRate": 100
+      },
+      "passed": true,
+      "specs": [
+        {
+          "cid": "0-0",
+          "file": "file:///D:/2.POS/e2e_volt_pos_webdriverIO/tests/regression/sync/vp-4856-stale-echo.spec.ts",
+          "specName": "vp-4856-stale-echo",
+          "startedAt": "2026-11-09T07:45:18.670Z",
+          "finishedAt": "2026-11-09T07:45:48.933Z",
+          "durationMs": 30263,
+          "retry": 1,
+          "suites": [],
+          "totals": {
+            "tests": 0,
+            "passed": 0,
+            "failed": 0,
+            "skipped": 0,
+            "passRate": 100
+          }
+        }
+      ]
+    },
+    {
+      "runId": "2026-11-09T07-43-53-746Z",
+      "startedAt": "2026-11-09T07:43:53.746Z",
+      "finishedAt": "2026-11-09T07:44:27.708Z",
+      "durationMs": 33962,
+      "env": {
+        "name": "dev",
+        "mode": "attach",
+        "merchant": "14",
+        "app": "(unresolved)",
+        "upstream": "https://volt-pos.v2.dev-fastboypay.com"
+      },
+      "totals": {
+        "tests": 0,
+        "passed": 0,
+        "failed": 0,
+        "skipped": 0,
+        "passRate": 100
+      },
+      "passed": true,
+      "specs": [
+        {
+          "cid": "0-0",
+          "file": "file:///D:/2.POS/e2e_volt_pos_webdriverIO/tests/regression/sync/vp-4856-stale-echo.spec.ts",
+          "specName": "vp-4856-stale-echo",
+          "startedAt": "2026-11-09T07:43:56.936Z",
+          "finishedAt": "2026-11-09T07:44:27.294Z",
+          "durationMs": 30358,
+          "retry": 1,
+          "suites": [],
+          "totals": {
+            "tests": 0,
+            "passed": 0,
+            "failed": 0,
+            "skipped": 0,
+            "passRate": 100
+          }
+        }
+      ]
+    },
     {
       "runId": "2026-11-07T09-17-22-579Z",
       "startedAt": "2026-11-07T09:17:22.579Z",
@@ -7714,879 +8120,6 @@
             "failed": 0,
             "skipped": 0,
             "passRate": 100
-          }
-        }
-      ]
-    },
-    {
-      "runId": "2026-11-05T04-01-39-900Z",
-      "startedAt": "2026-11-05T04:01:39.900Z",
-      "finishedAt": "2026-11-05T04:06:35.783Z",
-      "durationMs": 295883,
-      "env": {
-        "name": "dev",
-        "mode": "attach",
-        "merchant": "14",
-        "app": "volt-pos.exe",
-        "upstream": "https://volt-pos.v2.dev-fastboypay.com"
-      },
-      "totals": {
-        "tests": 13,
-        "passed": 4,
-        "failed": 6,
-        "skipped": 3,
-        "passRate": 40
-      },
-      "passed": false,
-      "specs": [
-        {
-          "cid": "0-0",
-          "file": "file:///D:/2.POS/e2e_volt_pos_webdriverIO/tests/regression/customer-display/vp-5195-phone-reject.spec.ts",
-          "specName": "vp-5195-phone-reject",
-          "startedAt": "2026-11-05T04:01:41.647Z",
-          "finishedAt": "2026-11-05T04:06:33.871Z",
-          "durationMs": 292224,
-          "retry": 1,
-          "suites": [
-            {
-              "title": "VP-5195 — customer display \"No, enter again\" takes the refused customer off the order",
-              "tests": [],
-              "suites": [
-                {
-                  "title": "1. \"No, enter again\"",
-                  "tests": [
-                    {
-                      "title": "TC-VP5195-01: No → staff order drops the customer, shows the toast, reopens the keypad @regression @critical @write @dual-window",
-                      "fullTitle": "VP-5195 — customer display \"No, enter again\" takes the refused customer off the order.1. \"No, enter again\".TC-VP5195-01: No → staff order drops the customer, shows the toast, reopens the keypad @regression @critical @write @dual-window",
-                      "state": "failed",
-                      "durationMs": 28334,
-                      "retries": 0,
-                      "error": "expect(received).toBe(expected) // Object.is equality",
-                      "stack": "Error: expect(received).toBe(expected) // Object.is equality\n\nExpected: \"ok\"\nReceived: \"no rejection toast; toasts on screen: []\"\n    at ensure (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\volt-qc\\cd-e2e\\cd-e2e.helpers.ts:66:38)\n    at Context.<anonymous> (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\customer-display\\vp-5195-phone-reject.spec.ts:89:9)\n    at async Context.executeAsync (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\@wdio\\utils\\build\\index.js:1133:20)\n    at async Context.testFrameworkFnWrapper (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\@wdio\\utils\\build\\index.js:1214:14)"
-                    },
-                    {
-                      "title": "TC-VP5195-02: after No the customer display is back on an empty keypad with the cart still shown @regression @write @dual-window",
-                      "fullTitle": "VP-5195 — customer display \"No, enter again\" takes the refused customer off the order.1. \"No, enter again\".TC-VP5195-02: after No the customer display is back on an empty keypad with the cart still shown @regression @write @dual-window",
-                      "state": "passed",
-                      "durationMs": 25888,
-                      "retries": 0
-                    },
-                    {
-                      "title": "TC-VP5195-03: after No the customer keys another number → that customer is attached, not the refused one @regression @write @dual-window",
-                      "fullTitle": "VP-5195 — customer display \"No, enter again\" takes the refused customer off the order.1. \"No, enter again\".TC-VP5195-03: after No the customer keys another number → that customer is attached, not the refused one @regression @write @dual-window",
-                      "state": "passed",
-                      "durationMs": 28239,
-                      "retries": 0
-                    },
-                    {
-                      "title": "TC-VP5195-04: after No the customer keys the same number again → re-attached @regression @write @dual-window",
-                      "fullTitle": "VP-5195 — customer display \"No, enter again\" takes the refused customer off the order.1. \"No, enter again\".TC-VP5195-04: after No the customer keys the same number again → re-attached @regression @write @dual-window",
-                      "state": "passed",
-                      "durationMs": 27732,
-                      "retries": 0
-                    },
-                    {
-                      "title": "TC-VP5195-05: Yes keeps the customer and raises no rejection toast (regression) @regression @write @dual-window",
-                      "fullTitle": "VP-5195 — customer display \"No, enter again\" takes the refused customer off the order.1. \"No, enter again\".TC-VP5195-05: Yes keeps the customer and raises no rejection toast (regression) @regression @write @dual-window",
-                      "state": "passed",
-                      "durationMs": 12872,
-                      "retries": 0
-                    }
-                  ],
-                  "suites": []
-                },
-                {
-                  "title": "2. Rewards / promotions / custom discount",
-                  "tests": [
-                    {
-                      "title": "TC-VP5195-06: No with a promotion + reward → both dropped; Pending card and stored total follow the panel (VP-5711) @regression @critical @write @dual-window @broken",
-                      "fullTitle": "VP-5195 — customer display \"No, enter again\" takes the refused customer off the order.2. Rewards / promotions / custom discount.TC-VP5195-06: No with a promotion + reward → both dropped; Pending card and stored total follow the panel (VP-5711) @regression @critical @write @dual-window @broken",
-                      "state": "failed",
-                      "durationMs": 24306,
-                      "retries": 0,
-                      "error": "Step \"Apply \"Remind after 15 days not visit\" + \"Reward 10%\"\" failed after 15005ms: Never appeared: {\"role\":\"button\",\"name\":\"Promo & Rewards\",\"nth\":0}",
-                      "stack": "Error: Step \"Apply \"Remind after 15 days not visit\" + \"Reward 10%\"\" failed after 15005ms: Never appeared: {\"role\":\"button\",\"name\":\"Promo & Rewards\",\"nth\":0}\n    at step (D:\\2.POS\\e2e_volt_pos_webdriverIO\\src\\helpers\\steps.ts:139:11)\n    at async Context.<anonymous> (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\customer-display\\vp-5195-phone-reject.spec.ts:210:9)\n    at async Context.executeAsync (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\@wdio\\utils\\build\\index.js:1133:20)\n    at async Context.testFrameworkFnWrapper (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\@wdio\\utils\\build\\index.js:1214:14)"
-                    },
-                    {
-                      "title": "TC-VP5195-07: No with custom discount + reward → reward dropped, custom discount kept @regression @write @dual-window",
-                      "fullTitle": "VP-5195 — customer display \"No, enter again\" takes the refused customer off the order.2. Rewards / promotions / custom discount.TC-VP5195-07: No with custom discount + reward → reward dropped, custom discount kept @regression @write @dual-window",
-                      "state": "failed",
-                      "durationMs": 17660,
-                      "retries": 0,
-                      "error": "Never appeared: {\"role\":\"button\",\"name\":\"Quick Checkout\",\"nth\":0}",
-                      "stack": "Error: Never appeared: {\"role\":\"button\",\"name\":\"Quick Checkout\",\"nth\":0}\n    at <anonymous> (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\webdriverio\\build\\node.js:6278:15)\n    at async Browser.wrapCommandFn (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\@wdio\\utils\\build\\index.js:1007:23)\n    at async VoltQcProbe.waitFor (D:\\2.POS\\e2e_volt_pos_webdriverIO\\src\\pages\\voltqc\\pos\\VoltQcProbe.ts:251:5)\n    at async VoltQcProbe.clickQ (D:\\2.POS\\e2e_volt_pos_webdriverIO\\src\\pages\\voltqc\\pos\\VoltQcProbe.ts:283:5)\n    at async CdApp.quickCheckout (D:\\2.POS\\e2e_volt_pos_webdriverIO\\src\\pages\\voltqc\\cd-e2e\\cdApp.ts:255:7)\n    at async CdApp.createOrder (D:\\2.POS\\e2e_volt_pos_webdriverIO\\src\\pages\\voltqc\\cd-e2e\\cdApp.ts:343:5)\n    at async orderAskingA (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\customer-display\\vp-5195-phone-reject.spec.ts:45:22)\n    at async Context.<anonymous> (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\customer-display\\vp-5195-phone-reject.spec.ts:248:22)\n    at async Context.executeAsync (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\@wdio\\utils\\build\\index.js:1133:20)\n    at async Context.testFrameworkFnWrapper (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\@wdio\\utils\\build\\index.js:1214:14)"
-                    },
-                    {
-                      "title": "TC-VP5195-08: cashier removes the customer by hand → promotion + reward dropped, card total updated @regression @write @dual-window",
-                      "fullTitle": "VP-5195 — customer display \"No, enter again\" takes the refused customer off the order.2. Rewards / promotions / custom discount.TC-VP5195-08: cashier removes the customer by hand → promotion + reward dropped, card total updated @regression @write @dual-window",
-                      "state": "failed",
-                      "durationMs": 17657,
-                      "retries": 0,
-                      "error": "Never appeared: {\"role\":\"button\",\"name\":\"Quick Checkout\",\"nth\":0}",
-                      "stack": "Error: Never appeared: {\"role\":\"button\",\"name\":\"Quick Checkout\",\"nth\":0}\n    at <anonymous> (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\webdriverio\\build\\node.js:6278:15)\n    at async Browser.wrapCommandFn (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\@wdio\\utils\\build\\index.js:1007:23)\n    at async VoltQcProbe.waitFor (D:\\2.POS\\e2e_volt_pos_webdriverIO\\src\\pages\\voltqc\\pos\\VoltQcProbe.ts:251:5)\n    at async VoltQcProbe.clickQ (D:\\2.POS\\e2e_volt_pos_webdriverIO\\src\\pages\\voltqc\\pos\\VoltQcProbe.ts:283:5)\n    at async CdApp.quickCheckout (D:\\2.POS\\e2e_volt_pos_webdriverIO\\src\\pages\\voltqc\\cd-e2e\\cdApp.ts:255:7)\n    at async CdApp.createOrder (D:\\2.POS\\e2e_volt_pos_webdriverIO\\src\\pages\\voltqc\\cd-e2e\\cdApp.ts:343:5)\n    at async orderAskingA (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\customer-display\\vp-5195-phone-reject.spec.ts:45:22)\n    at async Context.<anonymous> (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\customer-display\\vp-5195-phone-reject.spec.ts:277:22)\n    at async Context.executeAsync (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\@wdio\\utils\\build\\index.js:1133:20)\n    at async Context.testFrameworkFnWrapper (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\@wdio\\utils\\build\\index.js:1214:14)"
-                    }
-                  ],
-                  "suites": []
-                },
-                {
-                  "title": "3. Lock while paying, and payment after \"No\"",
-                  "tests": [
-                    {
-                      "title": "TC-VP5195-09: Pay while the display still asks → \"No, enter again\" is no longer offered @regression @write @dual-window",
-                      "fullTitle": "VP-5195 — customer display \"No, enter again\" takes the refused customer off the order.3. Lock while paying, and payment after \"No\".TC-VP5195-09: Pay while the display still asks → \"No, enter again\" is no longer offered @regression @write @dual-window",
-                      "state": "failed",
-                      "durationMs": 17601,
-                      "retries": 0,
-                      "error": "Never appeared: {\"role\":\"button\",\"name\":\"Quick Checkout\",\"nth\":0}",
-                      "stack": "Error: Never appeared: {\"role\":\"button\",\"name\":\"Quick Checkout\",\"nth\":0}\n    at <anonymous> (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\webdriverio\\build\\node.js:6278:15)\n    at async Browser.wrapCommandFn (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\@wdio\\utils\\build\\index.js:1007:23)\n    at async VoltQcProbe.waitFor (D:\\2.POS\\e2e_volt_pos_webdriverIO\\src\\pages\\voltqc\\pos\\VoltQcProbe.ts:251:5)\n    at async VoltQcProbe.clickQ (D:\\2.POS\\e2e_volt_pos_webdriverIO\\src\\pages\\voltqc\\pos\\VoltQcProbe.ts:283:5)\n    at async CdApp.quickCheckout (D:\\2.POS\\e2e_volt_pos_webdriverIO\\src\\pages\\voltqc\\cd-e2e\\cdApp.ts:255:7)\n    at async CdApp.createOrder (D:\\2.POS\\e2e_volt_pos_webdriverIO\\src\\pages\\voltqc\\cd-e2e\\cdApp.ts:343:5)\n    at async orderAskingA (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\customer-display\\vp-5195-phone-reject.spec.ts:45:22)\n    at async Context.<anonymous> (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\customer-display\\vp-5195-phone-reject.spec.ts:306:9)\n    at async Context.executeAsync (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\@wdio\\utils\\build\\index.js:1133:20)\n    at async Context.testFrameworkFnWrapper (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\@wdio\\utils\\build\\index.js:1214:14)"
-                    },
-                    {
-                      "title": "TC-VP5195-10: pay after No without re-keying → order paid with no customer, refused customer earns nothing @regression @critical @write @payment @dual-window",
-                      "fullTitle": "VP-5195 — customer display \"No, enter again\" takes the refused customer off the order.3. Lock while paying, and payment after \"No\".TC-VP5195-10: pay after No without re-keying → order paid with no customer, refused customer earns nothing @regression @critical @write @payment @dual-window",
-                      "state": "failed",
-                      "durationMs": 220,
-                      "retries": 0,
-                      "error": "GraphQL operation \"vp5195Customer\" failed: Unknown field \"customerList\" on type \"Query\". Did you mean \"customerInfo\"?",
-                      "stack": "GraphQLQueryError: GraphQL operation \"vp5195Customer\" failed: Unknown field \"customerList\" on type \"Query\". Did you mean \"customerInfo\"?\nIf this says Unknown field, the query in src/api/services is ahead of (or behind) the schema this build ships. Diff it against ${VOLT_POS_SRC}/src/generated/schema.graphql before touching the spec.\n    at unwrap (D:\\2.POS\\e2e_volt_pos_webdriverIO\\src\\api\\GraphQLClient.ts:138:11)\n    at GraphQLClient.query (D:\\2.POS\\e2e_volt_pos_webdriverIO\\src\\api\\GraphQLClient.ts:81:16)\n    at async read (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\customer-display\\vp-5195.helpers.ts:201:7)\n    at async customerByPhone (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\customer-display\\vp-5195.helpers.ts:206:14)\n    at async Context.<anonymous> (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\customer-display\\vp-5195-phone-reject.spec.ts:325:24)\n    at async Context.executeAsync (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\@wdio\\utils\\build\\index.js:1133:20)\n    at async Context.testFrameworkFnWrapper (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\@wdio\\utils\\build\\index.js:1214:14)"
-                    },
-                    {
-                      "title": "TC-VP5195-11: re-opened order offers no \"No, enter again\" — PENDING (covered by tests/regression/volt-qc/cd-e2e/cd-phone.spec.ts CD-028)",
-                      "fullTitle": "VP-5195 — customer display \"No, enter again\" takes the refused customer off the order.3. Lock while paying, and payment after \"No\".TC-VP5195-11: re-opened order offers no \"No, enter again\" — PENDING (covered by tests/regression/volt-qc/cd-e2e/cd-phone.spec.ts CD-028)",
-                      "state": "skipped",
-                      "durationMs": 0,
-                      "retries": 0
-                    },
-                    {
-                      "title": "TC-VP5195-12: Vietnamese toast copy — PENDING (app language is merchant-global @exclusive state; run by hand)",
-                      "fullTitle": "VP-5195 — customer display \"No, enter again\" takes the refused customer off the order.3. Lock while paying, and payment after \"No\".TC-VP5195-12: Vietnamese toast copy — PENDING (app language is merchant-global @exclusive state; run by hand)",
-                      "state": "skipped",
-                      "durationMs": 0,
-                      "retries": 0
-                    },
-                    {
-                      "title": "TC-VP5195-13: semi / D5 customer display — PENDING (Android devices, not on the Windows lane)",
-                      "fullTitle": "VP-5195 — customer display \"No, enter again\" takes the refused customer off the order.3. Lock while paying, and payment after \"No\".TC-VP5195-13: semi / D5 customer display — PENDING (Android devices, not on the Windows lane)",
-                      "state": "skipped",
-                      "durationMs": 0,
-                      "retries": 0
-                    }
-                  ],
-                  "suites": []
-                }
-              ]
-            }
-          ],
-          "totals": {
-            "tests": 13,
-            "passed": 4,
-            "failed": 6,
-            "skipped": 3,
-            "passRate": 40
-          }
-        }
-      ]
-    },
-    {
-      "runId": "2026-11-05T04-00-28-916Z",
-      "startedAt": "2026-11-05T04:00:28.916Z",
-      "finishedAt": "2026-11-05T04:00:42.728Z",
-      "durationMs": 13812,
-      "env": {
-        "name": "dev",
-        "mode": "attach",
-        "merchant": "14",
-        "app": "volt-pos.exe",
-        "upstream": "https://volt-pos.v2.dev-fastboypay.com"
-      },
-      "totals": {
-        "tests": 1,
-        "passed": 0,
-        "failed": 1,
-        "skipped": 0,
-        "passRate": 0
-      },
-      "passed": false,
-      "specs": [
-        {
-          "cid": "0-0",
-          "file": "file:///D:/2.POS/e2e_volt_pos_webdriverIO/tests/regression/customer-display/vp-5195-phone-reject.spec.ts",
-          "specName": "vp-5195-phone-reject",
-          "startedAt": "2026-11-05T04:00:31.789Z",
-          "finishedAt": "2026-11-05T04:00:42.294Z",
-          "durationMs": 10505,
-          "retry": 1,
-          "suites": [
-            {
-              "title": "VP-5195 — customer display \"No, enter again\" takes the refused customer off the order",
-              "tests": [
-                {
-                  "title": "\"before all\" hook for VP-5195 — customer display \"No, enter again\" takes the refused customer off the order",
-                  "fullTitle": "\"before all\" hook for VP-5195 — customer display \"No, enter again\" takes the refused customer off the order",
-                  "state": "failed",
-                  "durationMs": 124,
-                  "retries": 0,
-                  "error": "Phone 2052051122 matches 0 customers — set VP5195_PHONE_A/B to a unique number.",
-                  "stack": "Error: Phone 2052051122 matches 0 customers — set VP5195_PHONE_A/B to a unique number.\n    at customerByPhone (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\customer-display\\vp-5195.helpers.ts:200:11)\n    at async Context.<anonymous> (D:\\2.POS\\e2e_volt_pos_webdriverIO\\tests\\regression\\customer-display\\vp-5195-phone-reject.spec.ts:62:5)\n    at async Context.executeAsync (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\@wdio\\utils\\build\\index.js:1133:20)\n    at async Context.testFrameworkFnWrapper (D:\\2.POS\\e2e_volt_pos_webdriverIO\\node_modules\\@wdio\\utils\\build\\index.js:1214:14)"
-                }
-              ],
-              "suites": []
-            }
-          ],
-          "totals": {
-            "tests": 1,
-            "passed": 0,
-            "failed": 1,
-            "skipped": 0,
-            "passRate": 0
-          }
-        }
-      ]
-    },
-    {
-      "runId": "2026-11-04T08-37-48-544Z",
-      "startedAt": "2026-11-04T08:37:48.544Z",
-      "finishedAt": "2026-11-04T08:40:02.116Z",
-      "durationMs": 133572,
-      "env": {
-        "name": "dev",
-        "mode": "launch",
-        "merchant": "14",
-        "app": "volt-pos.exe",
-        "upstream": "https://volt-pos.v2.dev-fastboypay.com"
-      },
-      "totals": {
-        "tests": 4,
-        "passed": 4,
-        "failed": 0,
-        "skipped": 0,
-        "passRate": 100
-      },
-      "passed": true,
-      "specs": [
-        {
-          "cid": "0-0",
-          "file": "file:///D:/Project/webdriverIO_volt_pos/tests/regression/order-flow/vp-5203-other-payment-name.spec.ts",
-          "specName": "vp-5203-other-payment-name",
-          "startedAt": "2026-11-04T08:37:59.655Z",
-          "finishedAt": "2026-11-04T08:39:55.172Z",
-          "durationMs": 115517,
-          "retry": 1,
-          "suites": [
-            {
-              "title": "VP-5203 — Order History keeps the Other payment method name",
-              "tests": [
-                {
-                  "title": "TC-5203-01 installed POS build carries the fix (>= 1.1.88) @regression",
-                  "fullTitle": "VP-5203 — Order History keeps the Other payment method name.TC-5203-01 installed POS build carries the fix (>= 1.1.88) @regression",
-                  "state": "passed",
-                  "durationMs": 250,
-                  "retries": 0
-                },
-                {
-                  "title": "TC-5203-02/03 plain order paid Other with a name: success shows \"Other (<name>)\" and Order History Payment Details keeps \"<name> - Amount\" @regression @write @payment @dual-window",
-                  "fullTitle": "VP-5203 — Order History keeps the Other payment method name.TC-5203-02/03 plain order paid Other with a name: success shows \"Other (<name>)\" and Order History Payment Details keeps \"<name> - Amount\" @regression @write @payment @dual-window",
-                  "state": "passed",
-                  "durationMs": 21081,
-                  "retries": 0
-                },
-                {
-                  "title": "TC-5203-04 split order: each check paid Other under its own name → both names in Order History Payment Details @regression @write @payment @dual-window",
-                  "fullTitle": "VP-5203 — Order History keeps the Other payment method name.TC-5203-04 split order: each check paid Other under its own name → both names in Order History Payment Details @regression @write @payment @dual-window",
-                  "state": "passed",
-                  "durationMs": 33242,
-                  "retries": 0
-                },
-                {
-                  "title": "TC-5203-05 Other with no name still settles; Payment Details reads \"Amount: $x\" with no null/undefined @regression @write @payment @dual-window",
-                  "fullTitle": "VP-5203 — Order History keeps the Other payment method name.TC-5203-05 Other with no name still settles; Payment Details reads \"Amount: $x\" with no null/undefined @regression @write @payment @dual-window",
-                  "state": "passed",
-                  "durationMs": 22337,
-                  "retries": 0
-                }
-              ],
-              "suites": []
-            }
-          ],
-          "totals": {
-            "tests": 4,
-            "passed": 4,
-            "failed": 0,
-            "skipped": 0,
-            "passRate": 100
-          }
-        }
-      ]
-    },
-    {
-      "runId": "2026-11-04T08-34-14-023Z",
-      "startedAt": "2026-11-04T08:34:14.023Z",
-      "finishedAt": "2026-11-04T08:36:09.617Z",
-      "durationMs": 115594,
-      "env": {
-        "name": "dev",
-        "mode": "launch",
-        "merchant": "14",
-        "app": "volt-pos.exe",
-        "upstream": "https://volt-pos.v2.dev-fastboypay.com"
-      },
-      "totals": {
-        "tests": 4,
-        "passed": 3,
-        "failed": 1,
-        "skipped": 0,
-        "passRate": 75
-      },
-      "passed": false,
-      "specs": [
-        {
-          "cid": "0-0",
-          "file": "file:///D:/Project/webdriverIO_volt_pos/tests/regression/order-flow/vp-5203-other-payment-name.spec.ts",
-          "specName": "vp-5203-other-payment-name",
-          "startedAt": "2026-11-04T08:34:28.820Z",
-          "finishedAt": "2026-11-04T08:35:58.267Z",
-          "durationMs": 89447,
-          "retry": 1,
-          "suites": [
-            {
-              "title": "VP-5203 — Order History keeps the Other payment method name",
-              "tests": [
-                {
-                  "title": "TC-5203-01 installed POS build carries the fix (>= 1.1.88) @regression",
-                  "fullTitle": "VP-5203 — Order History keeps the Other payment method name.TC-5203-01 installed POS build carries the fix (>= 1.1.88) @regression",
-                  "state": "passed",
-                  "durationMs": 276,
-                  "retries": 0
-                },
-                {
-                  "title": "TC-5203-02/03 plain order paid Other with a name: success shows \"Other (<name>)\" and Order History Payment Details keeps \"<name> - Amount\" @regression @write @payment @dual-window",
-                  "fullTitle": "VP-5203 — Order History keeps the Other payment method name.TC-5203-02/03 plain order paid Other with a name: success shows \"Other (<name>)\" and Order History Payment Details keeps \"<name> - Amount\" @regression @write @payment @dual-window",
-                  "state": "failed",
-                  "durationMs": 14375,
-                  "retries": 0,
-                  "error": "Step \"TC-5203-03: Order History › Payment Details shows the name\" failed after 3192ms: clickQ(): nothing matches {\"css\":\"main a[href^=\\\"/order-history/\\\"]\",\"nth\":0}",
-                  "message": "Step \"TC-5203-03: Order History › Payment Details shows the name\" failed after 3192ms: clickQ(): nothing matches {\"css\":\"main a[href^=\\\"/order-history/\\\"]\",\"nth\":0}",
-                  "stack": "Error: Step \"TC-5203-03: Order History › Payment Details shows the name\" failed after 3192ms: clickQ(): nothing matches {\"css\":\"main a[href^=\\\"/order-history/\\\"]\",\"nth\":0}\n    at step (D:\\Project\\webdriverIO_volt_pos\\src\\helpers\\steps.ts:141:11)\n    at async Context.<anonymous> (D:\\Project\\webdriverIO_volt_pos\\tests\\regression\\order-flow\\vp-5203-other-payment-name.spec.ts:109:7)\n    at async Context.executeAsync (D:\\Project\\webdriverIO_volt_pos\\node_modules\\@wdio\\utils\\build\\index.js:1133:20)\n    at async Context.testFrameworkFnWrapper (D:\\Project\\webdriverIO_volt_pos\\node_modules\\@wdio\\utils\\build\\index.js:1214:14)",
-                  "evidence": "regression-order-flow-vp-5203-other-payment-name__tc-5203-02-03-plain-order-paid-other-with-a-name-success-shows-other-name-and-or__2026-11-04T08-34-54-729Z"
-                },
-                {
-                  "title": "TC-5203-04 split order: each check paid Other under its own name → both names in Order History Payment Details @regression @write @payment @dual-window",
-                  "fullTitle": "VP-5203 — Order History keeps the Other payment method name.TC-5203-04 split order: each check paid Other under its own name → both names in Order History Payment Details @regression @write @payment @dual-window",
-                  "state": "passed",
-                  "durationMs": 40775,
-                  "retries": 0
-                },
-                {
-                  "title": "TC-5203-05 Other with no name still settles; Payment Details reads \"Amount: $x\" with no null/undefined @regression @write @payment @dual-window",
-                  "fullTitle": "VP-5203 — Order History keeps the Other payment method name.TC-5203-05 Other with no name still settles; Payment Details reads \"Amount: $x\" with no null/undefined @regression @write @payment @dual-window",
-                  "state": "passed",
-                  "durationMs": 13365,
-                  "retries": 0
-                }
-              ],
-              "suites": []
-            }
-          ],
-          "totals": {
-            "tests": 4,
-            "passed": 3,
-            "failed": 1,
-            "skipped": 0,
-            "passRate": 75
-          }
-        }
-      ]
-    },
-    {
-      "runId": "2026-11-04T05-43-17-651Z",
-      "startedAt": "2026-11-04T05:43:17.651Z",
-      "finishedAt": "2026-11-04T06:25:51.046Z",
-      "durationMs": 2553395,
-      "env": {
-        "name": "dev",
-        "mode": "attach",
-        "merchant": "14",
-        "app": "volt-pos.exe",
-        "upstream": "https://volt-pos.v2.dev-fastboypay.com"
-      },
-      "totals": {
-        "tests": 43,
-        "passed": 26,
-        "failed": 14,
-        "skipped": 3,
-        "passRate": 65
-      },
-      "passed": false,
-      "specs": [
-        {
-          "cid": "0-2",
-          "file": "file:///D:/Project/webdriverIO_volt_pos/tests/regression/volt-qc/pos/home.spec.ts",
-          "specName": "home",
-          "startedAt": "2026-11-04T06:17:33.843Z",
-          "finishedAt": "2026-11-04T06:19:08.177Z",
-          "durationMs": 94334,
-          "retry": 1,
-          "suites": [
-            {
-              "title": "volt-qc 02 HOME — read-only",
-              "tests": [
-                {
-                  "title": "Customer entry: keypad 0-9/C + backspace, Done disabled, phone mask, paste 11 digits drops the leading 1 (HOME-089, HOME-091, HOME-095, HOME-104) @regression",
-                  "fullTitle": "volt-qc 02 HOME — read-only.Customer entry: keypad 0-9/C + backspace, Done disabled, phone mask, paste 11 digits drops the leading 1 (HOME-089, HOME-091, HOME-095, HOME-104) @regression",
-                  "state": "passed",
-                  "durationMs": 18500,
-                  "retries": 0
-                },
-                {
-                  "title": "Tile order Quick Pay, Gift Card, then categories; \"N Service(s)\" plural rule; service tiles show name + $x.xx (HOME-036, HOME-038) @regression",
-                  "fullTitle": "volt-qc 02 HOME — read-only.Tile order Quick Pay, Gift Card, then categories; \"N Service(s)\" plural rule; service tiles show name + $x.xx (HOME-036, HOME-038) @regression",
-                  "state": "passed",
-                  "durationMs": 2227,
-                  "retries": 0
-                },
-                {
-                  "title": "Service search keeps only matching services and deselects the category; no match → \"No services available.\" (HOME-039, HOME-040) @regression",
-                  "fullTitle": "volt-qc 02 HOME — read-only.Service search keeps only matching services and deselects the category; no match → \"No services available.\" (HOME-039, HOME-040) @regression",
-                  "state": "passed",
-                  "durationMs": 3152,
-                  "retries": 0
-                },
-                {
-                  "title": "More than 8 tiles: dragging the carousel shows the rest and keeps the selected category (HOME-037) @regression",
-                  "fullTitle": "volt-qc 02 HOME — read-only.More than 8 tiles: dragging the carousel shows the rest and keeps the selected category (HOME-037) @regression",
-                  "state": "skipped",
-                  "durationMs": 0,
-                  "retries": 0,
-                  "skip": {
-                    "kind": "runtime",
-                    "text": "Điều kiện tiên quyết không thoả: tiles.length <= 8",
-                    "where": "tests/regression/volt-qc/pos/home.spec.ts:160",
-                    "code": "if (tiles.length <= 8) this.skip();"
-                  }
-                },
-                {
-                  "title": "Staff search never returns an Inactive staff or the Owner (HOME-017) @regression",
-                  "fullTitle": "volt-qc 02 HOME — read-only.Staff search never returns an Inactive staff or the Owner (HOME-017) @regression",
-                  "state": "skipped",
-                  "durationMs": 0,
-                  "retries": 0,
-                  "skip": {
-                    "kind": "runtime",
-                    "text": "Không đủ dịch vụ/mục trong danh sách cho test này. (Needs the names of an Inactive staff / the Owner on this merchant (Portal data).)",
-                    "where": "tests/regression/volt-qc/pos/home.spec.ts:186",
-                    "code": "if (names.length === 0) this.skip();",
-                    "comment": "Needs the names of an Inactive staff / the Owner on this merchant (Portal data)."
-                  }
-                },
-                {
-                  "title": "Sort by popover lists every option; Name sorts A→Z then Z→A (HOME-023, HOME-024) @regression",
-                  "fullTitle": "volt-qc 02 HOME — read-only.Sort by popover lists every option; Name sorts A→Z then Z→A (HOME-023, HOME-024) @regression",
-                  "state": "passed",
-                  "durationMs": 7095,
-                  "retries": 0
-                },
-                {
-                  "title": "Global Search modal: title, autofocus, hint, 4 tabs (All selected), no-result text, reset on reopen (HOME-155, HOME-161, HOME-162) @regression",
-                  "fullTitle": "volt-qc 02 HOME — read-only.Global Search modal: title, autofocus, hint, 4 tabs (All selected), no-result text, reset on reopen (HOME-155, HOME-161, HOME-162) @regression",
-                  "state": "failed",
-                  "durationMs": 7292,
-                  "retries": 0,
-                  "error": "Never appeared: global search dialog",
-                  "message": "Never appeared: global search dialog",
-                  "stack": "Error: Never appeared: global search dialog\n    at <anonymous> (D:\\Project\\webdriverIO_volt_pos\\node_modules\\webdriverio\\build\\node.js:6278:15)\n    at async Browser.wrapCommandFn (D:\\Project\\webdriverIO_volt_pos\\node_modules\\@wdio\\utils\\build\\index.js:1007:23)\n    at async VoltQcProbe.waitFor (D:\\Project\\webdriverIO_volt_pos\\src\\pages\\voltqc\\pos\\VoltQcProbe.ts:251:5)\n    at async openGlobalSearch (D:\\Project\\webdriverIO_volt_pos\\src\\pages\\voltqc\\pos\\homeProbe.ts:160:3)\n    at async Context.<anonymous> (D:\\Project\\webdriverIO_volt_pos\\tests\\regression\\volt-qc\\pos\\home.spec.ts:232:7)\n    at async Context.executeAsync (D:\\Project\\webdriverIO_volt_pos\\node_modules\\@wdio\\utils\\build\\index.js:1133:20)\n    at async Context.testFrameworkFnWrapper (D:\\Project\\webdriverIO_volt_pos\\node_modules\\@wdio\\utils\\build\\index.js:1214:14)",
-                  "evidence": "regression-volt-qc-pos-home__global-search-modal-title-autofocus-hint-4-tabs-all-selected-no-result-text-rese__2026-11-04T06-18-24-541Z"
-                },
-                {
-                  "title": "Global Search \"5\" → Customer tab capped at 20 rows (HOME-163) @regression",
-                  "fullTitle": "volt-qc 02 HOME — read-only.Global Search \"5\" → Customer tab capped at 20 rows (HOME-163) @regression",
-                  "state": "failed",
-                  "durationMs": 8324,
-                  "retries": 0,
-                  "error": "Never appeared: global search dialog",
-                  "message": "Never appeared: global search dialog",
-                  "stack": "Error: Never appeared: global search dialog\n    at <anonymous> (D:\\Project\\webdriverIO_volt_pos\\node_modules\\webdriverio\\build\\node.js:6278:15)\n    at async Browser.wrapCommandFn (D:\\Project\\webdriverIO_volt_pos\\node_modules\\@wdio\\utils\\build\\index.js:1007:23)\n    at async VoltQcProbe.waitFor (D:\\Project\\webdriverIO_volt_pos\\src\\pages\\voltqc\\pos\\VoltQcProbe.ts:251:5)\n    at async openGlobalSearch (D:\\Project\\webdriverIO_volt_pos\\src\\pages\\voltqc\\pos\\homeProbe.ts:160:3)\n    at async Context.<anonymous> (D:\\Project\\webdriverIO_volt_pos\\tests\\regression\\volt-qc\\pos\\home.spec.ts:255:5)\n    at async Context.executeAsync (D:\\Project\\webdriverIO_volt_pos\\node_modules\\@wdio\\utils\\build\\index.js:1133:20)\n    at async Context.testFrameworkFnWrapper (D:\\Project\\webdriverIO_volt_pos\\node_modules\\@wdio\\utils\\build\\index.js:1214:14)",
-                  "evidence": "regression-volt-qc-pos-home__global-search-5-customer-tab-capped-at-20-rows-home-163-regression__2026-11-04T06-18-40-402Z"
-                },
-                {
-                  "title": "Home layout: 4 panels, no horizontal scroll, customer placeholder not clipped, sidebar has no collapse/pin (HOME-001, HOME-003, HOME-016) @regression",
-                  "fullTitle": "volt-qc 02 HOME — read-only.Home layout: 4 panels, no horizontal scroll, customer placeholder not clipped, sidebar has no collapse/pin (HOME-001, HOME-003, HOME-016) @regression",
-                  "state": "failed",
-                  "durationMs": 3850,
-                  "retries": 0,
-                  "error": "expect(received).toBe(expected) // Object.is equality",
-                  "message": "expect(received).toBe(expected) // Object.is equality\n\nExpected: true\nReceived: false",
-                  "stack": "Error: expect(received).toBe(expected) // Object.is equality\n\nExpected: true\nReceived: false\n    at Context.<anonymous> (D:\\Project\\webdriverIO_volt_pos\\tests\\regression\\volt-qc\\pos\\home.spec.ts:279:51)\n    at async Context.executeAsync (D:\\Project\\webdriverIO_volt_pos\\node_modules\\@wdio\\utils\\build\\index.js:1133:20)\n    at async Context.testFrameworkFnWrapper (D:\\Project\\webdriverIO_volt_pos\\node_modules\\@wdio\\utils\\build\\index.js:1214:14)",
-                  "evidence": "regression-volt-qc-pos-home__home-layout-4-panels-no-horizontal-scroll-customer-placeholder-not-clipped-sideb__2026-11-04T06-18-51-722Z"
-                },
-                {
-                  "title": "Typing one character in Search staff / Search service shows no \"null\"/\"undefined\" (HOME-002) @regression",
-                  "fullTitle": "volt-qc 02 HOME — read-only.Typing one character in Search staff / Search service shows no \"null\"/\"undefined\" (HOME-002) @regression",
-                  "state": "passed",
-                  "durationMs": 4136,
-                  "retries": 0
-                },
-                {
-                  "title": "Checkin Today / Appointments Today accordions toggle Show/Hide; none today → \"No appointments today\" (HOME-117) @regression",
-                  "fullTitle": "volt-qc 02 HOME — read-only.Checkin Today / Appointments Today accordions toggle Show/Hide; none today → \"No appointments today\" (HOME-117) @regression",
-                  "state": "passed",
-                  "durationMs": 3834,
-                  "retries": 0
-                }
-              ],
-              "suites": []
-            }
-          ],
-          "totals": {
-            "tests": 11,
-            "passed": 6,
-            "failed": 3,
-            "skipped": 2,
-            "passRate": 66.7
-          }
-        },
-        {
-          "cid": "0-4",
-          "file": "file:///D:/Project/webdriverIO_volt_pos/tests/regression/volt-qc/home-pend/home-customer.spec.ts",
-          "specName": "home-customer",
-          "startedAt": "2026-11-04T06:19:34.842Z",
-          "finishedAt": "2026-11-04T06:25:48.308Z",
-          "durationMs": 373466,
-          "retry": 1,
-          "suites": [
-            {
-              "title": "volt-qc 02 HOME — customer (write)",
-              "tests": [
-                {
-                  "title": "Typing a name lists \"Customers Found\"; 60 chars keep 50 and Done stays disabled; no match → \"No customer found\", no order (HOME-092, HOME-094) @regression @write",
-                  "fullTitle": "volt-qc 02 HOME — customer (write).Typing a name lists \"Customers Found\"; 60 chars keep 50 and Done stays disabled; no match → \"No customer found\", no order (HOME-092, HOME-094) @regression @write",
-                  "state": "passed",
-                  "durationMs": 16545,
-                  "retries": 0
-                },
-                {
-                  "title": "Picking an existing customer from the suggestions (masked phone + name) opens an order with that customer, Point/Visit (HOME-093) @regression @write",
-                  "fullTitle": "volt-qc 02 HOME — customer (write).Picking an existing customer from the suggestions (masked phone + name) opens an order with that customer, Point/Visit (HOME-093) @regression @write",
-                  "state": "passed",
-                  "durationMs": 18997,
-                  "retries": 0
-                },
-                {
-                  "title": "An existing phone + Done picks that customer and opens the order, no quick-add (HOME-096) @regression @write",
-                  "fullTitle": "volt-qc 02 HOME — customer (write).An existing phone + Done picks that customer and opens the order, no quick-add (HOME-096) @regression @write",
-                  "state": "passed",
-                  "durationMs": 22588,
-                  "retries": 0
-                },
-                {
-                  "title": "Order with a line but no customer: the bar opens the keypad, Back closes it; an existing phone + Done attaches to THIS order (HOME-114) @regression @write",
-                  "fullTitle": "volt-qc 02 HOME — customer (write).Order with a line but no customer: the bar opens the keypad, Back closes it; an existing phone + Done attaches to THIS order (HOME-114) @regression @write",
-                  "state": "passed",
-                  "durationMs": 26314,
-                  "retries": 0
-                },
-                {
-                  "title": "New customer via keypad: phone formatted (xxx) xxx-xxxx, quick-add Save attaches, bar shows the masked phone (HOME-090, HOME-096) @regression @write",
-                  "fullTitle": "volt-qc 02 HOME — customer (write).New customer via keypad: phone formatted (xxx) xxx-xxxx, quick-add Save attaches, bar shows the masked phone (HOME-090, HOME-096) @regression @write",
-                  "state": "passed",
-                  "durationMs": 10951,
-                  "retries": 0
-                },
-                {
-                  "title": "A new phone + Done opens quick-add (phone title, name, group, View More, Save); closing it creates nothing (HOME-097, HOME-103) @regression @write",
-                  "fullTitle": "volt-qc 02 HOME — customer (write).A new phone + Done opens quick-add (phone title, name, group, View More, Save); closing it creates nothing (HOME-097, HOME-103) @regression @write",
-                  "state": "passed",
-                  "durationMs": 7603,
-                  "retries": 0
-                },
-                {
-                  "title": "Save with an empty name → customer \"UNKNOWN<last 4>\", order opened with it (HOME-098) @regression @write",
-                  "fullTitle": "volt-qc 02 HOME — customer (write).Save with an empty name → customer \"UNKNOWN<last 4>\", order opened with it (HOME-098) @regression @write",
-                  "state": "passed",
-                  "durationMs": 7375,
-                  "retries": 0
-                },
-                {
-                  "title": "A 51-char name → \"Customer name must be 50 characters or less\", nothing created (HOME-099) @regression @write",
-                  "fullTitle": "volt-qc 02 HOME — customer (write).A 51-char name → \"Customer name must be 50 characters or less\", nothing created (HOME-099) @regression @write",
-                  "state": "passed",
-                  "durationMs": 7542,
-                  "retries": 0
-                },
-                {
-                  "title": "View More → \"Customer Information\" pre-filled (phone, name); a valid email → Save creates the customer + order (HOME-101) @regression @write",
-                  "fullTitle": "volt-qc 02 HOME — customer (write).View More → \"Customer Information\" pre-filled (phone, name); a valid email → Save creates the customer + order (HOME-101) @regression @write",
-                  "state": "passed",
-                  "durationMs": 8551,
-                  "retries": 0
-                },
-                {
-                  "title": "Customer Information: email \"abc@\" → \"Invalid email\"; an 81-char note is refused; nothing saved (HOME-102) @regression @write",
-                  "fullTitle": "volt-qc 02 HOME — customer (write).Customer Information: email \"abc@\" → \"Invalid email\"; an 81-char note is refused; nothing saved (HOME-102) @regression @write",
-                  "state": "passed",
-                  "durationMs": 8053,
-                  "retries": 0
-                },
-                {
-                  "title": "Groups: 2 groups → 2 chips; 3 groups keep the full name + 3 chips; \"VIP\" is a plain chip with no tier badge and no price change (HOME-100, HOME-107, HOME-108) @regression @write",
-                  "fullTitle": "volt-qc 02 HOME — customer (write).Groups: 2 groups → 2 chips; 3 groups keep the full name + 3 chips; \"VIP\" is a plain chip with no tier badge and no price change (HOME-100, HOME-107, HOME-108) @regression @write",
-                  "state": "failed",
-                  "durationMs": 9791,
-                  "retries": 0,
-                  "error": "Step \"HOME-100 two groups\" failed after 9123ms: expect(received).toEqual(expected) // deep equality",
-                  "message": "Step \"HOME-100 two groups\" failed after 9123ms: expect(received).toEqual(expected) // deep equality\n\n- Expected  - 4\n+ Received  + 1\n\n- Array [\n-   \"QA G1\",\n-   \"QA G2\",\n- ]\n+ Array []",
-                  "stack": "Error: Step \"HOME-100 two groups\" failed after 9123ms: expect(received).toEqual(expected) // deep equality\n\n- Expected  - 4\n+ Received  + 1\n\n- Array [\n-   \"QA G1\",\n-   \"QA G2\",\n- ]\n+ Array []\n    at step (D:\\Project\\webdriverIO_volt_pos\\src\\helpers\\steps.ts:141:11)\n    at async Context.<anonymous> (D:\\Project\\webdriverIO_volt_pos\\tests\\regression\\volt-qc\\home-pend\\home-customer.spec.ts:412:7)",
-                  "evidence": "regression-volt-qc-home-pend-home-customer__groups-2-groups-2-chips-3-groups-keep-the-full-name-3-chips-vip-is-a-plain-chip-__2026-11-04T06-23-17-417Z"
-                },
-                {
-                  "title": "Customer bar: name, ***-***-xxxx, Point: 0, Visit: 0, edit + remove buttons (HOME-106) @regression @write",
-                  "fullTitle": "volt-qc 02 HOME — customer (write).Customer bar: name, ***-***-xxxx, Point: 0, Visit: 0, edit + remove buttons (HOME-106) @regression @write",
-                  "state": "failed",
-                  "durationMs": 12523,
-                  "retries": 0,
-                  "error": "expect(received).toContain(expected) // indexOf",
-                  "message": "expect(received).toContain(expected) // indexOf\n\nExpected substring: \"Visit: 0\"\nReceived string:    \"QC Bar Fpystb ***-***-0590 Point: 0 Visit: ###\"",
-                  "stack": "Error: expect(received).toContain(expected) // indexOf\n\nExpected substring: \"Visit: 0\"\nReceived string:    \"QC Bar Fpystb ***-***-0590 Point: 0 Visit: ###\"\n    at Context.<anonymous> (D:\\Project\\webdriverIO_volt_pos\\tests\\regression\\volt-qc\\home-pend\\home-customer.spec.ts:459:17)\n    at async Context.executeAsync (D:\\Project\\webdriverIO_volt_pos\\node_modules\\@wdio\\utils\\build\\index.js:1133:20)\n    at async Context.testFrameworkFnWrapper (D:\\Project\\webdriverIO_volt_pos\\node_modules\\@wdio\\utils\\build\\index.js:1214:14)",
-                  "evidence": "regression-volt-qc-home-pend-home-customer__customer-bar-name-xxxx-point-0-visit-0-edit-remove-buttons-home-106-regression-w__2026-11-04T06-23-47-238Z"
-                },
-                {
-                  "title": "Red x → \"Remove Customer Phone\": Cancel keeps the customer; Remove returns to the customer field and keeps the lines (HOME-112, HOME-113) @regression @write",
-                  "fullTitle": "volt-qc 02 HOME — customer (write).Red x → \"Remove Customer Phone\": Cancel keeps the customer; Remove returns to the customer field and keeps the lines (HOME-112, HOME-113) @regression @write",
-                  "state": "passed",
-                  "durationMs": 13996,
-                  "retries": 0
-                },
-                {
-                  "title": "Tapping the masked phone asks \"Enter staff code to continue\" (+ 30-minute box) and then shows the full phone (HOME-109) @regression @write",
-                  "fullTitle": "volt-qc 02 HOME — customer (write).Tapping the masked phone asks \"Enter staff code to continue\" (+ 30-minute box) and then shows the full phone (HOME-109) @regression @write",
-                  "state": "passed",
-                  "durationMs": 15873,
-                  "retries": 0
-                },
-                {
-                  "title": "View phone: an unknown code errors; a role without View Phone Number is refused; the phone stays masked (HOME-110) @regression @write",
-                  "fullTitle": "volt-qc 02 HOME — customer (write).View phone: an unknown code errors; a role without View Phone Number is refused; the phone stays masked (HOME-110) @regression @write",
-                  "state": "passed",
-                  "durationMs": 16101,
-                  "retries": 0
-                },
-                {
-                  "title": "Edit icon → \"Customer Information\" (phone read-only) → new name → Save: the bar shows it (HOME-111) @regression @write",
-                  "fullTitle": "volt-qc 02 HOME — customer (write).Edit icon → \"Customer Information\" (phone read-only) → new name → Save: the bar shows it (HOME-111) @regression @write",
-                  "state": "passed",
-                  "durationMs": 13634,
-                  "retries": 0
-                }
-              ],
-              "suites": []
-            }
-          ],
-          "totals": {
-            "tests": 16,
-            "passed": 14,
-            "failed": 2,
-            "skipped": 0,
-            "passRate": 87.5
-          }
-        },
-        {
-          "cid": "0-3",
-          "file": "file:///D:/Project/webdriverIO_volt_pos/tests/regression/volt-qc/home-pend/home-order.spec.ts",
-          "specName": "home-order",
-          "startedAt": "2026-11-04T06:19:12.824Z",
-          "finishedAt": "2026-11-04T06:19:32.027Z",
-          "durationMs": 19203,
-          "retry": 1,
-          "suites": [
-            {
-              "title": "volt-qc 02 HOME — order building & deleting (write)",
-              "tests": [
-                {
-                  "title": "\"before all\" hook for volt-qc 02 HOME — order building & deleting (write)",
-                  "fullTitle": "\"before all\" hook for volt-qc 02 HOME — order building & deleting (write)",
-                  "state": "failed",
-                  "durationMs": 16325,
-                  "retries": 0,
-                  "error": "Step \"Ensure the \"delete_order\" passcode gate is ON\" failed after 15673ms: Step \"Go to settings\" failed after 15663ms: element (\"[aria-label=\"Open sidebar\"]\") still not clickable after 15000ms",
-                  "message": "Step \"Ensure the \"delete_order\" passcode gate is ON\" failed after 15673ms: Step \"Go to settings\" failed after 15663ms: element (\"[aria-label=\"Open sidebar\"]\") still not clickable after 15000ms",
-                  "stack": "Error: Step \"Ensure the \"delete_order\" passcode gate is ON\" failed after 15673ms: Step \"Go to settings\" failed after 15663ms: element (\"[aria-label=\"Open sidebar\"]\") still not clickable after 15000ms\n    at step (D:\\Project\\webdriverIO_volt_pos\\src\\helpers\\steps.ts:141:11)\n    at async Context.<anonymous> (D:\\Project\\webdriverIO_volt_pos\\tests\\regression\\volt-qc\\home-pend\\home-order.spec.ts:124:5)\n    at async Context.executeAsync (D:\\Project\\webdriverIO_volt_pos\\node_modules\\@wdio\\utils\\build\\index.js:1133:20)\n    at async Context.testFrameworkFnWrapper (D:\\Project\\webdriverIO_volt_pos\\node_modules\\@wdio\\utils\\build\\index.js:1214:14)"
-                }
-              ],
-              "suites": []
-            }
-          ],
-          "totals": {
-            "tests": 1,
-            "passed": 0,
-            "failed": 1,
-            "skipped": 0,
-            "passRate": 0
-          }
-        },
-        {
-          "cid": "0-1",
-          "file": "file:///D:/Project/webdriverIO_volt_pos/tests/regression/volt-qc/home-pend/home-panels.spec.ts",
-          "specName": "home-panels",
-          "startedAt": "2026-11-04T05:59:34.285Z",
-          "finishedAt": "2026-11-04T06:17:17.761Z",
-          "durationMs": 1063476,
-          "retry": 1,
-          "suites": [
-            {
-              "title": "volt-qc 02 HOME — panels (write)",
-              "tests": [
-                {
-                  "title": "Merge Order: hidden on an empty order, shown once it has an item, hidden after a Custom Discount (HOME-125) @regression @write",
-                  "fullTitle": "volt-qc 02 HOME — panels (write).Merge Order: hidden on an empty order, shown once it has an item, hidden after a Custom Discount (HOME-125) @regression @write",
-                  "state": "failed",
-                  "durationMs": 75245,
-                  "retries": 0,
-                  "error": "expect(received).toBe(expected) // Object.is equality",
-                  "message": "expect(received).toBe(expected) // Object.is equality\n\nExpected: 0\nReceived: 1",
-                  "stack": "Error: expect(received).toBe(expected) // Object.is equality\n\nExpected: 0\nReceived: 1\n    at Context.<anonymous> (D:\\Project\\webdriverIO_volt_pos\\tests\\regression\\volt-qc\\home-pend\\home-panels.spec.ts:134:9)\n    at async Context.executeAsync (D:\\Project\\webdriverIO_volt_pos\\node_modules\\@wdio\\utils\\build\\index.js:1133:20)\n    at async Context.testFrameworkFnWrapper (D:\\Project\\webdriverIO_volt_pos\\node_modules\\@wdio\\utils\\build\\index.js:1214:14)",
-                  "evidence": "regression-volt-qc-home-pend-home-panels__merge-order-hidden-on-an-empty-order-shown-once-it-has-an-item-hidden-after-a-cu__2026-11-04T06-01-53-839Z"
-                },
-                {
-                  "title": "Merge dialog: lists B (not A), Merge disabled until picked; No keeps both; Merge folds B into A (HOME-126, HOME-127, HOME-128) @regression @write",
-                  "fullTitle": "volt-qc 02 HOME — panels (write).Merge dialog: lists B (not A), Merge disabled until picked; No keeps both; Merge folds B into A (HOME-126, HOME-127, HOME-128) @regression @write",
-                  "state": "failed",
-                  "durationMs": 83961,
-                  "retries": 0,
-                  "error": "Step \"Create order (EREN + Nail Kit Set)\" failed after 40083ms: Never appeared: {\"role\":\"button\",\"name\":\"Quick Checkout\",\"nth\":0}",
-                  "message": "Step \"Create order (EREN + Nail Kit Set)\" failed after 40083ms: Never appeared: {\"role\":\"button\",\"name\":\"Quick Checkout\",\"nth\":0}",
-                  "stack": "Error: Step \"Create order (EREN + Nail Kit Set)\" failed after 40083ms: Never appeared: {\"role\":\"button\",\"name\":\"Quick Checkout\",\"nth\":0}\n    at step (D:\\Project\\webdriverIO_volt_pos\\src\\helpers\\steps.ts:141:11)\n    at async Context.<anonymous> (D:\\Project\\webdriverIO_volt_pos\\tests\\regression\\volt-qc\\home-pend\\home-panels.spec.ts:146:17)\n    at async Context.executeAsync (D:\\Project\\webdriverIO_volt_pos\\node_modules\\@wdio\\utils\\build\\index.js:1133:20)\n    at async Context.testFrameworkFnWrapper (D:\\Project\\webdriverIO_volt_pos\\node_modules\\@wdio\\utils\\build\\index.js:1214:14)",
-                  "evidence": "regression-volt-qc-home-pend-home-panels__merge-dialog-lists-b-not-a-merge-disabled-until-picked-no-keeps-both-merge-folds__2026-11-04T06-05-59-587Z"
-                },
-                {
-                  "title": "Sidebar header: \"Pending Orders\" + badge, today MM/DD/YYYY, Quick Checkout, search; badge follows the filter (HOME-006) @regression @write",
-                  "fullTitle": "volt-qc 02 HOME — panels (write).Sidebar header: \"Pending Orders\" + badge, today MM/DD/YYYY, Quick Checkout, search; badge follows the filter (HOME-006) @regression @write",
-                  "state": "failed",
-                  "durationMs": 7514,
-                  "retries": 0,
-                  "error": "expect(received).toBe(expected) // Object.is equality",
-                  "message": "expect(received).toBe(expected) // Object.is equality\n\nExpected: true\nReceived: false",
-                  "stack": "Error: expect(received).toBe(expected) // Object.is equality\n\nExpected: true\nReceived: false\n    at Context.<anonymous> (D:\\Project\\webdriverIO_volt_pos\\tests\\regression\\volt-qc\\home-pend\\home-panels.spec.ts:210:45)\n    at async Context.executeAsync (D:\\Project\\webdriverIO_volt_pos\\node_modules\\@wdio\\utils\\build\\index.js:1133:20)\n    at async Context.testFrameworkFnWrapper (D:\\Project\\webdriverIO_volt_pos\\node_modules\\@wdio\\utils\\build\\index.js:1214:14)",
-                  "evidence": "regression-volt-qc-home-pend-home-panels__sidebar-header-pending-orders-badge-today-mm-dd-yyyy-quick-checkout-search-badge__2026-11-04T06-07-37-921Z"
-                },
-                {
-                  "title": "Sidebar search by order code, customer name, last 4 phone digits, \"ORDER:<code>\"; junk → 0 cards, badge 0 (HOME-008, HOME-009) @regression @write",
-                  "fullTitle": "volt-qc 02 HOME — panels (write).Sidebar search by order code, customer name, last 4 phone digits, \"ORDER:<code>\"; junk → 0 cards, badge 0 (HOME-008, HOME-009) @regression @write",
-                  "state": "failed",
-                  "durationMs": 31776,
-                  "retries": 0,
-                  "error": "Never appeared: [{\"role\":\"complementary\",\"name\":\"Pending Orders sidebar\"},{\"role\":\"textbox\",\"nth\":0}]",
-                  "message": "Never appeared: [{\"role\":\"complementary\",\"name\":\"Pending Orders sidebar\"},{\"role\":\"textbox\",\"nth\":0}]",
-                  "stack": "Error: Never appeared: [{\"role\":\"complementary\",\"name\":\"Pending Orders sidebar\"},{\"role\":\"textbox\",\"nth\":0}]\n    at <anonymous> (D:\\Project\\webdriverIO_volt_pos\\node_modules\\webdriverio\\build\\node.js:6278:15)\n    at async Browser.wrapCommandFn (D:\\Project\\webdriverIO_volt_pos\\node_modules\\@wdio\\utils\\build\\index.js:1007:23)\n    at async VoltQcProbe.waitFor (D:\\Project\\webdriverIO_volt_pos\\src\\pages\\voltqc\\pos\\VoltQcProbe.ts:251:5)\n    at async VoltQcProbe.fillQ (D:\\Project\\webdriverIO_volt_pos\\src\\pages\\voltqc\\pos\\VoltQcProbe.ts:313:5)\n    at async Context.<anonymous> (D:\\Project\\webdriverIO_volt_pos\\tests\\regression\\volt-qc\\home-pend\\home-panels.spec.ts:233:9)\n    at async Context.executeAsync (D:\\Project\\webdriverIO_volt_pos\\node_modules\\@wdio\\utils\\build\\index.js:1133:20)\n    at async Context.testFrameworkFnWrapper (D:\\Project\\webdriverIO_volt_pos\\node_modules\\@wdio\\utils\\build\\index.js:1214:14)",
-                  "evidence": "regression-volt-qc-home-pend-home-panels__sidebar-search-by-order-code-customer-name-last-4-phone-digits-order-code-junk-0__2026-11-04T06-08-45-895Z"
-                },
-                {
-                  "title": "Open order A → sidebar Quick Checkout: customer entry screen, no new order, A still in the sidebar (HOME-011, PEND-036) @regression @write",
-                  "fullTitle": "volt-qc 02 HOME — panels (write).Open order A → sidebar Quick Checkout: customer entry screen, no new order, A still in the sidebar (HOME-011, PEND-036) @regression @write",
-                  "state": "failed",
-                  "durationMs": 23016,
-                  "retries": 0,
-                  "error": "Never appeared: [{\"role\":\"complementary\",\"name\":\"Pending Orders sidebar\"},{\"role\":\"textbox\",\"nth\":0}]",
-                  "message": "Never appeared: [{\"role\":\"complementary\",\"name\":\"Pending Orders sidebar\"},{\"role\":\"textbox\",\"nth\":0}]",
-                  "stack": "Error: Never appeared: [{\"role\":\"complementary\",\"name\":\"Pending Orders sidebar\"},{\"role\":\"textbox\",\"nth\":0}]\n    at <anonymous> (D:\\Project\\webdriverIO_volt_pos\\node_modules\\webdriverio\\build\\node.js:6278:15)\n    at async Browser.wrapCommandFn (D:\\Project\\webdriverIO_volt_pos\\node_modules\\@wdio\\utils\\build\\index.js:1007:23)\n    at async VoltQcProbe.waitFor (D:\\Project\\webdriverIO_volt_pos\\src\\pages\\voltqc\\pos\\VoltQcProbe.ts:251:5)\n    at async VoltQcProbe.fillQ (D:\\Project\\webdriverIO_volt_pos\\src\\pages\\voltqc\\pos\\VoltQcProbe.ts:313:5)\n    at async Context.<anonymous> (D:\\Project\\webdriverIO_volt_pos\\tests\\regression\\volt-qc\\home-pend\\home-panels.spec.ts:263:7)\n    at async Context.executeAsync (D:\\Project\\webdriverIO_volt_pos\\node_modules\\@wdio\\utils\\build\\index.js:1133:20)\n    at async Context.testFrameworkFnWrapper (D:\\Project\\webdriverIO_volt_pos\\node_modules\\@wdio\\utils\\build\\index.js:1214:14)",
-                  "evidence": "regression-volt-qc-home-pend-home-panels__open-order-a-sidebar-quick-checkout-customer-entry-screen-no-new-order-a-still-i__2026-11-04T06-09-59-807Z"
-                },
-                {
-                  "title": "Two-staff order: card names staff B; B then A + service lands in A's group, no duplicate group, still one card (HOME-032, HOME-034) @regression @write",
-                  "fullTitle": "volt-qc 02 HOME — panels (write).Two-staff order: card names staff B; B then A + service lands in A's group, no duplicate group, still one card (HOME-032, HOME-034) @regression @write",
-                  "state": "failed",
-                  "durationMs": 26145,
-                  "retries": 0,
-                  "error": "Never appeared: [{\"role\":\"complementary\",\"name\":\"Pending Orders sidebar\"},{\"role\":\"textbox\",\"nth\":0}]",
-                  "message": "Never appeared: [{\"role\":\"complementary\",\"name\":\"Pending Orders sidebar\"},{\"role\":\"textbox\",\"nth\":0}]",
-                  "stack": "Error: Never appeared: [{\"role\":\"complementary\",\"name\":\"Pending Orders sidebar\"},{\"role\":\"textbox\",\"nth\":0}]\n    at <anonymous> (D:\\Project\\webdriverIO_volt_pos\\node_modules\\webdriverio\\build\\node.js:6278:15)\n    at async Browser.wrapCommandFn (D:\\Project\\webdriverIO_volt_pos\\node_modules\\@wdio\\utils\\build\\index.js:1007:23)\n    at async VoltQcProbe.waitFor (D:\\Project\\webdriverIO_volt_pos\\src\\pages\\voltqc\\pos\\VoltQcProbe.ts:251:5)\n    at async VoltQcProbe.fillQ (D:\\Project\\webdriverIO_volt_pos\\src\\pages\\voltqc\\pos\\VoltQcProbe.ts:313:5)\n    at async sidebarHas (D:\\Project\\webdriverIO_volt_pos\\src\\pages\\voltqc\\home-pend\\homePendProbe.ts:282:3)\n    at async Context.<anonymous> (D:\\Project\\webdriverIO_volt_pos\\tests\\regression\\volt-qc\\home-pend\\home-panels.spec.ts:290:14)\n    at async Context.executeAsync (D:\\Project\\webdriverIO_volt_pos\\node_modules\\@wdio\\utils\\build\\index.js:1133:20)\n    at async Context.testFrameworkFnWrapper (D:\\Project\\webdriverIO_volt_pos\\node_modules\\@wdio\\utils\\build\\index.js:1214:14)",
-                  "evidence": "regression-volt-qc-home-pend-home-panels__two-staff-order-card-names-staff-b-b-then-a-service-lands-in-a-s-group-no-duplic__2026-11-04T06-11-02-024Z"
-                },
-                {
-                  "title": "Staff then service clicked back-to-back: exactly one order holds the line, no error toast (HOME-033) @regression @write",
-                  "fullTitle": "volt-qc 02 HOME — panels (write).Staff then service clicked back-to-back: exactly one order holds the line, no error toast (HOME-033) @regression @write",
-                  "state": "failed",
-                  "durationMs": 18297,
-                  "retries": 0,
-                  "error": "Never appeared: [{\"role\":\"complementary\",\"name\":\"Pending Orders sidebar\"},{\"role\":\"textbox\",\"nth\":0}]",
-                  "message": "Never appeared: [{\"role\":\"complementary\",\"name\":\"Pending Orders sidebar\"},{\"role\":\"textbox\",\"nth\":0}]",
-                  "stack": "Error: Never appeared: [{\"role\":\"complementary\",\"name\":\"Pending Orders sidebar\"},{\"role\":\"textbox\",\"nth\":0}]\n    at <anonymous> (D:\\Project\\webdriverIO_volt_pos\\node_modules\\webdriverio\\build\\node.js:6278:15)\n    at async Browser.wrapCommandFn (D:\\Project\\webdriverIO_volt_pos\\node_modules\\@wdio\\utils\\build\\index.js:1007:23)\n    at async VoltQcProbe.waitFor (D:\\Project\\webdriverIO_volt_pos\\src\\pages\\voltqc\\pos\\VoltQcProbe.ts:251:5)\n    at async VoltQcProbe.fillQ (D:\\Project\\webdriverIO_volt_pos\\src\\pages\\voltqc\\pos\\VoltQcProbe.ts:313:5)\n    at async Context.<anonymous> (D:\\Project\\webdriverIO_volt_pos\\tests\\regression\\volt-qc\\home-pend\\home-panels.spec.ts:329:7)\n    at async Context.executeAsync (D:\\Project\\webdriverIO_volt_pos\\node_modules\\@wdio\\utils\\build\\index.js:1133:20)\n    at async Context.testFrameworkFnWrapper (D:\\Project\\webdriverIO_volt_pos\\node_modules\\@wdio\\utils\\build\\index.js:1214:14)",
-                  "evidence": "regression-volt-qc-home-pend-home-panels__staff-then-service-clicked-back-to-back-exactly-one-order-holds-the-line-no-erro__2026-11-04T06-11-54-179Z"
-                },
-                {
-                  "title": "Staff search is case-insensitive with an x; junk empties the grid; x restores it; picking after a search opens an order (HOME-019, HOME-020, HOME-021) @regression @write",
-                  "fullTitle": "volt-qc 02 HOME — panels (write).Staff search is case-insensitive with an x; junk empties the grid; x restores it; picking after a search opens an order (HOME-019, HOME-020, HOME-021) @regression @write",
-                  "state": "passed",
-                  "durationMs": 4502,
-                  "retries": 0
-                },
-                {
-                  "title": "Sort \"Staff Checked In\": a staff who clocked in (Time Keeping) sorts above one who did not (HOME-025) @regression @write",
-                  "fullTitle": "volt-qc 02 HOME — panels (write).Sort \"Staff Checked In\": a staff who clocked in (Time Keeping) sorts above one who did not (HOME-025) @regression @write",
-                  "state": "passed",
-                  "durationMs": 29347,
-                  "retries": 0
-                },
-                {
-                  "title": "Order Note dialog (Save disabled), max 80 chars; save shows \"Order Note:\" + x; x clears it (HOME-119, HOME-120, HOME-121, HOME-122) @regression @write",
-                  "fullTitle": "volt-qc 02 HOME — panels (write).Order Note dialog (Save disabled), max 80 chars; save shows \"Order Note:\" + x; x clears it (HOME-119, HOME-120, HOME-121, HOME-122) @regression @write",
-                  "state": "passed",
-                  "durationMs": 9958,
-                  "retries": 0
-                },
-                {
-                  "title": "Note \"A\" → edit to \"B\" then close X: still \"A\"; Pay → checkout shows \"Order Note: A\" (HOME-123, HOME-124) @regression @write",
-                  "fullTitle": "volt-qc 02 HOME — panels (write).Note \"A\" → edit to \"B\" then close X: still \"A\"; Pay → checkout shows \"Order Note: A\" (HOME-123, HOME-124) @regression @write",
-                  "state": "passed",
-                  "durationMs": 9771,
-                  "retries": 0
-                },
-                {
-                  "title": "Header Search for a customer with a paid order: tab counts, per-tab rows, highlight; open the customer; open the order in Order History (HOME-156, HOME-157, HOME-158) @regression @write",
-                  "fullTitle": "volt-qc 02 HOME — panels (write).Header Search for a customer with a paid order: tab counts, per-tab rows, highlight; open the customer; open the order in Order History (HOME-156, HOME-157, HOME-158) @regression @write",
-                  "state": "failed",
-                  "durationMs": 44409,
-                  "retries": 0,
-                  "error": "Never appeared: global search dialog",
-                  "message": "Never appeared: global search dialog",
-                  "stack": "Error: Never appeared: global search dialog\n    at <anonymous> (D:\\Project\\webdriverIO_volt_pos\\node_modules\\webdriverio\\build\\node.js:6278:15)\n    at async Browser.wrapCommandFn (D:\\Project\\webdriverIO_volt_pos\\node_modules\\@wdio\\utils\\build\\index.js:1007:23)\n    at async VoltQcProbe.waitFor (D:\\Project\\webdriverIO_volt_pos\\src\\pages\\voltqc\\pos\\VoltQcProbe.ts:251:5)\n    at async openGlobalSearch (D:\\Project\\webdriverIO_volt_pos\\src\\pages\\voltqc\\pos\\homeProbe.ts:160:3)\n    at async Context.<anonymous> (D:\\Project\\webdriverIO_volt_pos\\tests\\regression\\volt-qc\\home-pend\\home-panels.spec.ts:546:7)\n    at async Context.executeAsync (D:\\Project\\webdriverIO_volt_pos\\node_modules\\@wdio\\utils\\build\\index.js:1133:20)\n    at async Context.testFrameworkFnWrapper (D:\\Project\\webdriverIO_volt_pos\\node_modules\\@wdio\\utils\\build\\index.js:1214:14)",
-                  "evidence": "regression-volt-qc-home-pend-home-panels__header-search-for-a-customer-with-a-paid-order-tab-counts-per-tab-rows-highlight__2026-11-04T06-15-41-086Z"
-                },
-                {
-                  "title": "A pending order is not in the header Search \"Order\" tab (HOME-159) @regression @write",
-                  "fullTitle": "volt-qc 02 HOME — panels (write).A pending order is not in the header Search \"Order\" tab (HOME-159) @regression @write",
-                  "state": "passed",
-                  "durationMs": 10939,
-                  "retries": 0
-                },
-                {
-                  "title": "Staff group tabs: \"All\" first and selected by default; another tab narrows the grid (HOME-022) @regression",
-                  "fullTitle": "volt-qc 02 HOME — panels (write).Staff group tabs: \"All\" first and selected by default; another tab narrows the grid (HOME-022) @regression",
-                  "state": "skipped",
-                  "durationMs": 0,
-                  "retries": 0,
-                  "skip": {
-                    "kind": "runtime",
-                    "text": "Không đủ dịch vụ/mục trong danh sách cho test này. (Needs staff groups configured on this merchant (otherwise no tab strip).)",
-                    "where": "tests/regression/volt-qc/home-pend/home-panels.spec.ts:646",
-                    "code": "if (names.length < 2) this.skip();",
-                    "comment": "Needs staff groups configured on this merchant (otherwise no tab strip)."
-                  }
-                },
-                {
-                  "title": "Staff cards show the nickname and an avatar / initial (HOME-028) @regression",
-                  "fullTitle": "volt-qc 02 HOME — panels (write).Staff cards show the nickname and an avatar / initial (HOME-028) @regression",
-                  "state": "passed",
-                  "durationMs": 2063,
-                  "retries": 0
-                }
-              ],
-              "suites": []
-            }
-          ],
-          "totals": {
-            "tests": 15,
-            "passed": 6,
-            "failed": 8,
-            "skipped": 1,
-            "passRate": 42.9
           }
         }
       ]
