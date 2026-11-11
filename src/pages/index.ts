@@ -104,6 +104,13 @@ export type { TimeTrackingRow } from './payroll/TimeTrackingPage.js';
 export { default as staffPayrollPage, StaffPayrollPage } from './payroll/StaffPayrollPage.js';
 export type { PayrollRow, PayrollStat, PayType } from './payroll/StaffPayrollPage.js';
 
+/** `/settings/themes` — POS Builder theme packs (Classic / Summer / Spring / Winter). */
+export {
+  default as themesSettingsPage,
+  ThemesSettingsPage,
+  themeRadio,
+} from './settings/ThemesSettingsPage.js';
+
 /** `/settings/business` — pay period, work hours, store details. */
 export { default as businessInfoPage, BusinessInfoPage } from './settings/BusinessInfoPage.js';
 export type { PayPeriod, PayPeriodType } from './settings/BusinessInfoPage.js';

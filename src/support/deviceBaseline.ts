@@ -1,5 +1,6 @@
 import { browser } from '@wdio/globals';
 import { moduleLogger } from '../utils/logger.js';
+import { ensureRequestedThemePack } from './theme.js';
 
 const log = moduleLogger('deviceBaseline');
 
@@ -44,6 +45,8 @@ export async function restoreDeviceBaseline(): Promise<string[]> {
       if (keys.length) await invoke('plugin:store|save', { rid });
       return keys;
     }, BASELINE);
+    // THEME=summer|spring|winter pins the theme pack too (localStorage, not the store).
+    if (await ensureRequestedThemePack()) changed.push('theme-pack');
     if (changed.length) log.warn(`Device settings restored to the suite baseline: ${changed.join(', ')}`);
     return changed;
   } catch (error) {

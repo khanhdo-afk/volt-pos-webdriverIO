@@ -54,6 +54,10 @@ export const Routes = {
   SETTINGS_ROLES: '/settings/roles',
   SETTINGS_SERVICES: '/settings/services',
   SETTINGS_STAFFS: '/settings/staffs',
+  /** Setting › General › Themes — POS Builder theme packs (1.1.117). */
+  SETTINGS_THEMES: '/settings/themes',
+  /** Setting › General › Screen layout (1.1.117). */
+  SETTINGS_LAYOUT: '/settings/layout',
 
   /** Second window — the customer-facing display. */
   CUSTOMER: '/customer',

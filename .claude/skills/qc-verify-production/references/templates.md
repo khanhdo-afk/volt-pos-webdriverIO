@@ -14,6 +14,18 @@ Hai dấu cách trước `cc` là thói quen của team — giữ nguyên.
 | VP-5338 | Category palette | QC Completed | ❓ | POS + Portal | chỉ verify phần POS |
 | VP-xxxx | ... | Done | @... | ⏭️ Portal | không verify |
 | VP-4823 | ... | Verified Production | — | ⏭️ đã verify | bỏ qua |
+| VP-xxxx | Tip trên terminal khi charge Card | QC Completed | @... | ⏸️ Pending — Card | user test + Portal/GoCheckin/GAP |
+```
+
+## 1b. Mục Pending — Card (trong báo cáo cuối)
+
+```
+**⏸️ Pending — Card (user test):**
+| Task | Case Card cần test | Kiểm trên POS | Kiểm trên Portal / GoCheckin / GAP |
+|---|---|---|---|
+| VP-xxxx | TC-VPxxxx-03 Charge $1 + tip 15% | Order Completed, tip đúng | Portal → Transactions có giao dịch + tip; GoCheckin ticket Paid |
+
+Đã mở: Portal (đã đăng nhập ✅/❌), web GoCheckin (✅/❌), web GAP Checkin (✅/❌) — store <id>. Terminal: <đã kết nối / chưa>.
 ```
 
 `❓` = chưa chắc dev → hỏi user (gộp mọi ❓ vào 1 câu hỏi).
@@ -35,7 +47,8 @@ Hai dấu cách trước `cc` là thói quen của team — giữ nguyên.
 | TC-VP4809-07 | Print nhiều staff khi chưa mở chi tiết | High | ... | ... | ... | Có nút Print | FAIL — VP-5610 |
 ```
 
-- Status: `PASS` / `FAIL — VP-xxxx` (link sub task) / `Not Run` (lý do ngay dưới bảng) / `N/A (Portal)`.
+- Status: `PASS` / `FAIL — VP-xxxx` (link sub task) / `Not Run` (lý do ngay dưới bảng) / `N/A (Portal)` /
+  `Pending — Card (user test)` (task còn case này thì chưa post, chờ user test xong).
 - Ghi **giá trị thật** quan sát được trong cột Expected/Steps khi có ích (số tiền, mã order, số lượng).
 - Dòng tổng ngay trên bảng: `**Kết quả: X/Y PASS, Z FAIL**` (+ `(n case Not Run: <lý do ngắn>)` nếu có).
   Y chỉ đếm case đã chạy; Not Run và N/A không tính vào Y.

@@ -18,8 +18,7 @@
 
 import { expect } from '@wdio/globals';
 import { assertWritesAllowed } from '../../../../configs/env/loadEnv.js';
-import { btn, inMain } from '../../../../src/constants/testids.voltqc-pos.js';
-import { VqcCommon } from '../../../../src/constants/testids.voltqc-pos.js';
+import { btn, inMain, VqcCommon } from '../../../../src/constants/testids.voltqc-pos.js';
 import {
   VqpsCheckout,
   VqpsCustomer,
@@ -55,6 +54,8 @@ import {
   twoStaffOrder,
   typeCode,
   visibleStaffNames,
+  clickItemRowName,
+  reopenToCheckout,
 } from '../../../../src/pages/voltqc/promo-split/splitPlanBExtra.js';
 import {
   app,
@@ -446,83 +447,81 @@ describe('volt-qc 05 SPLIT plan B — gift card, lock, after-payment, tips, void
    * ======================================================================= */
 
   describe('SPLIT-M After payment', () => {
-    // [TẮT 2026-11-08] Tạm không test (đã đánh dấu skip/MANUAL: cần thiết bị/điều kiện không tự động được, hoặc Re-Open tạm dừng theo yêu cầu) — mở lại (bỏ comment) khi tính năng hoàn thiện.
-    // // PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bỏ .skip để chạy lại.
-    // it.skip(
-    //   title(
-    //     'SPLIT-M1 Re-open a split order: re-open checkout Enter Amount $0.00 on 4 methods; Edit Order locks amounts, note editable; Re-Open Done keeps the checks (SPLIT-071, SPLIT-090)',
-    //     Tag.REGRESSION,
-    //     Tag.WRITE,
-    //   ),
-    //   async function () {
-    //     this.timeout(5 * 60_000);
-    //     // Bug #22: re-opening a split order with tips is forced into "Void Order Transactions" → each run leaves a stuck order.
-    //     if (process.env.VOLT_RUN_STUCK_BUG_TESTS !== '1') {
-    //       console.warn(
-    //         'SPLIT-M1: bug #22 (re-open split order forced to Void) leaves a stuck order each run — set VOLT_RUN_STUCK_BUG_TESTS=1 to run',
-    //       );
-    //       this.skip();
-    //     }
-    //     const id = track(await app.createOrder({ services: [vqEnv.testService, vqEnv.testService2] }));
-    //     await S.openSplit();
-    //     await S.payCheck(id, 1, 'Cash', { cashierTipCents: '200' });
-    //     await S.payCheck(id, 2, 'Other', { cashierTipCents: '100' });
-    //     await S.completeDone();
-    //     await app.noReceipt();
-    //     splits.delete(id);
+    it(
+      title(
+        'SPLIT-M1 Re-open a split order: re-open checkout Enter Amount $0.00 on 4 methods; Edit Order locks amounts, note editable; Re-Open Done keeps the checks (SPLIT-071, SPLIT-090)',
+        Tag.REGRESSION,
+        Tag.WRITE,
+      ),
+      async function () {
+        this.timeout(5 * 60_000);
+        // Bug #22: re-opening a split order with tips is forced into "Void Order Transactions" → each run leaves a stuck order.
+        if (process.env.VOLT_RUN_STUCK_BUG_TESTS !== '1') {
+          console.warn(
+            'SPLIT-M1: bug #22 (re-open split order forced to Void) leaves a stuck order each run — set VOLT_RUN_STUCK_BUG_TESTS=1 to run',
+          );
+          this.skip();
+        }
+        const id = track(await app.createOrder({ services: [vqEnv.testService, vqEnv.testService2] }));
+        await S.openSplit();
+        await S.payCheck(id, 1, 'Cash', { cashierTipCents: '200' });
+        await S.payCheck(id, 2, 'Other', { cashierTipCents: '100' });
+        await S.completeDone();
+        await app.noReceipt();
+        splits.delete(id);
 
-    //     await reopenToCheckout(id);
-    //     let reopened = true;
-    //     try {
-    //       // Bug #22: SF + Tax on → re-opening a Cash + Other split with tips raises "Void Order Transactions" at once.
-    //       const forcedVoid = { role: 'dialog', hasText: 'Void Order Transactions', nth: -1 } as const;
-    //       await settle(1_500);
-    //       expect(await P.count(forcedVoid)).toBe(0); // re-open without changes must not force a void (bug #22)
-    //       expect(await visible(VqpsCheckout.reopenDone)).toBe(true);
-    //       for (const m of ['Card', 'Cash', 'Gift Card', 'Other'] as const) {
-    //         await app.selectMethod(m);
-    //         // VERIFY: "Enter Amount" shows for all 4 methods on the re-open checkout.
-    //         expect(await app.enteredAmount()).toBeCloseTo(0, 2);
-    //       }
+        await reopenToCheckout(id);
+        let reopened = true;
+        try {
+          // Bug #22: SF + Tax on → re-opening a Cash + Other split with tips raises "Void Order Transactions" at once.
+          const forcedVoid = { role: 'dialog', hasText: 'Void Order Transactions', nth: -1 } as const;
+          await settle(1_500);
+          expect(await P.count(forcedVoid)).toBe(0); // re-open without changes must not force a void (bug #22)
+          expect(await visible(VqpsCheckout.reopenDone)).toBe(true);
+          for (const m of ['Card', 'Cash', 'Gift Card', 'Other'] as const) {
+            await app.selectMethod(m);
+            // VERIFY: "Enter Amount" shows for all 4 methods on the re-open checkout.
+            expect(await app.enteredAmount()).toBeCloseTo(0, 2);
+          }
 
-    //       await P.clickQ(VqpsCheckout.editOrder);
-    //       await app.passcodeIfAsked(2_000);
-    //       await app.waitPath(/\/home\?editOrderId=/, 15_000);
-    //       await step('Amount edits are blocked', async () => {
-    //         expect(await visible(inMain({ css: 'li.pointer-events-none', nth: 0 }))).toBe(true);
-    //         await clickItemRowName(vqEnv.testService);
-    //         const dlg = { role: 'dialog', hasText: vqEnv.testService, nth: -1 } as const;
-    //         if (await waitUntil(() => visible(dlg), 3_000)) {
-    //           const amt = [dlg, { css: 'input[placeholder="0.00"]', nth: 0 }] as const;
-    //           const ai = await P.info(amt);
-    //           if (ai) expect(ai.disabled || 'readonly' in ai.attrs).toBe(true); // item price must not be editable on re-open
-    //           const sw = [dlg, { role: 'switch', nth: 0 }] as const;
-    //           if (await P.count(sw)) expect(await P.isDisabled(sw)).toBe(true);
-    //           await app.closeStrayDialogs();
-    //         }
-    //       });
-    //       await step('Note is editable', async () => {
-    //         await app.addNote('Reopen note e2e');
-    //       });
-    //       await app.finishReopen();
-    //       reopened = false;
-    //     } finally {
-    //       if (reopened) {
-    //         // Bug #22: never Confirm Void (would void real money) — "Back to Order" only; the order stays stuck in re-open.
-    //         const backBtn = btn('Back to Order', 0);
-    //         if (await visible(backBtn)) {
-    //           console.warn(`SPLIT-M1 cleanup: order ${id} stuck in Re-open by bug #22 (Void not confirmed)`);
-    //           await P.clickQ(backBtn).catch(() => undefined);
-    //         } else await app.finishReopen().catch(() => undefined);
-    //       }
-    //     }
-    //     await app.openHistoryOrder(id);
-    //     const d = await app.historyDetail(id);
-    //     expect(d).toContain(`#${id}-1`);
-    //     expect(d).toContain(`#${id}-2`);
-    //     expect(d).toContain('Reopen note e2e');
-    //   },
-    // );
+          await P.clickQ(VqpsCheckout.editOrder);
+          await app.passcodeIfAsked(2_000);
+          await app.waitPath(/\/home\?editOrderId=/, 15_000);
+          await step('Amount edits are blocked', async () => {
+            expect(await visible(inMain({ css: 'li.pointer-events-none', nth: 0 }))).toBe(true);
+            await clickItemRowName(vqEnv.testService);
+            const dlg = { role: 'dialog', hasText: vqEnv.testService, nth: -1 } as const;
+            if (await waitUntil(() => visible(dlg), 3_000)) {
+              const amt = [dlg, { css: 'input[placeholder="0.00"]', nth: 0 }] as const;
+              const ai = await P.info(amt);
+              if (ai) expect(ai.disabled || 'readonly' in ai.attrs).toBe(true); // item price must not be editable on re-open
+              const sw = [dlg, { role: 'switch', nth: 0 }] as const;
+              if (await P.count(sw)) expect(await P.isDisabled(sw)).toBe(true);
+              await app.closeStrayDialogs();
+            }
+          });
+          await step('Note is editable', async () => {
+            await app.addNote('Reopen note e2e');
+          });
+          await app.finishReopen();
+          reopened = false;
+        } finally {
+          if (reopened) {
+            // Bug #22: never Confirm Void (would void real money) — "Back to Order" only; the order stays stuck in re-open.
+            const backBtn = btn('Back to Order', 0);
+            if (await visible(backBtn)) {
+              console.warn(`SPLIT-M1 cleanup: order ${id} stuck in Re-open by bug #22 (Void not confirmed)`);
+              await P.clickQ(backBtn).catch(() => undefined);
+            } else await app.finishReopen().catch(() => undefined);
+          }
+        }
+        await app.openHistoryOrder(id);
+        const d = await app.historyDetail(id);
+        expect(d).toContain(`#${id}-1`);
+        expect(d).toContain(`#${id}-2`);
+        expect(d).toContain('Reopen note e2e');
+      },
+    );
 
     it(
       title(

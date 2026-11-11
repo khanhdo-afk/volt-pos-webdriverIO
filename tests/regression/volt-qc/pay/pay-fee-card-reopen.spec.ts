@@ -21,7 +21,7 @@
 import { expect } from '@wdio/globals';
 import { Timeouts } from '../../../../configs/constants/timeouts.js';
 import { payWithCard } from '../../../../src/flows/index.js';
-import { checkoutPage, homePage } from '../../../../src/pages/index.js';
+import { checkoutPage, homePage, orderHistoryDetailPage } from '../../../../src/pages/index.js';
 import {
   P,
   checkoutState,
@@ -43,8 +43,12 @@ import {
 import { giftCard } from '../../../../src/data/static/paymentMethods.js';
 import { settle } from '../../../../src/helpers/wait.js';
 import { buildDraft } from '../../order-flow/charge-matrix.helpers.js';
-import { CARD_SETTLE_ENABLED } from '../../order-flow/payment-flows.helpers.js';
-import { leaveReopenCheckout } from '../../order-flow/reopen-flow.helpers.js';
+import { CARD_SETTLE_ENABLED, createAndSettleCashOrder } from '../../order-flow/payment-flows.helpers.js';
+import {
+  leaveReopenCheckout,
+  finishReopenUnchanged,
+  reopenOrder,
+} from '../../order-flow/reopen-flow.helpers.js';
 import { requireStore, TIP_FULL, FEE_ON } from '../../../../src/support/portal/storeSettings.js';
 
 /** Sell the configured gift card as a $25 line on the open draft (never paid). */
@@ -208,29 +212,27 @@ describe('volt-qc 03 PAY — fees, card, re-open', function () {
     },
   );
 
-  // [TẮT 2026-11-08] Tạm không test (đã đánh dấu skip/MANUAL: cần thiết bị/điều kiện không tự động được, hoặc Re-Open tạm dừng theo yêu cầu) — mở lại (bỏ comment) khi tính năng hoàn thiện.
-  // // PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bỏ .skip để chạy lại.
-  // it.skip(
-  //   title(
-  //     'Re-opening a paid cash order lists the existing payment in Total Paid, Remaining $0.00, and offers Re-Open Done (PAY-055)',
-  //     Tag.REGRESSION,
-  //     Tag.WRITE,
-  //     Tag.PAYMENT,
-  //   ),
-  //   async () => {
-  //     const { orderId, paidTotalCents } = await createAndSettleCashOrder();
-  //     if (!(await orderHistoryDetailPage.isReopenAvailable())) {
-  //       throw new Error(`Re-Open is not offered on the just-settled order ${orderId}`);
-  //     }
-  //     await reopenOrder(orderId);
-  //     reopened = orderId;
-  //     const s = await checkoutState();
-  //     expect(s.totalPaid).toBe(paidTotalCents);
-  //     expect(s.text).toMatch(/Cash/);
-  //     expect(s.remaining).toBe(0);
-  //     expect(await checkoutPage.isReopenDoneShown()).toBe(true);
-  //     await finishReopenUnchanged(orderId);
-  //     reopened = '';
-  //   },
-  // );
+  it(
+    title(
+      'Re-opening a paid cash order lists the existing payment in Total Paid, Remaining $0.00, and offers Re-Open Done (PAY-055)',
+      Tag.REGRESSION,
+      Tag.WRITE,
+      Tag.PAYMENT,
+    ),
+    async () => {
+      const { orderId, paidTotalCents } = await createAndSettleCashOrder();
+      if (!(await orderHistoryDetailPage.isReopenAvailable())) {
+        throw new Error(`Re-Open is not offered on the just-settled order ${orderId}`);
+      }
+      await reopenOrder(orderId);
+      reopened = orderId;
+      const s = await checkoutState();
+      expect(s.totalPaid).toBe(paidTotalCents);
+      expect(s.text).toMatch(/Cash/);
+      expect(s.remaining).toBe(0);
+      expect(await checkoutPage.isReopenDoneShown()).toBe(true);
+      await finishReopenUnchanged(orderId);
+      reopened = '';
+    },
+  );
 });

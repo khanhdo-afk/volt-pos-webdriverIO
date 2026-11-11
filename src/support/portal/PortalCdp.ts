@@ -36,7 +36,8 @@ export class PortalCdp {
   constructor(private readonly port = Number(process.env.PORTAL_CDP_PORT ?? 9333)) {}
 
   get profileDir(): string {
-    return path.join(Paths.ROOT, '.portal-profile');
+    // PORTAL_PROFILE_DIR picks another signed-in profile (e.g. .portal-profile-prod-20258 for the live Portal).
+    return path.join(Paths.ROOT, process.env.PORTAL_PROFILE_DIR ?? '.portal-profile');
   }
 
   /** Launch Edge on the profile (or reuse one already listening on the port) and attach to its page. */

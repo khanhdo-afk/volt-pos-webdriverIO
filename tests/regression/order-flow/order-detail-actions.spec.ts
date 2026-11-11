@@ -90,24 +90,22 @@ describe('Order flow — Order detail actions', () => {
     },
   );
 
-  // [TẮT 2026-11-08] Tạm không test (đã đánh dấu skip/MANUAL: cần thiết bị/điều kiện không tự động được, hoặc Re-Open tạm dừng theo yêu cầu) — mở lại (bỏ comment) khi tính năng hoàn thiện.
-  // // PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bỏ .skip để chạy lại.
-  // it.skip(
-  //   title(
-  //     'An unsettled order offers Cancel / Re-Open, not Refund (TC-ORDERFLOW-55)',
-  //     Tag.REGRESSION,
-  //     Tag.WRITE,
-  //   ),
-  //   async () => {
-  //     // Settled-only actions must be absent while the order is unsettled...
-  //     expect(await orderHistoryDetailPage.isRefundAvailable()).toBe(false);
-  //     // ...and the unsettled actions present.
-  //     expect(await orderHistoryDetailPage.isCancelAvailable()).toBe(true);
-  //     expect(await orderHistoryDetailPage.isReopenAvailable()).toBe(true);
-  //     // One staff on the order, so no tip to split.
-  //     expect(await orderHistoryDetailPage.isSplitTipAvailable()).toBe(false);
-  //   },
-  // );
+  it(
+    title(
+      'An unsettled order offers Cancel / Re-Open, not Refund (TC-ORDERFLOW-55)',
+      Tag.REGRESSION,
+      Tag.WRITE,
+    ),
+    async () => {
+      // Settled-only actions must be absent while the order is unsettled...
+      expect(await orderHistoryDetailPage.isRefundAvailable()).toBe(false);
+      // ...and the unsettled actions present.
+      expect(await orderHistoryDetailPage.isCancelAvailable()).toBe(true);
+      expect(await orderHistoryDetailPage.isReopenAvailable()).toBe(true);
+      // One staff on the order, so no tip to split.
+      expect(await orderHistoryDetailPage.isSplitTipAvailable()).toBe(false);
+    },
+  );
 
   it(title('Cancel Order opens its reason dialog (TC-ORDERFLOW-64)', Tag.REGRESSION, Tag.WRITE), async () => {
     expect(await orderHistoryDetailPage.isCancelAvailable()).toBe(true);
