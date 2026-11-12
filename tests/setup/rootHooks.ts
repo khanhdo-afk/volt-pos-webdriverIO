@@ -48,6 +48,7 @@ import {
 import { restoreDeviceBaseline } from '../../src/support/deviceBaseline.js';
 import { ensurePasscodeGrant, topUpPasscodeGrant } from '../../src/support/passcodeGrant.js';
 import { killStaleProcesses } from '../../src/support/process.js';
+import { applyThemePack } from '../../src/support/themePack.js';
 import { moduleLogger } from '../../src/utils/logger.js';
 
 const log = moduleLogger('rootHooks');
@@ -226,6 +227,10 @@ export const mochaHooks: Mocha.RootHookObject = {
     }
 
     await ensureLoggedIn();
+
+    // THEME_PACK=volt-spring|volt-summer|volt-winter: the launch lane boots on a
+    // fresh WebView2 profile (Classic), so put the requested theme pack back first.
+    if (await applyThemePack()) await ensureLoggedIn();
 
     // A worker's first file gets no between-files reset, and the device settings a
     // previous worker (or run) left behind survive app relaunches: restore them,

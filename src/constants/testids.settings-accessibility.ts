@@ -94,3 +94,56 @@ export const defaultScreenOption = (value: DefaultScreen): Locator =>
 /** The skeleton preview of one option — a real testid on 1.1.107. */
 export const defaultScreenPreview = (value: DefaultScreen): Locator =>
   locator(`default screen preview ${value}`, `default-screen-preview-${value}`);
+
+/** The two values of `merchant_theme_pos_style.tile_colors` (VP-5724). */
+export type TileColors = 'bold' | 'pastel';
+
+/** EN "Tile Colors" / VI "Màu ô". */
+const TILE_COLORS_TITLE = '[normalize-space()="Tile Colors" or normalize-space()="Màu ô"]';
+const TILE_COLORS_CARD = `//div[@data-slot="card"][.//div[@data-slot="card-title"]${TILE_COLORS_TITLE}]`;
+
+/**
+ * VP-5724 "Tile Colors" card, right under Default Screen (build 1.1.120, merchant 14).
+ *
+ * Real testids on 1.1.120: the radios `tile-colors-<value>` (Radix `button#tile-colors-<value>`
+ * inside `label[for=…]`), the previews `tile-colors-preview-<value>` and the card's Save
+ * `tile-colors-save`. The card itself has none (`tile-colors-card` is a proposal).
+ */
+export const TileColorsIds = {
+  card: locator('tile colors card', 'tile-colors-card', TILE_COLORS_CARD),
+  /** The card right after Default Screen — the placement the ticket asks for. */
+  cardAfterDefaultScreen: locator(
+    'tile colors card after default screen',
+    'tile-colors-card-after-default-screen',
+    `${DEFAULT_SCREEN_CARD}/following-sibling::div[@data-slot="card"][1][.//div[@data-slot="card-title"]${TILE_COLORS_TITLE}]`,
+  ),
+  saveBtn: locator(
+    'tile colors save',
+    'tile-colors-save',
+    `${TILE_COLORS_CARD}//div[@data-slot="card-action"]//button`,
+  ),
+  /** "Default" badge on the Bold option. */
+  defaultBadge: locator(
+    'tile colors default badge',
+    'tile-colors-default-badge',
+    '//label[@for="tile-colors-bold"]//*[@data-slot="badge"]',
+  ),
+} satisfies Record<string, Locator>;
+
+/** The radio of one option (`data-state=checked` when selected) — a real testid on 1.1.120. */
+export const tileColorsRadio = (value: TileColors): Locator =>
+  locator(`tile colors radio ${value}`, `tile-colors-${value}`, `#tile-colors-${value}`);
+
+/** The clickable label (whole option tile) of one option. */
+export const tileColorsOption = (value: TileColors): Locator =>
+  locator(`tile colors option ${value}`, `tile-colors-option-${value}`, `label[for="tile-colors-${value}"]`);
+
+/** The preview of one option — a real testid on 1.1.120. */
+export const tileColorsPreview = (value: TileColors): Locator =>
+  locator(`tile colors preview ${value}`, `tile-colors-preview-${value}`);
+
+/** Option sub-labels (EN / VI) — data to check the copy, not to find the options. */
+export const TILE_COLORS_SUBLABELS: Record<TileColors, readonly string[]> = {
+  bold: ['Bold service tiles', 'Ô dịch vụ màu đậm'],
+  pastel: ['Pastel service tiles', 'Ô dịch vụ màu pastel'],
+};

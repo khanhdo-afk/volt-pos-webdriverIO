@@ -2,7 +2,7 @@ import { spawn } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
 import { Paths } from '../../../configs/constants/paths.js';
-import type { AppointmentHandoff, AppointmentInput } from '../../pages/web/OrderSitePage.js';
+import type { AppointmentHandoff, AppointmentInput, GapBoardHandoff } from '../../pages/web/OrderSitePage.js';
 import type { CheckinHandoff, CheckinInput } from '../../pages/web/CheckinKioskPage.js';
 import { CHECKIN_BULK_FILE, CHECKIN_HANDOFF_FILE } from '../../pages/web/checkinHandoff.js';
 import { HANDOFF_FILE } from '../../pages/web/handoff.js';
@@ -92,6 +92,18 @@ export async function runWebSpec<T>(
 /** Check a customer in on the GAP → GoCheckin kiosk (a pending order syncs to POS). */
 export function gapCheckin(input: CheckinInput = {}): Promise<CheckinHandoff> {
   return runWebSpec<CheckinHandoff>('tests/web/create-checkin.spec.ts', input, CHECKIN_HANDOFF_FILE);
+}
+
+/** Where `tests/web/gap-appointment-board.spec.ts` leaves the GoCheckin calendar columns. */
+export const GAP_BOARD_FILE = path.join(Paths.TMP, 'gap-appointment-board.json');
+
+/**
+ * Read the GoCheckin (pos.gocheckin.net) Appointment calendar columns — name and
+ * colour, left to right — in a child web-lane run (read-only, ~30 s).
+ */
+export function gapAppointmentBoard(): Promise<GapBoardHandoff> {
+  fs.mkdirSync(Paths.TMP, { recursive: true });
+  return runWebSpec<GapBoardHandoff>('tests/web/gap-appointment-board.spec.ts', {}, GAP_BOARD_FILE);
 }
 
 /** Book an appointment on the GoCheckin web POS (pos.gocheckin.net); it syncs to the POS board. */

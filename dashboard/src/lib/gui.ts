@@ -480,3 +480,71 @@ export function featureKeyOf(file: string): string {
       .join('/') || 'root'
   );
 }
+
+/* ── Core Retest (dashboard/server/core.mjs) ───────────────────────────── */
+
+export type CoreStatus = 'pass' | 'fail' | 'blocked' | 'skip' | 'todo';
+
+export interface CoreAutoTest {
+  id: string;
+  spec: string;
+  title: string;
+}
+
+export interface CoreTc {
+  key: string;
+  group: number;
+  raw: string;
+  ids: string[];
+  label: string;
+  star: boolean;
+  /** Markdown: source link, preconditions, steps, expected. */
+  body: string;
+  sources: { name: string; href: string }[];
+  manualOnly: boolean;
+  /** Automated tests covering this test case (empty = test by hand). */
+  auto: CoreAutoTest[];
+  /** Ids of a multi-id row with no automated test. */
+  missing: string[];
+}
+
+export interface CoreGroup {
+  num: number;
+  name: string;
+  note: string;
+  tcs: CoreTc[];
+}
+
+export interface CoreResult {
+  status: Exclude<CoreStatus, 'todo'>;
+  note: string;
+  source: 'auto' | 'manual';
+  detail?: string;
+  at: string;
+}
+
+export interface CoreSession {
+  id: string;
+  startedAt: string;
+  meta: { build: string; env: string; store: string; tester: string };
+  results: Record<string, CoreResult>;
+}
+
+export interface CoreResultInput {
+  key: string;
+  status: CoreStatus;
+  note?: string;
+  source?: 'auto' | 'manual';
+  detail?: string;
+}
+
+const CORE = '/api/gui/core';
+
+export const coreApi = {
+  state: () => json<{ groups: CoreGroup[]; session: CoreSession }>(`${CORE}`),
+  results: (results: CoreResultInput[]) =>
+    json<{ session: CoreSession }>(`${CORE}/results`, post({ results })),
+  meta: (meta: Partial<CoreSession['meta']>) => json<{ session: CoreSession }>(`${CORE}/meta`, post(meta)),
+  reset: (meta?: Partial<CoreSession['meta']>) => json<{ session: CoreSession }>(`${CORE}/reset`, post(meta)),
+  exportReport: () => json<{ path: string; markdown: string }>(`${CORE}/export`, post()),
+};

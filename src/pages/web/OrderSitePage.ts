@@ -390,6 +390,60 @@ export class OrderSitePage {
     // so an existence check would never resolve.
     await this.waitGone(`//input[@placeholder="${searchPlaceholder}"]`, `${fieldLabel} picker`);
   }
+
+  /* --------------------------------------------------------------------- *
+   * Appointment board (read-only) — VP-4402 / VP-5481 cross-check
+   * --------------------------------------------------------------------- */
+
+  /**
+   * Every column of the Appointment calendar, left to right, as GoCheckin draws it.
+   *
+   * The calendar is FullCalendar: one `th.fc-col-header-cell.fc-resource` per
+   * column (`data-resource-id` = GCI staff id, `"unassigned"` for Unassigned),
+   * not virtualised, and the column colour is the inline `color` of the name span
+   * (`var(--primary)` for Unassigned / a staff with no colour, else `rgb(…)`).
+   * Call after {@link login}; the calendar mounts a moment after the landing URL.
+   */
+  async readAppointmentColumns(): Promise<GapBoardColumn[]> {
+    await this.visible('//th[contains(@class, "fc-resource")]', { timeout: Timeouts.LONG });
+    return browser.execute(() => {
+      const seen = new Set<string>();
+      const out: { resourceId: string; name: string; color: string; date: string }[] = [];
+      for (const th of Array.from(
+        document.querySelectorAll<HTMLElement>('th.fc-col-header-cell.fc-resource'),
+      )) {
+        if (th.getBoundingClientRect().height === 0) continue;
+        const id = th.dataset.resourceId ?? '';
+        if (seen.has(id)) continue;
+        seen.add(id);
+        const span = th.querySelector<HTMLElement>('.fc-col-header-cell-cushion > span') ?? th;
+        out.push({
+          resourceId: id,
+          name: (span.textContent ?? '').trim(),
+          color: window.getComputedStyle(span).color,
+          date: th.dataset.date ?? '',
+        });
+      }
+      return out;
+    });
+  }
+}
+
+/** One GoCheckin calendar column as rendered (colour is the computed `rgb(…)`). */
+export interface GapBoardColumn {
+  /** GCI staff id, or `"unassigned"`. */
+  resourceId: string;
+  name: string;
+  /** Computed text colour of the header label, `rgb(r, g, b)`. */
+  color: string;
+  /** `yyyy-MM-dd` of the board the header belongs to. */
+  date: string;
+}
+
+/** What `tests/web/gap-appointment-board.spec.ts` hands to the app lane. */
+export interface GapBoardHandoff {
+  readAt: string;
+  columns: GapBoardColumn[];
 }
 
 export const orderSitePage = new OrderSitePage();

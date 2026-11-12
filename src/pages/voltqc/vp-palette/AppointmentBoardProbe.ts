@@ -12,6 +12,8 @@ export interface BoardColumn {
   name: string;
   /** The header's bottom border colour = the column colour, upper-case `#RRGGBB`. */
   color: string;
+  /** The count badge beside the name (inline `background-color`), `#RRGGBB`; `null` = no badge. */
+  badge: string | null;
 }
 
 /** One appointment card read off a column. */
@@ -53,7 +55,7 @@ export class AppointmentBoardProbe extends UiObject {
       while (scroller && !/(auto|scroll)/.test(window.getComputedStyle(scroller).overflowX)) {
         scroller = scroller.parentElement;
       }
-      const seen = new Map<number, { name: string; color: string }>();
+      const seen = new Map<number, { name: string; color: string; badge: string | null }>();
       const collect = (): void => {
         for (const cell of cells()) {
           const match = /translateX\((-?[\d.]+)px\)/.exec(cell.style.transform);
@@ -62,7 +64,12 @@ export class AppointmentBoardProbe extends UiObject {
           if (seen.has(x)) continue;
           const span = cell.querySelector('span');
           const label = span?.firstChild?.textContent ?? span?.textContent ?? '';
-          seen.set(x, { name: label.trim(), color: window.getComputedStyle(cell).borderBottomColor });
+          const badge = cell.querySelector<HTMLElement>('[style*="background-color"]');
+          seen.set(x, {
+            name: label.trim(),
+            color: window.getComputedStyle(cell).borderBottomColor,
+            badge: badge ? window.getComputedStyle(badge).backgroundColor : null,
+          });
         }
       };
       if (!scroller) {
@@ -80,9 +87,14 @@ export class AppointmentBoardProbe extends UiObject {
       }
       return Array.from(seen.entries())
         .sort((a, b) => a[0] - b[0])
-        .map(([x, v]) => ({ x, name: v.name, color: v.color }));
+        .map(([x, v]) => ({ x, name: v.name, color: v.color, badge: v.badge }));
     }, PaletteCss.boardHeaderCell);
-    return raw.map((c) => ({ x: c.x, name: c.name, color: toHex(c.color) }));
+    return raw.map((c) => ({
+      x: c.x,
+      name: c.name,
+      color: toHex(c.color),
+      badge: c.badge === null ? null : toHex(c.badge),
+    }));
   }
 
   /**
@@ -138,7 +150,9 @@ export class AppointmentBoardProbe extends UiObject {
           scroller.scrollTop = top;
           await sleep(150);
           for (const el of Array.from(document.querySelectorAll<HTMLElement>(cardCss))) {
-            if (!el.style.borderTopColor || !el.style.borderLeftColor) continue;
+            // Since volt-pos#3406 the card sets `border-color: var(--identity-fill, …)`; a
+            // var() shorthand leaves the inline longhands empty, so test the attribute.
+            if (!/(^|;)\s*border-color\s*:/.test(el.getAttribute('style') ?? '')) continue;
             const r = el.getBoundingClientRect();
             const cx = r.left + r.width / 2;
             if (cx < box.left || cx > box.right || r.height === 0) continue;

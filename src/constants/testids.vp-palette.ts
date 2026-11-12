@@ -26,7 +26,8 @@
  * - `appointment/-appointment-scheduler/appointment-scheduler-staff-header.tsx` —
  *   each column header is an absolutely positioned cell with inline
  *   `transform: translateX(<px>)` and `border-bottom: 3px solid <staff colour>`;
- *   Unassigned uses `var(--color-neutral-700)`.
+ *   Unassigned used `var(--color-neutral-700)` until volt-pos#3406 (VP-5481, 1.1.115):
+ *   now `var(--color-primary)` (#5669FF), and a null-colour staff is #5669FF too.
  * - `appointment-scheduler-card-body.tsx` — a card sets inline `border-color`
  *   (all four sides) = staff colour and, when assigned, inline
  *   `background-color: color-mix(in srgb, <staff> 30%, var(--card))` (VP-4402, PR #3274).
@@ -103,6 +104,61 @@ export const PINNED_TILE_LABELS = {
   quickPay: ['Quick Pay', 'Thanh toán nhanh'],
   giftCard: ['Gift Card', 'Thẻ quà tặng'],
 } as const;
+
+/**
+ * VP-5724 Tile Colors — `CATEGORY_PASTEL_BY_BOLD` of volt-pos `src/shared/constants/service.ts`
+ * (PR #3425, develop 11/11/2026): each bold category colour's staff-palette partner, which a
+ * Pastel category / service tile is filled with. Keys upper-case `#RRGGBB`.
+ */
+export const CATEGORY_PASTEL_BY_BOLD: Readonly<Record<string, string>> = {
+  '#36BFF2': '#9DDDF9',
+  '#3FB2F2': '#9DDDF9',
+  '#1FD69F': '#83F0CC',
+  '#3A86EB': '#96BDF5',
+  '#2EE4D9': '#9DF5EC',
+  '#785EE1': '#B5ADEF',
+  '#6C64E9': '#B5ADEF',
+  '#DB4B91': '#F5A3B5',
+  '#E74F78': '#F5A3B5',
+  '#E363AC': '#F5A3B5',
+  '#E77653': '#F5A98A',
+  '#E66436': '#F4B6A0',
+  '#E9434A': '#F59992',
+  '#CA7146': '#E3AA8A',
+  '#9E6442': '#E3AA8A',
+  '#C239DD': '#E299F1',
+  '#0AA456': '#78D4A2',
+  '#546AD7': '#A0AFF0',
+  '#70A950': '#B7D5A1',
+  '#F2BB3B': '#F8D885',
+};
+
+/** `CATEGORY_BOLD_BY_PASTEL` — each staff colour's FIRST bold partner (a staff-coloured category draws bold in Bold). */
+export const CATEGORY_BOLD_BY_PASTEL: Readonly<Record<string, string>> = Object.entries(
+  CATEGORY_PASTEL_BY_BOLD,
+).reduce<Record<string, string>>((acc, [bold, pastel]) => {
+  acc[pastel] ??= bold;
+  return acc;
+}, {});
+
+/** `text-ink` — the dark text of Pastel tiles and of staff names (rgb(47, 44, 53)). */
+export const INK_HEX = '#2F2C35';
+
+/** Bold fill of a category stored as `hex` (`boldCategoryColor`): a staff colour → its bold partner. */
+export function boldTileHex(hex: string): string {
+  const upper = hex.toUpperCase();
+  return CATEGORY_BOLD_BY_PASTEL[upper] ?? upper;
+}
+
+/**
+ * Pastel fill of a category stored as `hex` (`pastelCategoryColor`): the table partner, a staff
+ * colour unchanged, `null` for any other hex (the app picks the nearest staff colour in OKLab —
+ * callers then only assert "some staff colour").
+ */
+export function pastelTileHex(hex: string): string | null {
+  const upper = hex.toUpperCase();
+  return CATEGORY_PASTEL_BY_BOLD[upper] ?? (STAFF_PALETTE_HEX.includes(upper) ? upper : null);
+}
 
 /** The appointment board's first column — `global.unassigned`. */
 export const UNASSIGNED_LABELS = ['Unassigned', 'Chưa phân công'] as const;

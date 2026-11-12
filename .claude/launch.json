@@ -18,6 +18,15 @@
       "runtimeExecutable": "node",
       "runtimeArgs": ["dashboard/server/runner.mjs"],
       "port": 4322
+    },
+    {
+      "name": "runner-gui-installed",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "-e",
+        "const p=require('path');process.env.APP_PATH=p.join(process.env.LOCALAPPDATA,'Volt POS','volt-pos.exe');process.env.REMOTE_DEBUG_PORT='9223';import(require('url').pathToFileURL(p.resolve('dashboard/server/runner.mjs')).href).then(m=>m.listen())"
+      ],
+      "port": 4322
     }
   ]
 }

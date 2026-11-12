@@ -11,6 +11,18 @@ export function toHex(value: string | null | undefined): string {
   const text = (value ?? '').trim();
   const hex = /^#([0-9a-f]{6})$/i.exec(text);
   if (hex?.[1]) return `#${hex[1].toUpperCase()}`;
+  // A resolved `color-mix(in srgb, …)` computes to `color(srgb r g b)` with 0…1 channels.
+  const srgb = /^color\(\s*srgb\s+([\d.]+)\s+([\d.]+)\s+([\d.]+)/i.exec(text);
+  if (srgb) {
+    return `#${[srgb[1], srgb[2], srgb[3]]
+      .map((part) =>
+        Math.round(Math.min(1, Number(part)) * 255)
+          .toString(16)
+          .padStart(2, '0'),
+      )
+      .join('')
+      .toUpperCase()}`;
+  }
   const rgb = /^rgba?\(\s*(\d+)[,\s]+(\d+)[,\s]+(\d+)/i.exec(text);
   if (!rgb) return '';
   return `#${[rgb[1], rgb[2], rgb[3]]

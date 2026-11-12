@@ -11,10 +11,12 @@ import { ConsoleTab } from './components/gui/ConsoleTab';
 import { HistoryTab } from './components/gui/HistoryTab';
 import { ScheduleTab } from './components/gui/ScheduleTab';
 import { DEFAULT_NOTIFY, NotifyTab, notify, type NotifyPrefs } from './components/gui/NotifyTab';
+import { CoreTab } from './components/gui/CoreTab';
 
-type Tab = 'dashboard' | 'results' | 'console' | 'history' | 'schedule' | 'notify';
+type Tab = 'core' | 'dashboard' | 'results' | 'console' | 'history' | 'schedule' | 'notify';
 
 const TABS: [Tab, string][] = [
+  ['core', '✅ Core Retest'],
   ['dashboard', '🎯 Dashboard'],
   ['results', '📊 Kết quả'],
   ['console', '⚡ Chạy & Console'],
@@ -437,6 +439,16 @@ export function App(): JSX.Element {
               </div>
             )}
 
+            {tab === 'core' && (
+              <CoreTab
+                runner={runner}
+                env={env}
+                disabled={running || !runner.online}
+                onRun={({ specs, titles, label }) =>
+                  void start({ specs, titles, label }).then(() => setTab('core'))
+                }
+              />
+            )}
             {tab === 'dashboard' && <HistoryTab history={history} mode="overview" />}
             {tab === 'results' && (
               <ResultsTab

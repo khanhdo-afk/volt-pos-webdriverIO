@@ -1,8 +1,8 @@
 {
-  "runId": "2026-11-09T07-56-40-715Z",
-  "startedAt": "2026-11-09T07:56:40.715Z",
-  "finishedAt": "2026-11-09T08:06:36.882Z",
-  "durationMs": 596167,
+  "runId": "2026-11-12T06-38-33-651Z",
+  "startedAt": "2026-11-12T06:38:33.651Z",
+  "finishedAt": "2026-11-12T06:39:19.482Z",
+  "durationMs": 45831,
   "env": {
     "name": "dev",
     "mode": "attach",
@@ -11,8 +11,8 @@
     "upstream": "https://volt-pos.v2.dev-fastboypay.com"
   },
   "totals": {
-    "tests": 10,
-    "passed": 10,
+    "tests": 0,
+    "passed": 0,
     "failed": 0,
     "skipped": 0,
     "passRate": 100
@@ -21,105 +21,16 @@
   "specs": [
     {
       "cid": "0-0",
-      "file": "file:///D:/Project/webdriverIO_volt_pos/tests/regression/order-flow/vp-3788-split-gift-card-partial-tip.spec.ts",
-      "specName": "vp-3788-split-gift-card-partial-tip",
-      "startedAt": "2026-11-09T07:56:42.460Z",
-      "finishedAt": "2026-11-09T08:06:35.722Z",
-      "durationMs": 593262,
+      "file": "file:///D:/2.POS/e2e_volt_pos_webdriverIO/tests/smoke/home-screen.spec.ts",
+      "specName": "home-screen",
+      "startedAt": "2026-11-12T06:38:35.314Z",
+      "finishedAt": "2026-11-12T06:39:19.100Z",
+      "durationMs": 43786,
       "retry": 1,
-      "suites": [
-        {
-          "title": "VP-3788 — Split gift card short of the check keeps the tip",
-          "tests": [],
-          "suites": [
-            {
-              "title": "1. Short card → Create New Check (order A)",
-              "tests": [
-                {
-                  "title": "TC-VP3788-01: Split By Amount + tip on Check 1 @regression @write @payment",
-                  "fullTitle": "VP-3788 — Split gift card short of the check keeps the tip.1. Short card → Create New Check (order A).TC-VP3788-01: Split By Amount + tip on Check 1 @regression @write @payment",
-                  "state": "passed",
-                  "durationMs": 133991,
-                  "retries": 0
-                },
-                {
-                  "title": "TC-VP3788-02: short card → \"not Enough Balance\" offers Create New Check @regression @write @payment",
-                  "fullTitle": "VP-3788 — Split gift card short of the check keeps the tip.1. Short card → Create New Check (order A).TC-VP3788-02: short card → \"not Enough Balance\" offers Create New Check @regression @write @payment",
-                  "state": "passed",
-                  "durationMs": 13215,
-                  "retries": 0
-                },
-                {
-                  "title": "TC-VP3788-03: Create New Check → tip stays on the panel, Total unchanged @regression @write @payment",
-                  "fullTitle": "VP-3788 — Split gift card short of the check keeps the tip.1. Short card → Create New Check (order A).TC-VP3788-03: Create New Check → tip stays on the panel, Total unchanged @regression @write @payment",
-                  "state": "passed",
-                  "durationMs": 2881,
-                  "retries": 0
-                },
-                {
-                  "title": "TC-VP3788-04: the remainder check is selected and carries the tip @regression @write",
-                  "fullTitle": "VP-3788 — Split gift card short of the check keeps the tip.1. Short card → Create New Check (order A).TC-VP3788-04: the remainder check is selected and carries the tip @regression @write",
-                  "state": "passed",
-                  "durationMs": 1082,
-                  "retries": 0
-                },
-                {
-                  "title": "TC-VP3788-05: pay the rest in Cash → remainder shows \"Tip: $x\", Success shows the tip @regression @write @payment @dual-window",
-                  "fullTitle": "VP-3788 — Split gift card short of the check keeps the tip.1. Short card → Create New Check (order A).TC-VP3788-05: pay the rest in Cash → remainder shows \"Tip: $x\", Success shows the tip @regression @write @payment @dual-window",
-                  "state": "passed",
-                  "durationMs": 8313,
-                  "retries": 0
-                },
-                {
-                  "title": "TC-VP3788-06: order data — tipAmount, tip on the remainder tx, gift card tx tip 0 @regression @write",
-                  "fullTitle": "VP-3788 — Split gift card short of the check keeps the tip.1. Short card → Create New Check (order A).TC-VP3788-06: order data — tipAmount, tip on the remainder tx, gift card tx tip 0 @regression @write",
-                  "state": "passed",
-                  "durationMs": 173,
-                  "retries": 0
-                },
-                {
-                  "title": "TC-VP3788-07: Order History shows the tip and the total @regression @write",
-                  "fullTitle": "VP-3788 — Split gift card short of the check keeps the tip.1. Short card → Create New Check (order A).TC-VP3788-07: Order History shows the tip and the total @regression @write",
-                  "state": "passed",
-                  "durationMs": 2027,
-                  "retries": 0
-                }
-              ],
-              "suites": []
-            },
-            {
-              "title": "2. Cancel and the refused band (order B — never charged)",
-              "tests": [
-                {
-                  "title": "TC-VP3788-08: Cancel on \"not Enough Balance\" → nothing charged, tip kept @regression @write @payment",
-                  "fullTitle": "VP-3788 — Split gift card short of the check keeps the tip.2. Cancel and the refused band (order B — never charged).TC-VP3788-08: Cancel on \"not Enough Balance\" → nothing charged, tip kept @regression @write @payment",
-                  "state": "passed",
-                  "durationMs": 148430,
-                  "retries": 0
-                },
-                {
-                  "title": "TC-VP3788-09: balance within [base − $1, base + tip] → refused, no Create New Check @regression @write @payment",
-                  "fullTitle": "VP-3788 — Split gift card short of the check keeps the tip.2. Cancel and the refused band (order B — never charged).TC-VP3788-09: balance within [base − $1, base + tip] → refused, no Create New Check @regression @write @payment",
-                  "state": "passed",
-                  "durationMs": 273512,
-                  "retries": 0
-                },
-                {
-                  "title": "TC-VP3788-10: Select Another Method → no transaction, tip kept @regression @write @payment",
-                  "fullTitle": "VP-3788 — Split gift card short of the check keeps the tip.2. Cancel and the refused band (order B — never charged).TC-VP3788-10: Select Another Method → no transaction, tip kept @regression @write @payment",
-                  "state": "passed",
-                  "durationMs": 1665,
-                  "retries": 0
-                }
-              ],
-              "suites": []
-            }
-          ]
-        }
-      ],
+      "suites": [],
       "totals": {
-        "tests": 10,
-        "passed": 10,
+        "tests": 0,
+        "passed": 0,
         "failed": 0,
         "skipped": 0,
         "passRate": 100

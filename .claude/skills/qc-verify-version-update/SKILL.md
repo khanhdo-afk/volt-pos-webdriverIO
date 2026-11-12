@@ -1,6 +1,6 @@
 ---
 name: qc-verify-version-update
-description: QC 1 task Linear liên quan đến Version Update của Volt POS (menu ≡ → Version Update, updater, release notes, Update Now/retry, auto update) — đọc task, tự test trên POS dev, liệt kê bảng test case PASS/FAIL, rồi comment kết quả tiếng Việt kèm nhiều ảnh + video (🎬 Video). PASS → comment "I have verified..." + chuyển QC Completed. FAIL → mỗi bug 1 sub task, comment "Please help me fix bug..." + assign mọi bug (sub task + task cha) cho Mai Khanh. Dùng khi user nói "test task VP-xxxx (version update / update POS) xem pass chưa", "verify version update", "/qc-verify-version-update VP-xxxx".
+description: QC 1 task Linear liên quan đến Version Update của Volt POS (menu ≡ → Version Update, updater, release notes, Update Now/retry, auto update) hoặc task [POS&Portal] có setting chỉnh ở cả Portal web và app — đọc task, tự test trên POS dev KẾT HỢP Portal DEV (đồng bộ 2 chiều Portal ↔ POS), liệt kê bảng test case PASS/FAIL, rồi comment kết quả tiếng Việt kèm nhiều ảnh + video (🎬 Video). PASS → comment "I have verified..." + chuyển QC Completed. FAIL → mỗi bug 1 sub task, comment "Please help me fix bug..." + assign mọi bug (sub task + task cha) cho Mai Khanh. Dùng khi user nói "test task VP-xxxx (version update / update POS) xem pass chưa", "verify version update", "/qc-verify-version-update VP-xxxx".
 argument-hint: '<VP-xxxx hoặc URL Linear> [version] [@dev]'
 ---
 
@@ -11,15 +11,17 @@ Nếu thiếu mã task → hỏi user, KHÔNG đoán task.
 
 ## Mặc định (user đã yêu cầu, có thể bị ghi đè bởi tham số)
 
-| Mục                         | Giá trị                                                                                   |
-| --------------------------- | ----------------------------------------------------------------------------------------- |
-| Dev tag trong comment       | `@ngan_huynh` (Ngan Huynh Thi Thao) — lời user > PR author                                |
-| Assignee khi FAIL           | **Mai Khanh** (`khanh_do@fastboy.net` / `me`) — MỌI bug: sub task + task cha (user 06/11) |
-| cc                          | `@tienpd @loan_dang`                                                                      |
-| Ngôn ngữ comment / sub task | Tiếng Việt (giữ nguyên câu mở đầu tiếng Anh của template)                                 |
-| Version ghi trong comment   | Version **thật sự đã test** (đọc trong app), không phải số trong template (vd 1.1.57)     |
-| Video                       | 1 video case chính (luồng update) + 1 video cho mỗi bug FAIL — xem mục 4b                 |
-| Version test                | Luôn là **bản dev mới nhất trên feed** (mục 2), trừ khi tham số chỉ định version          |
+| Mục                         | Giá trị                                                                                                                                                                                                 |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Dev tag trong comment       | `@ngan_huynh` (Ngan Huynh Thi Thao) — lời user > PR author                                                                                                                                              |
+| Assignee khi FAIL           | **Mai Khanh** (`khanh_do@fastboy.net` / `me`) — MỌI bug: sub task + task cha (user 06/11)                                                                                                               |
+| cc                          | `@tienpd @loan_dang`                                                                                                                                                                                    |
+| Ngôn ngữ comment / sub task | Tiếng Việt (giữ nguyên câu mở đầu tiếng Anh của template)                                                                                                                                               |
+| Version ghi trong comment   | Version **thật sự đã test** (đọc trong app), không phải số trong template (vd 1.1.57)                                                                                                                   |
+| Video                       | 1 video case chính (luồng update) + 1 video cho mỗi bug FAIL — xem mục 4b                                                                                                                               |
+| Version test                | Luôn là **bản dev mới nhất trên feed** (mục 2), trừ khi tham số chỉ định version                                                                                                                        |
+| Portal web                  | **Luôn test kèm Portal DEV** khi task có label `Portal`, tiêu đề `[POS&Portal]`/`[PORTAL]`, PR fastboy-portal, hoặc setting/dữ liệu POS mà Portal cũng sửa/hiển thị (user 12/11) — xem mục 2b           |
+| Code / spec                 | **Không bao giờ viết code** (spec, helper, page object, `it()`) cho task này: version của app và app mobile chỉ test tay (user 10/11). Lái app bằng CDP / fake updater trong trang để test thì vẫn được |
 
 ## 1. Đọc task
 
@@ -51,7 +53,35 @@ User yêu cầu (05/11): mọi lần QC đều phải chạy trên **bản dev m
 - Đọc version hiện tại: menu ≡ → **Version Update** (hoặc About). Feed dev:
   `curl -s https://volt-pos.v2.dev-fastboypay.com/auto_update/check_version_update/<version-hiện-tại>` để biết có bản mới không.
 
+## 2b. Portal web — test kết hợp với app Volt POS
+
+Áp dụng khi task đụng Portal (xem bảng Mặc định). Không cần user nhắc — mặc định test cả 2 phía trong cùng lượt QC.
+
+1. **PR Portal đã lên DEV chưa**: `gh pr view <n> --repo FastboyMarketing/fastboy-portal --json state,mergedAt,baseRefName`
+   (Portal merge vào `main` là deploy DEV). Chưa merge → báo user, chỉ test phía POS.
+2. **Mở Portal DEV** bằng Claude in Chrome (đã đăng nhập sẵn; ToolSearch nạp 1 lần: `tabs_context_mcp, navigate, computer,
+find, get_page_text, javascript_tool`): `https://v2.dev-fastboypay.com/pos/nail/<merchantId>/setting?tab=<tab>`
+   (`configuration`, `payment-transactions`, …). `merchantId` = `MERCHANT_ID` trong `configs/env/.env.dev` (tiệm #14).
+   Hết phiên → nhờ user tự đăng nhập (Google 2FA), Claude không gõ mật khẩu. Đóng tab đã mở khi xong.
+3. **Ma trận test bắt buộc** (thêm vào bảng TC, ID `TC-PT-xx` hoặc chung bảng của task):
+   | Case                       | Cách làm                                                                                      | Mong đợi                                                                                                              |
+   | -------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+   | UI Portal                  | Vị trí mục, nhãn, chữ phụ, nhãn `Default`, thanh lưu nổi `N unsaved changes · Discard · Save` | Đúng mô tả task                                                                                                       |
+   | POS → Portal               | Lưu trên POS, mở/xem Portal                                                                   | Portal hiện giá trị mới (kiểm cả khi Portal đang mở sẵn)                                                              |
+   | Portal → POS               | Lưu trên Portal, KHÔNG mở lại app                                                             | POS nhận giá trị mới (đọc `sysSettingList` / `merchantSettingList` bằng GraphQL trong trang) + màn liên quan đổi đúng |
+   | Không phá setting cùng row | Lưu 1 setting khác cùng row JSON trên Portal (vd Font size với `merchant_theme_pos_style`)    | Không lỗi `invalid field(s)`, field mới vẫn giữ                                                                       |
+   | Quyền                      | Portal: quyền Store Settings; POS: passcode POS Settings                                      | Đúng quyền                                                                                                            |
+4. **Đọc giá trị POS** trong trang: `window.__TAURI_INTERNALS__.invoke('graphql',{query:'query{ sysSettingList(where:{key:{in:["<key>"]}}){key value updatedAt} }',variables:{},operation:null})`.
+5. **Ảnh Portal**: `computer screenshot` với `save_to_disk: true` → copy file vào `.playwright-mcp/<VP-xxxx>/NN-portal-<mo-ta>.jpg`.
+   Video: quay màn POS (`rec:start --screens staff`) trong lúc bấm Save trên Portal để thấy POS đổi theo.
+6. **Trả lại giá trị gốc** ở cả Portal và POS sau khi test (ghi lại giá trị trước khi đổi), nêu trong comment.
+7. Giả lập mất mạng: wrap `window.fetch` KHÔNG chặn được IPC của Tauri (tự fallback sang postMessage, lưu vẫn thành công) →
+   case "lưu khi lỗi mạng" phải rút mạng thật, nếu không ghi "Chưa test được".
+
 ## 3. Test case Version Update (chọn những case liên quan task, thêm case riêng của task)
+
+Task không phải Version Update (vd setting [POS&Portal]): bỏ bảng TC-VU, tự lập TC theo quy tắc / Acceptance Criteria của
+task + ma trận mục 2b; vẫn giữ quy trình bản dev mới nhất, ảnh, video, comment, trạng thái như dưới.
 
 | TC ID    | Title                                 | Ý chính                                                                              |
 | -------- | ------------------------------------- | ------------------------------------------------------------------------------------ |
@@ -163,5 +193,5 @@ Please help me fix bug @ngan_huynh cc @tienpd @loan_dang
 
 ## 7. Báo lại user
 
-Tóm tắt: version đã test (và đó có phải bản mới nhất trên feed lúc test không), X/Y PASS, link comment, sub task đã tạo (link), trạng thái mới.
+Tóm tắt: version đã test (và đó có phải bản mới nhất trên feed lúc test không), phía Portal đã test những gì (hoặc vì sao chưa), X/Y PASS, link comment, sub task đã tạo (link), trạng thái mới.
 Cập nhật memory nếu học được điều mới về updater.

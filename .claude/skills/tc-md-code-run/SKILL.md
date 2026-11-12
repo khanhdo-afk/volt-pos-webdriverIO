@@ -9,6 +9,16 @@ argument-hint: '<VP-xxxx | URL Linear | tên tính năng> [chỉ bước: md | c
 Tham số: `$ARGUMENTS` = mã task / URL / tên tính năng, tuỳ chọn giới hạn bước (`md`, `code`, `run`).
 Thiếu đối tượng → hỏi user, không đoán. Nếu file .md / spec đã có → **cập nhật**, không tạo bản trùng.
 
+> **Không bao giờ viết code** (spec, helper, page object, `it()` / `it.skip`) cho:
+>
+> - **app mobile**: Android / P8D / iOS, task chỉ có label Android;
+> - **version của app**: kiểm version đang chạy, so version với feed, Version Update / updater / auto update.
+>
+> Các TC này vẫn có trong file `.md` nhưng chỉ test tay: Status `📄 test tay (không code — app mobile / version)`.
+> Không scaffold, không tạo `it()` cho chúng, không đưa vào bước 3 (user yêu cầu 10/11/2026).
+> Spec vẫn được tự **đọc** version (dòng "Binary under test", `skipUnlessBuild`) để chặn chạy nhầm build cũ,
+> nhưng không có TC nào kiểm version.
+
 ## Bước 1 — Tạo file test case `.md`
 
 1. Đọc nguồn: task Linear (`get_issue` + `list_comments`, ảnh qua `extract_images`, PR dev nếu có)
@@ -31,6 +41,7 @@ Thiếu đối tượng → hỏi user, không đoán. Nếu file .md / spec đ�
 2. Đọc `docs/writing-tests.md` + 1 spec cùng thư mục làm mẫu (vd `tests/regression/customer-display/vp-5195-phone-reject.spec.ts`
    - `vp-5195.helpers.ts`). Dùng page object `src/pages/**`, testid `src/constants/testids*.ts`; thiếu thì thêm method/testid, không hard-code selector trong spec.
 3. Title chứa TC id: `title('… (TC-VP<id>-NN)', Tag.REGRESSION, …)`. ✅/⚠️ → implement thật; 🧱/📄 → `it.skip`/PENDING kèm lý do.
+   TC app mobile / version của app → **không có `it()` nào** (xem quy tắc đầu trang), xoá khỏi skeleton.
 4. Đặt file ở `tests/regression/<feature>/vp-<id>-<slug>.spec.ts` (helper riêng: `vp-<id>.helpers.ts`).
    Ghi đường dẫn spec vào `spec-files` của .md.
 5. `npm run typecheck` và `npm run lint` phải sạch trước khi chạy.

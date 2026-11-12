@@ -6,7 +6,12 @@ import {
   defaultScreenOption,
   defaultScreenPreview,
   defaultScreenRadio,
+  TileColorsIds,
+  tileColorsOption,
+  tileColorsPreview,
+  tileColorsRadio,
   type DefaultScreen,
+  type TileColors,
 } from '../../constants/testids.settings-accessibility.js';
 import { AccessibilityIds, passcodeGate } from '../../constants/testids.vp.js';
 import type { Locator } from '../../helpers/selectors.js';
@@ -227,6 +232,82 @@ export class AccessibilitySettingsPage extends BasePage {
   async applyDefaultScreen(value: DefaultScreen): Promise<this> {
     if ((await this.selectedDefaultScreen()) !== value) await this.chooseDefaultScreen(value);
     await this.saveDefaultScreen();
+    return this;
+  }
+
+  /* --------------------------------------------------------------------- *
+   * Tile Colors (VP-5724)
+   * --------------------------------------------------------------------- */
+
+  /** Is the Tile Colors card rendered (scrolled into view)? */
+  async isTileColorsCardShown(): Promise<boolean> {
+    if (!(await this.exists(TileColorsIds.card, Timeouts.MEDIUM))) return false;
+    await (await this.find(TileColorsIds.card)).scrollIntoView({ block: 'center' });
+    return this.isVisible(TileColorsIds.card, Timeouts.SHORT);
+  }
+
+  /** Is the card the very next card after Default Screen? */
+  isTileColorsAfterDefaultScreen(): Promise<boolean> {
+    return this.exists(TileColorsIds.cardAfterDefaultScreen, Timeouts.SHORT);
+  }
+
+  /** Are both options rendered with their preview? */
+  async hasTileColorsOptions(): Promise<boolean> {
+    for (const value of ['bold', 'pastel'] as const) {
+      if (!(await this.exists(tileColorsRadio(value), Timeouts.SHORT))) return false;
+      if (!(await this.exists(tileColorsPreview(value), Timeouts.SHORT))) return false;
+    }
+    return true;
+  }
+
+  /** The visible text of one option tile (name + sub-label + badge). */
+  async tileColorsOptionText(value: TileColors): Promise<string> {
+    return (await (await this.find(tileColorsOption(value), { visible: true })).getText()).replace(
+      /\s+/g,
+      ' ',
+    );
+  }
+
+  /** Does Bold carry the "Default" badge? */
+  hasTileColorsDefaultBadge(): Promise<boolean> {
+    return this.exists(TileColorsIds.defaultBadge, Timeouts.SHORT);
+  }
+
+  /** The option currently selected in the card (not necessarily saved), or null. */
+  async selectedTileColors(): Promise<TileColors | null> {
+    for (const value of ['bold', 'pastel'] as const) {
+      if (await this.isSwitchOn(tileColorsRadio(value))) return value;
+    }
+    return null;
+  }
+
+  /** Pick an option without saving. */
+  async chooseTileColors(value: TileColors): Promise<this> {
+    await logStep(`Accessibility: tile colors → ${value}`);
+    await this.click(tileColorsOption(value));
+    await settle();
+    return this;
+  }
+
+  /** Is the card's Save pressable (= the choice differs from the saved value)? */
+  async isTileColorsSaveEnabled(): Promise<boolean> {
+    return (await this.find(TileColorsIds.saveBtn, { visible: true })).isEnabled();
+  }
+
+  /** Press the card's Save. Returns false (and does nothing) when Save is disabled. */
+  async saveTileColors(): Promise<boolean> {
+    const save = await this.find(TileColorsIds.saveBtn, { visible: true });
+    if (!(await save.isEnabled())) return false;
+    await logStep('Accessibility: save tile colors');
+    await save.click();
+    await settle(Timeouts.DEBOUNCE);
+    return true;
+  }
+
+  /** Pick and save in one go; a no-op when the value is already selected and saved. */
+  async applyTileColors(value: TileColors): Promise<this> {
+    if ((await this.selectedTileColors()) !== value) await this.chooseTileColors(value);
+    await this.saveTileColors();
     return this;
   }
 

@@ -278,6 +278,14 @@ export const PORTAL_FIELDS: Record<string, Omit<FieldSpec, 'key'>> = {
     values: { small: 'small', medium: 'medium', large: 'large' },
     pos: sys('merchant_theme_pos_style', 'font_size'),
   },
+  /** VP-5724 — POS Accessibility › Tile colors (`#tileColors-bold|pastel`, Portal DEV 12/11/2026). */
+  tileColors: {
+    tab: 'configuration',
+    kind: 'radio',
+    id: 'tileColors',
+    values: { bold: 'bold', pastel: 'pastel' },
+    pos: sys('merchant_theme_pos_style', 'tile_colors'),
+  },
 };
 
 /** Portal passcode switch (`#passcode-<x>`) → `merchant_passcode_settings` path. */

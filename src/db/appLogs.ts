@@ -144,3 +144,13 @@ export function collectAppLogs(options: AppLogOptions): string | null {
   log.debug(`Collected app log tail from ${file}`);
   return trimmed.split(/\r?\n/).slice(-count).join('\n');
 }
+
+/**
+ * Full path of the log file the app is writing to right now
+ * (`%LOCALAPPDATA%\<identifier>\logs\<newest>.log`), or `null` off Windows /
+ * for a debug build that logs to stdout. For specs that grep the whole log.
+ */
+export function currentAppLogFile(identifier: string): string | null {
+  const dir = logsDir(identifier);
+  return dir ? newestLogFile(dir) : null;
+}

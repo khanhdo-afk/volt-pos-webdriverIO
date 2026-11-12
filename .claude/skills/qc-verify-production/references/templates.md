@@ -23,6 +23,7 @@ Hai dấu cách trước `cc` là thói quen của team — giữ nguyên.
 ```
 **Môi trường:** Volt POS Windows **production <version>** (đọc ở menu ≡ → Version Update), store <id> (<tên tiệm>), ngày test dd/MM/yyyy. <Thêm nếu có: GoCheckin kiosk production (gap.gocheckin.net, version x.y.z); máy in; terminal card.>
 **Dữ liệu test:** <order/khách đã tạo> — đã cancel/xoá sau khi kiểm.
+**Card (nếu có):** charge 0.xx USD (****NNNN, order #xxxx) — đã void/refund. Mọi giao dịch Card trên production giữ trong 0.01 USD–0.50 USD.
 ```
 
 ## 3. Bảng test case (bắt buộc)
@@ -33,7 +34,11 @@ Hai dấu cách trước `cc` là thói quen của team — giữ nguyên.
 | TC-VP4823-01 | Nhiều check-in kiosk liên tiếp đều lên Pending Orders | Critical | Kiosk + POS cùng store 2949 | 10 khách `QcKiosk Alpha…Kilo` | 1. Check-in lần lượt trên kiosk 2. POS → Pending Orders | 10/10 card hiện, đúng tên + `***-***-NNNN` | PASS |
 | TC-VP4823-05 | Batch 100 check-in | Medium | Batch ≥ 100 | — | — | 0/100 mất | Not Run |
 | TC-VP4809-07 | Print nhiều staff khi chưa mở chi tiết | High | ... | ... | ... | Có nút Print | FAIL — VP-5610 |
+| TC-VP4375-21 | Trả Card sau khi áp promo FIXED | High | Terminal card | Card 0.25 USD (prod giới hạn ≤ 0.50 USD), phần còn lại Cash | 1. ... 2. Split → Card 0.25 USD | Charge đúng 0.25 USD, order Paid | PASS |
 ```
+
+- TC Card: cột Test Data luôn ghi số tiền Card thật đã charge (trong 0.01 USD–0.50 USD) và mỗi TC Card có 1 dòng
+  `[🎬 Video: …]` ở phần hình ảnh.
 
 - Status: `PASS` / `FAIL — VP-xxxx` (link sub task) / `Not Run` (lý do ngay dưới bảng) / `N/A (Portal)`.
 - Ghi **giá trị thật** quan sát được trong cột Expected/Steps khi có ích (số tiền, mã order, số lượng).
@@ -59,6 +64,7 @@ I have verified that the task passed on production (version <version>) Thank you
 2. ...
 
 [🎬 Video: VP-4823-TC01 – <mô tả ngắn case chính>](https://uploads.linear.app/...)
+[🎬 Video: VP-4823-TC07 – Thanh toán Card 0.25 USD + void](https://uploads.linear.app/...)   ← mỗi TC Card 1 video
 
 **Dev <version dev> — dd/MM/yyyy** (vòng QC trước)
 3. TC-VP4823-02 – ...

@@ -1,6 +1,6 @@
 ---
 name: qc-verify-production
-description: Verify production cho Volt POS — nhận link project/milestone Linear (vd Maintenance 2026-Q4-M10-W4) hoặc danh sách VP-xxxx, đọc từng task, lọc task app POS (bỏ task Portal), tự lái app Volt POS production đang cài (code qua CDP 9222) để test, lập bảng test case PASS/FAIL, comment tiếng Việt kèm nhiều ảnh nhiều ngày + video quay màn staff/màn khách (🎬 Video). PASS → "I have verified that the task passed on production (version X) Thank you @dev  cc @tienpd @loan_dang" + chuyển Verified Production. FAIL → mỗi bug 1 sub task, comment "Please help me fix bug @dev  cc @tienpd @loan_dang" + assign lại dev. Dùng khi user nói "verify production", "verify lại tất cả các task volt pos", "test task trên production xem pass chưa", "chuyển trạng thái verify production", dán link project Linear kèm yêu cầu verify, hoặc "/qc-verify-production" — kể cả khi chỉ có 1 task.
+description: Verify production cho Volt POS — nhận link project/milestone Linear (vd Maintenance 2026-Q4-M10-W4) hoặc danh sách VP-xxxx, đọc từng task, lọc task app POS (bỏ task Portal), tự lái app Volt POS production đang cài (code qua CDP 9222) để test, lập bảng test case PASS/FAIL, comment tiếng Việt kèm nhiều ảnh nhiều ngày + video quay màn staff/màn khách (🎬 Video) bắt buộc cho mọi task. Mọi TC thanh toán Card chỉ được charge thẻ từ 0.01 USD đến 0.50 USD. PASS → "I have verified that the task passed on production (version X) Thank you @dev  cc @tienpd @loan_dang" + chuyển Verified Production. FAIL → mỗi bug 1 sub task, comment "Please help me fix bug @dev  cc @tienpd @loan_dang" + assign lại dev. Dùng khi user nói "verify production", "verify lại tất cả các task volt pos", "test task trên production xem pass chưa", "chuyển trạng thái verify production", dán link project Linear kèm yêu cầu verify, hoặc "/qc-verify-production" — kể cả khi chỉ có 1 task.
 argument-hint: '<URL project Linear | VP-xxxx [VP-yyyy …]> [version prod, vd 1.1.6] [dry-run] [@dev]'
 ---
 
@@ -15,16 +15,18 @@ mẫu comment ở [references/templates.md](references/templates.md).
 
 ## Mặc định
 
-| Mục                 | Giá trị                                                                                               |
-| ------------------- | ----------------------------------------------------------------------------------------------------- |
-| Môi trường          | App Volt POS **production** đang cài (`%LOCALAPPDATA%\Volt POS\volt-pos.exe`), store đang đăng nhập   |
-| Version ghi comment | Version **đọc trong app**, không phải số user gõ (user gõ 1.1.6 mà app 1.1.7 → ghi 1.1.7 và báo lại)  |
-| cc                  | `@tienpd @loan_dang`                                                                                  |
-| Trạng thái khi PASS | `Verified Production` (team VOLT; QC Completed = mới pass dev)                                        |
-| Khi FAIL            | sub task mỗi bug + assign task cha cho dev; không đổi trạng thái task cha nếu user chưa bảo           |
-| Video               | Mỗi task: 1 video case chính; mỗi bug FAIL: 1 video riêng (trong sub task + comment) — xem §4b        |
-| Ngôn ngữ            | Tiếng Việt cho comment, bảng, sub task, caption ảnh — chỉ câu mở đầu giữ tiếng Anh                    |
-| Phạm vi             | Chỉ hành vi trên app POS Windows. Portal / Android / chỉ-backend không có biểu hiện trên POS → bỏ qua |
+| Mục                 | Giá trị                                                                                                                                                                                                                                     |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Môi trường          | App Volt POS **production** đang cài (`%LOCALAPPDATA%\Volt POS\volt-pos.exe`), store đang đăng nhập                                                                                                                                         |
+| Version ghi comment | Version **đọc trong app**, không phải số user gõ (user gõ 1.1.6 mà app 1.1.7 → ghi 1.1.7 và báo lại)                                                                                                                                        |
+| cc                  | `@tienpd @loan_dang`                                                                                                                                                                                                                        |
+| Trạng thái khi PASS | `Verified Production` (team VOLT; QC Completed = mới pass dev)                                                                                                                                                                              |
+| Khi FAIL            | sub task mỗi bug + assign task cha cho dev; không đổi trạng thái task cha nếu user chưa bảo                                                                                                                                                 |
+| Video               | **Bắt buộc**: mỗi task ≥ 1 video case chính; mỗi TC Card 1 video; mỗi bug FAIL 1 video riêng — §4b                                                                                                                                          |
+| Thanh toán Card     | Số tiền charge thẻ **chỉ từ 0.01 USD đến 0.50 USD** (gồm cả tip, phí, surcharge) cho MỌI TC Card — §3a                                                                                                                                      |
+| Ngôn ngữ            | Tiếng Việt cho comment, bảng, sub task, caption ảnh — chỉ câu mở đầu giữ tiếng Anh                                                                                                                                                          |
+| Phạm vi             | Chỉ hành vi trên app POS Windows. Portal / Android / chỉ-backend không có biểu hiện trên POS → bỏ qua                                                                                                                                       |
+| Code / spec         | **Không bao giờ viết code** (spec, helper, page object, `it()`) cho app mobile (Android / P8D / iOS) hay version của app (kiểm version, Version Update / updater) — chỉ test tay (user 10/11). Lái app bằng CDP để đọc version thì vẫn được |
 
 ## 1. Lấy task & lập kế hoạch
 
@@ -63,7 +65,12 @@ fields [id,title,status,assignee,labels,parentId])` — lấy luôn sub issue. 1
     Thấy `dev-fastboypay.com` → đây là build dev: dừng, báo user cài build production.
   - Version: menu ≡ → **Version Update**. Có bản production mới hơn → hỏi user trước khi Update Now.
   - Store: đọc tên / id tiệm trên màn hình (production hay dùng Bee Bee Spa #2949).
-- Passcode production: user tự nhập trên máy hoặc đưa trong chat. Không ghi vào file nào được track.
+- Passcode production (staff code ở bước Complete Payment, store 2949): đọc `PROD_STAFF_PASSCODE` trong
+  `configs/env/.env.dev` (git-ignored). Thiếu key → hỏi user rồi lưu vào đó. Không ghi giá trị vào file được track.
+  Bấm phím số bằng sự kiện chuột thật (CDP Input), tick "Do not require passcode for the next 30 minutes".
+- 127.0.0.1:9222 hay bị TeamViewer giữ → POS nằm ở `http://[::1]:9222`: lái bằng
+  `node .playwright-mcp/prod-reopen/cdp.cjs eval|shot|click|type` và quay video với
+  `CDP_URL="http://[::1]:9222" npm run rec:start -- --name …`.
 - Không bao giờ `db:reset` / `RESET_DB` — dev và prod dùng chung `%APPDATA%\VoltPOS`, và đây có thể là
   máy của tiệm thật.
 
@@ -85,13 +92,36 @@ Không chạy `npm run test:attach` / `test:spec` / `test:dev` vào build produc
 
 **An toàn dữ liệu production:**
 
-- Order test: số tiền nhỏ, trả Cash / Other. Card thật chỉ khi user nói rõ. Tên khách test `QC Prod <ddMM>`.
+- Order test: số tiền nhỏ, trả Cash / Other khi TC không cần Card. TC Card → theo §3a. Tên khách test `QC Prod <ddMM>`.
 - Cancel / xoá mọi order test sau khi kiểm và ghi mã order vào comment ("đã cancel").
 - Đổi setting tiệm chỉ khi task cần, chụp giá trị cũ và trả lại ngay sau test.
 - Kiosk GoCheckin production: creds `PROD_GCI_*` trong `configs/env/.env.dev` (git-ignored).
 
-**Quay video khi test:** trước bước tái hiện của case chính (và của mỗi case nghi FAIL, lần tái hiện thứ 2)
-chạy `npm run rec:start -- --name VP-xxxx-TCnn`, làm xong thì `npm run rec:stop` (§4b).
+**Quay video khi test (bắt buộc):** trước bước tái hiện của case chính, của **mọi TC thanh toán Card**, và của
+mỗi case nghi FAIL (lần tái hiện thứ 2) chạy `npm run rec:start -- --name VP-xxxx-TCnn`, làm xong thì
+`npm run rec:stop` (§4b). Task không có video → chưa được post comment.
+
+### 3a. TC thanh toán Card — chỉ charge 0.01 USD → 0.50 USD
+
+Áp dụng cho **tất cả** TC có trả bằng Card (Card full, split Card + Cash, Card + tip, Card + gift card,
+reopen/charge thêm, refund/void card…), mọi task, mọi lần chạy lại:
+
+1. **Tổng số tiền thẻ bị charge phải nằm trong 0.01 USD – 0.50 USD**, tính cả tip, service fee, card surcharge /
+   non-cash fee, tax. Không bao giờ > 0.50 USD, không bao giờ 0.00 USD.
+2. Cách giữ số tiền nhỏ (ưu tiên theo thứ tự):
+   - Item/service giá nhỏ hoặc **Open price / Custom amount** ≤ 0.50 USD (tính trước phí + tax để tổng ≤ 0.50 USD).
+   - Order lớn hơn (TC cần giá trị lớn, vd cap discount) → **split**: phần Card nhập tay 0.01 USD–0.50 USD, phần còn
+     lại trả Cash / Other.
+   - Tip qua Card: chọn **custom tip** sao cho base + tip + phí ≤ 0.50 USD (không dùng % tip trên order lớn).
+3. **Trước khi bấm Charge / gửi sang terminal**: đọc số tiền trên màn thanh toán bằng `browser_snapshot` /
+   `browser_evaluate` (không tin ảnh). Số tiền ngoài 0.01 USD–0.50 USD → **không bấm**, chỉnh lại; không chỉnh được →
+   TC ghi `Not Run (số tiền Card > 0.50 USD)` và báo user.
+4. Màn khách (customer display) hiện số tiền thẻ → phải khớp số đã kiểm ở bước 3; video quay cả 2 màn.
+5. Sau khi kiểm: **void / refund** giao dịch Card (nếu TC không phải chính là test refund) rồi cancel order,
+   ghi vào comment: `Card 0.xx USD (****NNNN) — đã void/refund`.
+6. TC mà kịch bản gốc (file test case / spec / comment QC dev) dùng số tiền Card lớn hơn → giữ nguyên ý kiểm
+   tra nhưng hạ số tiền Card về khoảng này, ghi rõ trong cột Test Data: `Card 0.25 USD (prod giới hạn ≤ 0.50 USD)`.
+7. Không có terminal / thẻ trên máy → `Not Run (cần terminal card)`, không giả lập bằng tender khác rồi chấm PASS.
 
 **Chấm từng TC:** `PASS` / `FAIL` / `Not Run` (ghi lý do: cần terminal, cần 100 check-in…) / `N/A (Portal)`.
 
@@ -156,6 +186,12 @@ Theo [references/templates.md](references/templates.md):
   Portal cho dev (user đã chọn cách này ở VP-4566).
 - `@mention` viết `@displayName` (vd `@lam_doan`) — Linear tự thành mention.
 - `dry-run`: ghi comment / sub task ra `reports/qc-prod/<yyyy-mm-dd>/VP-xxxx.md`, không post, không đổi trạng thái.
+
+- **Mọi task trong project đều được comment, kể cả sub task** (bug con, task BE). Comment nào cũng phải
+  **kèm ảnh + video** (🎬), PASS hay FAIL đều vậy. Sub task được dùng lại ảnh/video của task cha (cùng assetUrl),
+  không cần upload lại. Sub task không có case nào chạy được → comment `Not Run` + lý do, giữ trạng thái.
+- User chọn (09/11/2026): task **PASS** → `Verified Production`; task **FAIL** → comment FAIL vào chính task đó
+  và **assign cho user (khanh_do) để check**, chưa tạo sub task bug nếu user chưa bảo.
 
 Post xong mỗi task rồi mới sang task tiếp theo, để nếu bị dừng giữa chừng thì task đã xong không phải làm lại.
 

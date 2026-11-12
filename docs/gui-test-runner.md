@@ -85,6 +85,21 @@ Lựa chọn, tag, ENV và tab đang mở được nhớ lại cho lần mở sa
 
 ## 3. Các tab
 
+### ✅ Core Retest
+
+Bộ **TC chính** để re-test mỗi khi có build mới, đọc thẳng từ [docs/qc/core-retest-checklist.md](qc/core-retest-checklist.md) (14 nhóm, 136 TC, 41 TC ⭐ smoke). Sửa file `.md` là tab tự cập nhật.
+
+- **Phiên re-test**: điền Build / Môi trường / Tiệm / Người test ở góc phải. **＋ Phiên mới** cất phiên cũ vào `reports/core-retest/session-<id>.json` và bắt đầu lại từ đầu.
+- **Ô số**: số TC đã test / PASS / FAIL / BLOCKED / Bỏ qua / Chưa test, và bao nhiêu TC có test tự động.
+- **Bộ lọc**: ⭐ Smoke / Tất cả · 🤖 Tự động / ✋ Tay · Chưa test / FAIL–BLOCKED · ô tìm mã TC hoặc nội dung.
+- **🤖 TC tự động**: TC có test `it(...)` mang đúng mã TC trong tiêu đề (vd `(TC-ORDERFLOW-21)`, `CHK-POS-007:`). Bấm **▶ Chạy tự động** (các TC đang hiện), **▶ Chạy nhóm**, hoặc mở 1 TC → **▶ Chạy TC này**. Khi chạy xong, kết quả tự ghi vào phiên: mọi test đạt → PASS, có test lỗi → FAIL (kèm lỗi), test bị skip → Bỏ qua (kèm lý do). Test `PENDING`, `.skip`, đã comment hoặc nằm trong `_manual` không được tính.
+- **✋ TC tay**: mở TC để xem tiền điều kiện, các bước, kết quả mong đợi; test trên app rồi bấm **PASS / FAIL / BLOCKED / Bỏ qua** và ghi chú (mã bug VP, lý do BLOCKED). Bấm lại nút đang chọn để xoá kết quả.
+- **⤓ Xuất báo cáo .md**: ghi `reports/core-retest/core-retest-<id>.md` (bảng tổng theo nhóm, danh sách FAIL/BLOCKED, từng TC) và cho copy markdown để dán vào Linear.
+
+Version Update, smoke mở app và in receipt luôn là TC tay. Mã TC chung chung (`TC-01`, `RO-06`…) chỉ được ghép với spec có nhắc tới file test case gốc của TC đó, để không nhận nhầm `TC-01` của màn khác.
+
+> Chạy theo danh sách test (Core Retest, chạy 1 test) dùng chế độ launch thường, đọc `APP_PATH` trong `configs/env/.env.dev`. Nếu đường dẫn đó không còn tồn tại thì preflight dừng ("App binary FAIL"). Sửa `APP_PATH`, hoặc mở runner với app đã cài: `set "APP_PATH=%LOCALAPPDATA%\Volt POS\volt-pos.exe" && npm run runner:gui`.
+
 ### 🎯 Dashboard
 
 Tổng quan **lần chạy gần nhất** đã ghi vào lịch sử: các ô KPI (tỉ lệ đạt, tổng số, thời gian), biểu đồ tỉ lệ đạt qua các lần chạy, kết quả theo spec.
@@ -185,6 +200,7 @@ Muốn đổi tên hiển thị: sửa bảng `FEATURE_NAMES` trong `dashboard/s
 | `dashboard/server/desktop.mjs`                                                                                 | Build UI nếu thiếu, khởi động server, mở cửa sổ Edge app mode.                                                                                  |
 | `dashboard/server/runner.mjs`                                                                                  | API chạy/dừng, ghép kết quả live, phục vụ UI đã build, chạy lịch. Mỗi lúc chỉ 1 lần chạy (suite điều khiển 1 app qua 1 phiên WebDriver).        |
 | `dashboard/server/catalog.mjs`                                                                                 | Đọc text các spec, lấy tiêu đề `describe`/`it` và tag (`title('…', Tag.X)` hoặc `@tag` trong chuỗi).                                            |
+| `dashboard/server/core.mjs` + `dashboard/src/components/gui/CoreTab.tsx`                                       | Tab Core Retest: đọc `docs/qc/core-retest-checklist.md`, ghép TC với test tự động, lưu phiên ở `reports/core-retest/`, xuất báo cáo.            |
 | `configs/reporters/DashboardReporter.ts`                                                                       | Ngoài việc ghi lịch sử, nó **ghi từng test ra file JSONL** khi biến `GUI_LIVE_FILE` được đặt (chỉ khi chạy từ GUI; chạy terminal không đổi gì). |
 | `dashboard/src/App.tsx`, `dashboard/src/components/gui/*`, `dashboard/src/lib/gui.ts`, `dashboard/src/gui.css` | Giao diện.                                                                                                                                      |
 
@@ -198,6 +214,11 @@ Muốn đổi tên hiển thị: sửa bảng `FEATURE_NAMES` trong `dashboard/s
 | GET       | `/api/gui/state?since=<version>` | Trạng thái lần chạy + kết quả (chỉ trả lại khi có thay đổi) |
 | GET       | `/api/gui/log?offset=<n>`        | Log từ vị trí `n`                                           |
 | POST      | `/api/gui/run`                   | `{ env, specs[], tags?[], titles?[], label?, retries? }`    |
+| GET       | `/api/gui/core`                  | Core Retest: nhóm → TC (kèm test tự động) + phiên hiện tại  |
+| POST      | `/api/gui/core/results`          | `{ results: [{ key, status, note?, source?, detail? }] }`   |
+| POST      | `/api/gui/core/meta`             | `{ build?, env?, store?, tester? }`                         |
+| POST      | `/api/gui/core/reset`            | Cất phiên cũ, mở phiên mới                                  |
+| POST      | `/api/gui/core/export`           | Ghi `reports/core-retest/core-retest-<id>.md`               |
 | POST      | `/api/gui/stop`                  | Dừng lần chạy                                               |
 | GET / PUT | `/api/gui/schedules`             | Đọc / lưu danh sách lịch                                    |
 

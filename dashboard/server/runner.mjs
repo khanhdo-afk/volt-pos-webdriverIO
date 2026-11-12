@@ -58,6 +58,7 @@ import { buildCatalog } from './catalog.mjs';
 import { createWarm } from './warm.mjs';
 import { createApps, normEnv } from './apps.mjs';
 import { createPreflight } from './preflight.mjs';
+import { createCore } from './core.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 /** Repo root = two levels up from dashboard/server/. npm scripts run from here. */
@@ -178,6 +179,9 @@ function getCatalog(refresh = false) {
   if (!catalog || refresh) catalog = buildCatalog(REPO_ROOT);
   return catalog;
 }
+
+/** Core Retest tab: docs/qc/core-retest-checklist.md + its session (core.mjs). */
+const core = createCore(REPO_ROOT, () => getCatalog());
 
 /* ── Run state ──────────────────────────────────────────────────────────── */
 
@@ -1110,6 +1114,22 @@ async function handle(req, res) {
     const body = await readBody(req);
     const r = apps.openForSignIn(Number(body.n));
     return sendJson(res, r.ok ? 200 : 400, r.ok ? { apps: apps.status(body.env) } : { error: r.error });
+  }
+  if (pathname === '/api/gui/core' && req.method === 'GET') {
+    return sendJson(res, 200, core.state());
+  }
+  if (pathname === '/api/gui/core/results' && req.method === 'POST') {
+    const body = await readBody(req);
+    return sendJson(res, 200, { session: core.setResults(body.results) });
+  }
+  if (pathname === '/api/gui/core/meta' && req.method === 'POST') {
+    return sendJson(res, 200, { session: core.setMeta(await readBody(req)) });
+  }
+  if (pathname === '/api/gui/core/reset' && req.method === 'POST') {
+    return sendJson(res, 200, { session: core.reset(await readBody(req)) });
+  }
+  if (pathname === '/api/gui/core/export' && req.method === 'POST') {
+    return sendJson(res, 200, core.exportReport());
   }
   if (pathname === '/api/gui/schedules') {
     if (req.method === 'GET') return sendJson(res, 200, { schedules: loadSchedules() });

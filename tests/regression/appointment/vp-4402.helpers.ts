@@ -142,20 +142,20 @@ const DAY_APPOINTMENTS = `
 const rfc3339 = (d: Date): string => `${d.toISOString().slice(0, 19)}+00:00`;
 
 export interface DayAppointments {
-  /** Days after today (0 = today). */
+  /** Days from today (0 = today, negative = past). */
   offset: number;
   assigned: { staffName: string; colorHex: string | null }[];
   unassigned: number;
 }
 
 /**
- * The board's appointments for each of the next `days` days (today first), with
- * the same filter the board uses: local day bounds, default statuses, no
- * temporary GCI rows.
+ * The board's appointments for `days` consecutive days starting `from` days from
+ * today (negative = past), with the same filter the board uses: local day
+ * bounds, default statuses, no temporary GCI rows.
  */
-export async function appointmentsByDay(days = 7): Promise<DayAppointments[]> {
+export async function appointmentsByDay(days = 7, from = 0): Promise<DayAppointments[]> {
   const out: DayAppointments[] = [];
-  for (let offset = 0; offset < days; offset += 1) {
+  for (let offset = from; offset < from + days; offset += 1) {
     const start = new Date();
     start.setHours(0, 0, 0, 0);
     start.setDate(start.getDate() + offset);
@@ -181,4 +181,16 @@ export async function appointmentsByDay(days = 7): Promise<DayAppointments[]> {
     });
   }
   return out;
+}
+
+/**
+ * The most recent day (offset ≤ 0, at most `lookBack` days back) whose board has
+ * at least one Unassigned appointment; `undefined` when none.
+ */
+export async function latestDayWithUnassigned(lookBack = 14): Promise<number | undefined> {
+  const days = await appointmentsByDay(lookBack + 1, -lookBack);
+  return days
+    .filter((d) => d.unassigned > 0)
+    .map((d) => d.offset)
+    .sort((a, b) => b - a)[0];
 }
