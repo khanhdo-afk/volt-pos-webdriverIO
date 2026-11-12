@@ -306,54 +306,52 @@ describe('volt-qc 07 ORDER HISTORY — Refund (settled orders)', () => {
     },
   );
 
-  // [TẮT 2026-11-08] Tạm không test (đã đánh dấu skip/MANUAL: cần thiết bị/điều kiện không tự động được, hoặc Re-Open tạm dừng theo yêu cầu) — mở lại (bỏ comment) khi tính năng hoàn thiện.
-  // // PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bỏ .skip để chạy lại.
-  // it.skip(
-  //   title(
-  //     '🌙 Partial refund of one service: Refunding → Partial Refunded, Refund information, refunded line locked on reopen; list badge = detail (OH-138, OH-146, OH-211)',
-  //     Tag.REGRESSION,
-  //     Tag.WRITE,
-  //   ),
-  //   async function () {
-  //     this.timeout(8 * 60_000);
-  //     if (!REFUND_SETTLE) this.skip(); // moves money back — opt in with REFUND_SETTLE=1
-  //     let code = '';
-  //     for (const c of (await settledCodes(['other'])).slice(0, 10)) {
-  //       await openByCode(c);
-  //       if ((await serviceCount(c)) >= 2) {
-  //         code = c;
-  //         break;
-  //       }
-  //     }
-  //     if (!code) this.skip();
-  //     await openRefundDialog();
-  //     await P.clickQ(R.services);
-  //     if ((await P.attrOf(R.all, 'data-state')) === 'checked') await P.clickQ(R.all);
-  //     await P.clickQ([D.refund, { css: '[id^="refund-service-"]:not([id="refund-service-all"])', nth: 0 }]);
-  //     await P.escape();
-  //     const amount = await refundAmountCents();
-  //     await P.clickQ(R.method);
-  //     await P.clickQ({ role: 'option', hasText: 'Other', nth: 0 });
-  //     await chooseReason('Customer Request');
-  //     await P.clickQ(R.confirm);
-  //     await passcodeIfAsked(3_000);
-  //     expect(await waitStatus(code, /^Partial Refunded$/, 90_000)).toBe('Partial Refunded');
-  //     const d = await detailText(code);
-  //     expect(d).toContain('Refund information');
-  //     expect(d.slice(d.indexOf('Refund information'))).toContain(`$${(amount / 100).toFixed(2)}`);
-  //     await openRefundDialog();
-  //     await P.clickQ(R.services);
-  //     const first = [
-  //       D.refund,
-  //       { css: '[id^="refund-service-"]:not([id="refund-service-all"])', nth: 0 },
-  //     ] as const;
-  //     expect(await P.isDisabled(first)).toBe(true);
-  //     await P.escape();
-  //     await closeRefundDialog();
-  //     await openByCode(code);
-  //     expect(field(await detailText(code), 'Status')).toBe('Partial Refunded');
-  //   },
-  // );
+  it(
+    title(
+      '🌙 Partial refund of one service: Refunding → Partial Refunded, Refund information, refunded line locked on reopen; list badge = detail (OH-138, OH-146, OH-211)',
+      Tag.REGRESSION,
+      Tag.WRITE,
+    ),
+    async function () {
+      this.timeout(8 * 60_000);
+      if (!REFUND_SETTLE) this.skip(); // moves money back — opt in with REFUND_SETTLE=1
+      let code = '';
+      for (const c of (await settledCodes(['other'])).slice(0, 10)) {
+        await openByCode(c);
+        if ((await serviceCount(c)) >= 2) {
+          code = c;
+          break;
+        }
+      }
+      if (!code) this.skip();
+      await openRefundDialog();
+      await P.clickQ(R.services);
+      if ((await P.attrOf(R.all, 'data-state')) === 'checked') await P.clickQ(R.all);
+      await P.clickQ([D.refund, { css: '[id^="refund-service-"]:not([id="refund-service-all"])', nth: 0 }]);
+      await P.escape();
+      const amount = await refundAmountCents();
+      await P.clickQ(R.method);
+      await P.clickQ({ role: 'option', hasText: 'Other', nth: 0 });
+      await chooseReason('Customer Request');
+      await P.clickQ(R.confirm);
+      await passcodeIfAsked(3_000);
+      expect(await waitStatus(code, /^Partial Refunded$/, 90_000)).toBe('Partial Refunded');
+      const d = await detailText(code);
+      expect(d).toContain('Refund information');
+      expect(d.slice(d.indexOf('Refund information'))).toContain(`$${(amount / 100).toFixed(2)}`);
+      await openRefundDialog();
+      await P.clickQ(R.services);
+      const first = [
+        D.refund,
+        { css: '[id^="refund-service-"]:not([id="refund-service-all"])', nth: 0 },
+      ] as const;
+      expect(await P.isDisabled(first)).toBe(true);
+      await P.escape();
+      await closeRefundDialog();
+      await openByCode(code);
+      expect(field(await detailText(code), 'Status')).toBe('Partial Refunded');
+    },
+  );
 
   it(
     title(

@@ -48,7 +48,12 @@ export const shared: WebdriverIO.Config = {
   // `_manual/` holds only it.skip stubs (TCs that need a 2nd POS, Portal, a
   // printer…). Each spec file costs a full app boot, so a lane may drop them
   // with SKIP_MANUAL=1; the coverage report still lists them.
-  exclude: process.env.SKIP_MANUAL === '1' ? [spec('regression', 'volt-qc', '_manual', '*.spec.ts')] : [],
+  // tests/features/** runs only in the profile lanes (staging / production)
+  // (wdio.staging.conf.ts / wdio.production.conf.ts) — not in the plain dev lanes.
+  exclude: [
+    spec('features', '**', '*.ts'),
+    ...(process.env.SKIP_MANUAL === '1' ? [spec('regression', 'volt-qc', '_manual', '*.spec.ts')] : []),
+  ],
 
   suites: {
     /** Read-only. The ONLY suite permitted against a production build. */

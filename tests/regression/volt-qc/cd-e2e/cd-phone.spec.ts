@@ -263,40 +263,38 @@ describe('volt-qc 13 CD — phone entry, confirm, check-in, lock', () => {
     },
   );
 
-  // [TẮT 2026-11-08] Tạm không test (đã đánh dấu skip/MANUAL: cần thiết bị/điều kiện không tự động được, hoặc Re-Open tạm dừng theo yêu cầu) — mở lại (bỏ comment) khi tính năng hoàn thiện.
-  // // PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bỏ .skip để chạy lại.
-  // it.skip(
-  //   title(
-  //     'Re-opened paid order: phone block locked, no "No, enter again" (CD-028)',
-  //     Tag.REGRESSION,
-  //     Tag.WRITE,
-  //     Tag.DUAL_WINDOW,
-  //   ),
-  //   async function () {
-  //     this.timeout(5 * 60_000);
-  //     const phone = randomPhone();
-  //     const code = track(await app.createOrder());
-  //     await app.attachNewCustomer(phone, uniqueName('QC E2E'));
-  //     await app.customerConfirmPhone();
-  //     await app.payCurrentOrder('Other');
-  //     await app.noReceipt();
-  //     untrack(code);
+  it(
+    title(
+      'Re-opened paid order: phone block locked, no "No, enter again" (CD-028)',
+      Tag.REGRESSION,
+      Tag.WRITE,
+      Tag.DUAL_WINDOW,
+    ),
+    async function () {
+      this.timeout(5 * 60_000);
+      const phone = randomPhone();
+      const code = track(await app.createOrder());
+      await app.attachNewCustomer(phone, uniqueName('QC E2E'));
+      await app.customerConfirmPhone();
+      await app.payCurrentOrder('Other');
+      await app.noReceipt();
+      untrack(code);
 
-  //     await app.reopenOrder(code);
-  //     expect(await cust.waitFor(CdCustomer.orderDetails)).toBe(true);
-  //     await app.pause(1_500);
-  //     expect(await cust.has(CdCustomer.noEnterAgain)).toBe(false);
-  //     const inputShown = await cust.phoneShown();
-  //     const confirmShown = await cust.has(CdCustomer.isThisYourPhone);
-  //     const checkinShown = await cust.has(CdCustomer.checkinSuccessful);
-  //     note(
-  //       `CD-028: re-open shows ${inputShown ? 'the phone input' : confirmShown ? 'the confirm screen' : checkinShown ? 'Check-in Successful' : 'unknown'}`,
-  //     );
-  //     if (inputShown) expect(await cust.phoneLocked()).toBe(true);
-  //     if (confirmShown) expect(await cust.has(CdCustomer.yes)).toBe(true);
-  //     await app.reopenDone();
-  //   },
-  // );
+      await app.reopenOrder(code);
+      expect(await cust.waitFor(CdCustomer.orderDetails)).toBe(true);
+      await app.pause(1_500);
+      expect(await cust.has(CdCustomer.noEnterAgain)).toBe(false);
+      const inputShown = await cust.phoneShown();
+      const confirmShown = await cust.has(CdCustomer.isThisYourPhone);
+      const checkinShown = await cust.has(CdCustomer.checkinSuccessful);
+      note(
+        `CD-028: re-open shows ${inputShown ? 'the phone input' : confirmShown ? 'the confirm screen' : checkinShown ? 'Check-in Successful' : 'unknown'}`,
+      );
+      if (inputShown) expect(await cust.phoneLocked()).toBe(true);
+      if (confirmShown) expect(await cust.has(CdCustomer.yes)).toBe(true);
+      await app.reopenDone();
+    },
+  );
 
   it(
     title(

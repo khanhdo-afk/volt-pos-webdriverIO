@@ -28,6 +28,8 @@ export const SettingsSection = {
   PAYMENT_TRANSACTION: Routes.SETTINGS_PAYMENT_TRANSACTION,
   ACCESSIBILITY: Routes.SETTINGS_ACCESSIBILITY,
   LANGUAGE: Routes.SETTINGS_LANGUAGE,
+  THEMES: Routes.SETTINGS_THEMES,
+  LAYOUT: Routes.SETTINGS_LAYOUT,
 } as const;
 
 export type SettingsSectionName = keyof typeof SettingsSection;

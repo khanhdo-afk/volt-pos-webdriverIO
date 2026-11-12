@@ -1,0 +1,15 @@
+{
+  "staffA": "",
+  "staffB": "",
+  "cheap": "Tropical Deluxe",
+  "cheap2": "Full set Ombre (2 colors)",
+  "cheap3": "Tropical Deluxe",
+  "svc25": "Tropical Deluxe",
+  "svc25b": "Full set Ombre (2 colors)",
+  "customer": "",
+  "customerSearch": "",
+  "customer2": "",
+  "giftCardActive": "973047331197",
+  "giftCardLow": "",
+  "_note": "Staging store 14 — staff/customer left empty = specs pick the first visible tile / skip customer TCs. Fill in when the staging lane is run."
+}

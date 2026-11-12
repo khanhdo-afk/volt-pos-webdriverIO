@@ -20,6 +20,13 @@
  * WRITES ORDERS, ATTENDANCE, MANUAL ADJUSTMENTS AND TURN SETTINGS. dev / staging only.
  */
 
+import {
+  goToReopenEditor,
+  leaveReopenCheckout,
+  openOrderDetail,
+  reopenOrder,
+} from '../../order-flow/reopen-flow.helpers.js';
+
 import { expect } from '@wdio/globals';
 import { appNav } from '../../../../src/components/index.js';
 import { timeKeepingDialog } from '../../../../src/components/modal/TimeKeepingDialog.js';
@@ -88,16 +95,16 @@ async function deltaAfter(
 const statusOf = async (staff: string): Promise<string> => (await quickOf(staff))?.status ?? '';
 
 /** Today's board count of a staff read WITHOUT dropping the current search (keeps `?editOrderId`). */
-// async function turnKeepingSearch(staff: string): Promise<number | null> {
-//   const search = await P.routerSearch();
-//   await P.routerGo(await P.path(), { ...search, dialog: 'turn-board' });
-//   await turnBoardDialog.waitOpen();
-//   await boardToToday();
-//   const row = await turnBoardDialog.rowFor(staff);
-//   await P.escape();
-//   await settle(500);
-//   return row ? row.turnCount : null;
-// }
+async function turnKeepingSearch(staff: string): Promise<number | null> {
+  const search = await P.routerSearch();
+  await P.routerGo(await P.path(), { ...search, dialog: 'turn-board' });
+  await turnBoardDialog.waitOpen();
+  await boardToToday();
+  const row = await turnBoardDialog.rowFor(staff);
+  await P.escape();
+  await settle(500);
+  return row ? row.turnCount : null;
+}
 
 describe('volt-qc 15 TURN — turn-count formulas (write, settings)', () => {
   before(async () => {
@@ -370,46 +377,44 @@ describe('volt-qc 15 TURN — turn-count formulas (write, settings)', () => {
     },
   );
 
-  // [TẮT 2026-11-08] Tạm không test (đã đánh dấu skip/MANUAL: cần thiết bị/điều kiện không tự động được, hoặc Re-Open tạm dừng theo yêu cầu) — mở lại (bỏ comment) khi tính năng hoàn thiện.
-  // // PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bỏ .skip để chạy lại.
-  // it.skip(
-  //   title(
-  //     'While an order is re-opened its turns are excluded and its staff is not Busy; Re-Open Done unchanged brings them back (TURN-025, TURN-051)',
-  //     Tag.REGRESSION,
-  //     Tag.WRITE,
-  //     Tag.EXCLUSIVE,
-  //   ),
-  //   async function () {
-  //     this.timeout(T);
-  //     await withCfg(this, CFG_D(3000), () =>
-  //       withTurnStaff(this, 1, async ([s]) => {
-  //         const sa = s ?? '';
-  //         const n0 = (await waitTurn(sa, (x) => x !== null, 30_000)) ?? 0;
-  //         const id = await paidOrder([{ staff: sa, amounts: [3000] }]);
-  //         const n = (await waitTurn(sa, (x) => x !== null && x !== n0)) ?? Number.NaN;
-  //         try {
-  //           await returnToHome();
-  //           await openOrderDetail(id);
-  //           await reopenOrder(id);
-  //           await goToReopenEditor();
-  //           await step('TURN-025 the re-opened order does not make its staff Busy', async () => {
-  //             expect(await statusOf(sa)).not.toBe('Busy');
-  //           });
-  //           await step('TURN-051 the order is out of the count while re-opened', async () => {
-  //             const during = await turnKeepingSearch(sa);
-  //             expect(Math.abs((during ?? Number.NaN) - (n - 1))).toBeLessThanOrEqual(0.011);
-  //           });
-  //         } finally {
-  //           await closeStray();
-  //           await leaveReopenCheckout(id).catch(() => undefined);
-  //         }
-  //         await returnToHome();
-  //         const back = await waitTurn(sa, (x) => x !== null && Math.abs(x - n) <= 0.011);
-  //         expect(Math.abs((back ?? Number.NaN) - n)).toBeLessThanOrEqual(0.011);
-  //       }),
-  //     );
-  //   },
-  // );
+  it(
+    title(
+      'While an order is re-opened its turns are excluded and its staff is not Busy; Re-Open Done unchanged brings them back (TURN-025, TURN-051)',
+      Tag.REGRESSION,
+      Tag.WRITE,
+      Tag.EXCLUSIVE,
+    ),
+    async function () {
+      this.timeout(T);
+      await withCfg(this, CFG_D(3000), () =>
+        withTurnStaff(this, 1, async ([s]) => {
+          const sa = s ?? '';
+          const n0 = (await waitTurn(sa, (x) => x !== null, 30_000)) ?? 0;
+          const id = await paidOrder([{ staff: sa, amounts: [3000] }]);
+          const n = (await waitTurn(sa, (x) => x !== null && x !== n0)) ?? Number.NaN;
+          try {
+            await returnToHome();
+            await openOrderDetail(id);
+            await reopenOrder(id);
+            await goToReopenEditor();
+            await step('TURN-025 the re-opened order does not make its staff Busy', async () => {
+              expect(await statusOf(sa)).not.toBe('Busy');
+            });
+            await step('TURN-051 the order is out of the count while re-opened', async () => {
+              const during = await turnKeepingSearch(sa);
+              expect(Math.abs((during ?? Number.NaN) - (n - 1))).toBeLessThanOrEqual(0.011);
+            });
+          } finally {
+            await closeStray();
+            await leaveReopenCheckout(id).catch(() => undefined);
+          }
+          await returnToHome();
+          const back = await waitTurn(sa, (x) => x !== null && Math.abs(x - n) <= 0.011);
+          expect(Math.abs((back ?? Number.NaN) - n)).toBeLessThanOrEqual(0.011);
+        }),
+      );
+    },
+  );
 
   it(
     title(

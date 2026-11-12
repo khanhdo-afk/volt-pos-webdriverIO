@@ -524,7 +524,7 @@ describe('VP-4375 — FIXED promo/reward above the discountable amount is shown 
 
   /* ----------------------------------------------------------------------- */
   describe('5. Other completion paths', () => {
-    // let reopenCode = ''; (dùng bởi TC Re-Open đang tắt)
+    let reopenCode = '';
 
     it(
       title(
@@ -554,41 +554,39 @@ describe('VP-4375 — FIXED promo/reward above the discountable amount is shown 
       },
     );
 
-    // [TẮT 2026-11-08] Tạm không test (đã đánh dấu skip/MANUAL: cần thiết bị/điều kiện không tự động được, hoặc Re-Open tạm dừng theo yêu cầu) — mở lại (bỏ comment) khi tính năng hoàn thiện.
-    // // PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bỏ .skip để chạy lại.
-    // it.skip(
-    //   title(
-    //     'TC-VP4375-16: Re-Open → Re-Open Done without changes keeps promo $20, discountAmount $20, staff fee $10',
-    //     Tag.REGRESSION,
-    //     Tag.WRITE,
-    //   ),
-    //   async function () {
-    //     this.timeout(6 * 60_000);
-    //     if (!vpGiftCardCode()) this.skip();
-    //     ({ code: reopenCode } = await overBudgetCustomOrder({
-    //       lineCents: 2000,
-    //       typedDollars: 30,
-    //       ownerPercent: 50,
-    //       giftCardDollars: 100,
-    //     }));
-    //     await completeCash();
+    it(
+      title(
+        'TC-VP4375-16: Re-Open → Re-Open Done without changes keeps promo $20, discountAmount $20, staff fee $10',
+        Tag.REGRESSION,
+        Tag.WRITE,
+      ),
+      async function () {
+        this.timeout(6 * 60_000);
+        if (!vpGiftCardCode()) this.skip();
+        ({ code: reopenCode } = await overBudgetCustomOrder({
+          lineCents: 2000,
+          typedDollars: 30,
+          ownerPercent: 50,
+          giftCardDollars: 100,
+        }));
+        await completeCash();
 
-    //     await app.reopenOrder(reopenCode);
-    //     await app.finishReopen();
+        await app.reopenOrder(reopenCode);
+        await app.finishReopen();
 
-    //     const o = await savedOrder(reopenCode);
-    //     expect(o.totalPromotionDiscount).toBe(2000);
-    //     const line = theServiceLine(o);
-    //     expect(line.discountAmount).toBe(2000);
-    //     expect(line.staffPromotionFeeAmount).toBe(1000);
-    //   },
-    // );
+        const o = await savedOrder(reopenCode);
+        expect(o.totalPromotionDiscount).toBe(2000);
+        const line = theServiceLine(o);
+        expect(line.discountAmount).toBe(2000);
+        expect(line.staffPromotionFeeAmount).toBe(1000);
+      },
+    );
   });
 
   /* ----------------------------------------------------------------------- */
   // 💳 Real charges: CARD_SETTLE=1 + "Terminal | Connected", an operator taps the card (see card-terminal.helpers.ts).
   describe('6. Card tender', () => {
-    // let cardCode = ''; (dùng bởi TC đang tắt)
+    const cardCode = '';
 
     /** Checkout → Card (skips when the terminal is not payable) → charge → No Receipt. */
     async function completeCard(ctx: Mocha.Context): Promise<void> {
@@ -667,27 +665,25 @@ describe('VP-4375 — FIXED promo/reward above the discountable amount is shown 
       },
     );
 
-    // [TẮT 2026-11-08] Tạm không test (đã đánh dấu skip/MANUAL: cần thiết bị/điều kiện không tự động được, hoặc Re-Open tạm dừng theo yêu cầu) — mở lại (bỏ comment) khi tính năng hoàn thiện.
-    // // PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bỏ .skip để chạy lại.
-    // it.skip(
-    //   title(
-    //     'TC-VP4375-23: Re-Open → Re-Open Done on the Card order keeps promo $20, discountAmount $20, staff fee $10',
-    //     Tag.REGRESSION,
-    //     Tag.WRITE,
-    //   ),
-    //   async function () {
-    //     this.timeout(6 * 60_000);
-    //     if (!cardCode) this.skip();
-    //     await app.reopenOrder(cardCode);
-    //     expect((await app.orderTotals()).promotion).toBeCloseTo(-20, 2);
-    //     await app.finishReopen();
+    it(
+      title(
+        'TC-VP4375-23: Re-Open → Re-Open Done on the Card order keeps promo $20, discountAmount $20, staff fee $10',
+        Tag.REGRESSION,
+        Tag.WRITE,
+      ),
+      async function () {
+        this.timeout(6 * 60_000);
+        if (!cardCode) this.skip();
+        await app.reopenOrder(cardCode);
+        expect((await app.orderTotals()).promotion).toBeCloseTo(-20, 2);
+        await app.finishReopen();
 
-    //     const o = await savedOrder(cardCode);
-    //     expect(o.totalPromotionDiscount).toBe(2000);
-    //     const line = theServiceLine(o);
-    //     expect(line.discountAmount).toBe(2000);
-    //     expect(line.staffPromotionFeeAmount).toBe(1000);
-    //   },
-    // );
+        const o = await savedOrder(cardCode);
+        expect(o.totalPromotionDiscount).toBe(2000);
+        const line = theServiceLine(o);
+        expect(line.discountAmount).toBe(2000);
+        expect(line.staffPromotionFeeAmount).toBe(1000);
+      },
+    );
   });
 });

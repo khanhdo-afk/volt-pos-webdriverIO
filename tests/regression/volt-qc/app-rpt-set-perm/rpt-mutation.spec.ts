@@ -15,6 +15,9 @@
  * make a case fail. All money is integer cents.
  */
 
+import { step } from '../../../../src/helpers/steps.js';
+import { finishReopenUnchanged } from '../../order-flow/reopen-flow.helpers.js';
+
 import { browser, expect } from '@wdio/globals';
 import { Key } from 'webdriverio';
 import { Timeouts } from '../../../../configs/constants/timeouts.js';
@@ -24,7 +27,7 @@ import { RptCss, RptRoutes, RptTitles } from '../../../../src/constants/testids.
 import { AspText } from '../../../../src/constants/testids.voltqc-app-rpt-set-perm.js';
 import { goToOrderHistory, payWithOther, returnToHome } from '../../../../src/flows/index.js';
 
-import { settle } from '../../../../src/helpers/wait.js';
+import { settle, waitUntilPath } from '../../../../src/helpers/wait.js';
 import { checkoutPage, orderHistoryDetailPage, orderHistoryPage } from '../../../../src/pages/index.js';
 import { gateProbe } from '../../../../src/pages/voltqc/app-perm/GateProbe.js';
 import {
@@ -292,53 +295,51 @@ describe('volt-qc RPT — new orders vs the reports (mutation)', () => {
     },
   );
 
-  // [TẮT 2026-11-08] Tạm không test (đã đánh dấu skip/MANUAL: cần thiết bị/điều kiện không tự động được, hoặc Re-Open tạm dừng theo yêu cầu) — mở lại (bỏ comment) khi tính năng hoàn thiện.
-  // // PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bỏ .skip để chạy lại.
-  // it.skip(
-  //   title(
-  //     'A re-opened order leaves Daily Sale; completed again it is counted exactly once (RPT-049)',
-  //     Tag.REGRESSION,
-  //     Tag.WRITE,
-  //   ),
-  //   async function (this: Mocha.Context): Promise<void> {
-  //     this.timeout(Timeouts.MOCHA_HOOK * 3);
-  //     const o = await settleCashOrder();
-  //     await dailyUntil((s) => rowsFor(s, o.orderNumber).length === 1);
-  //     let reopened = false;
-  //     try {
-  //       await openHistoryDetail(o.orderId);
-  //       await orderHistoryDetailPage.openReopenDialog();
-  //       await orderHistoryDetailPage.pressReopenConfirm();
-  //       await gateProbe.waitOpen(2_000).then(async (up) => (up ? gateProbe.submit(ownerCode()) : undefined));
-  //       await waitUntilPath((p) => p.startsWith(`/order/${o.orderId}/checkout`), {
-  //         timeout: Timeouts.NAVIGATION,
-  //         message: 'Re-open never reached checkout',
-  //       });
-  //       reopened = true;
-  //       await step('While re-opened the order is not on Daily Sale', async () => {
-  //         const mid = await dailyUntil((s) => rowsFor(s, o.orderNumber).length === 0, 30_000);
-  //         expect(rowsFor(mid, o.orderNumber)).toEqual([]);
-  //         await openHistoryDetail(o.orderId);
-  //         await orderHistoryDetailPage.openReopenDialog();
-  //         await orderHistoryDetailPage.pressReopenConfirm();
-  //         await gateProbe
-  //           .waitOpen(2_000)
-  //           .then(async (up) => (up ? gateProbe.submit(ownerCode()) : undefined));
-  //         await waitUntilPath((p) => p.startsWith(`/order/${o.orderId}/checkout`), {
-  //           timeout: Timeouts.NAVIGATION,
-  //           message: 'Continue Re-open never reached checkout',
-  //         });
-  //       });
-  //       await checkoutPage.waitForReady(Timeouts.MEDIUM);
-  //       await finishReopenUnchanged(o.orderId);
-  //       reopened = false;
-  //     } finally {
-  //       if (reopened) await finishReopenUnchanged(o.orderId).catch(() => undefined);
-  //     }
-  //     const after = await dailyUntil((s) => rowsFor(s, o.orderNumber).length === 1);
-  //     expect(rowsFor(after, o.orderNumber).length).toBe(1);
-  //   },
-  // );
+  it(
+    title(
+      'A re-opened order leaves Daily Sale; completed again it is counted exactly once (RPT-049)',
+      Tag.REGRESSION,
+      Tag.WRITE,
+    ),
+    async function (this: Mocha.Context): Promise<void> {
+      this.timeout(Timeouts.MOCHA_HOOK * 3);
+      const o = await settleCashOrder();
+      await dailyUntil((s) => rowsFor(s, o.orderNumber).length === 1);
+      let reopened = false;
+      try {
+        await openHistoryDetail(o.orderId);
+        await orderHistoryDetailPage.openReopenDialog();
+        await orderHistoryDetailPage.pressReopenConfirm();
+        await gateProbe.waitOpen(2_000).then(async (up) => (up ? gateProbe.submit(ownerCode()) : undefined));
+        await waitUntilPath((p) => p.startsWith(`/order/${o.orderId}/checkout`), {
+          timeout: Timeouts.NAVIGATION,
+          message: 'Re-open never reached checkout',
+        });
+        reopened = true;
+        await step('While re-opened the order is not on Daily Sale', async () => {
+          const mid = await dailyUntil((s) => rowsFor(s, o.orderNumber).length === 0, 30_000);
+          expect(rowsFor(mid, o.orderNumber)).toEqual([]);
+          await openHistoryDetail(o.orderId);
+          await orderHistoryDetailPage.openReopenDialog();
+          await orderHistoryDetailPage.pressReopenConfirm();
+          await gateProbe
+            .waitOpen(2_000)
+            .then(async (up) => (up ? gateProbe.submit(ownerCode()) : undefined));
+          await waitUntilPath((p) => p.startsWith(`/order/${o.orderId}/checkout`), {
+            timeout: Timeouts.NAVIGATION,
+            message: 'Continue Re-open never reached checkout',
+          });
+        });
+        await checkoutPage.waitForReady(Timeouts.MEDIUM);
+        await finishReopenUnchanged(o.orderId);
+        reopened = false;
+      } finally {
+        if (reopened) await finishReopenUnchanged(o.orderId).catch(() => undefined);
+      }
+      const after = await dailyUntil((s) => rowsFor(s, o.orderNumber).length === 1);
+      expect(rowsFor(after, o.orderNumber).length).toBe(1);
+    },
+  );
 
   it(
     title(

@@ -47,6 +47,7 @@ import {
   typeCode,
   unknownCode,
   waitAmountBox,
+  reopenToHome,
 } from '../../../../src/pages/voltqc/promo-split/splitPlanAExtra.js';
 import {
   app,
@@ -148,34 +149,32 @@ describe('volt-qc 05 SPLIT plan A (SPLIT-E … SPLIT-J)', () => {
       },
     );
 
-    // [TẮT 2026-11-08] Tạm không test (đã đánh dấu skip/MANUAL: cần thiết bị/điều kiện không tự động được, hoặc Re-Open tạm dừng theo yêu cầu) — mở lại (bỏ comment) khi tính năng hoàn thiện.
-    // // PENDING 04/11/2026: Re-Open Order tạm không test (theo yêu cầu) — bỏ .skip để chạy lại.
-    // it.skip(
-    //   title(
-    //     'SPLIT-E3 Re-open a paid order: no Split button on Home; split-order?editOrderId redirects to /order-history/<id> (SPLIT-007)',
-    //     Tag.REGRESSION,
-    //     Tag.WRITE,
-    //   ),
-    //   async function () {
-    //     this.timeout(5 * 60_000);
-    //     const { id } = await app.createPaidOrder({ method: 'Other' });
-    //     await reopenToHome(id);
-    //     const uuid = (await P.urlParam('editOrderId')) ?? '';
-    //     try {
-    //       expect(await P.count(VqpsHome.splitButton)).toBe(0);
-    //       await routerNavigate('/order/$orderId/split-order', { orderId: uuid }, { editOrderId: uuid });
-    //       await app.waitPath(new RegExp(`/order-history/${uuid}`), 15_000);
-    //     } finally {
-    //       // VERIFY: go back to edit mode to finish the re-open cleanly (Pay → Re-Open Done).
-    //       await routerNavigate('/home', undefined, { editOrderId: uuid }).catch(() => undefined);
-    //       await app.passcodeIfAsked(2_000);
-    //       await app.waitPath(/\/home\?editOrderId=/, 15_000).catch(() => undefined);
-    //       await app
-    //         .finishReopen()
-    //         .catch((e: unknown) => console.warn(`[cleanup] Re-Open Done failed: ${(e as Error).message}`));
-    //     }
-    //   },
-    // );
+    it(
+      title(
+        'SPLIT-E3 Re-open a paid order: no Split button on Home; split-order?editOrderId redirects to /order-history/<id> (SPLIT-007)',
+        Tag.REGRESSION,
+        Tag.WRITE,
+      ),
+      async function () {
+        this.timeout(5 * 60_000);
+        const { id } = await app.createPaidOrder({ method: 'Other' });
+        await reopenToHome(id);
+        const uuid = (await P.urlParam('editOrderId')) ?? '';
+        try {
+          expect(await P.count(VqpsHome.splitButton)).toBe(0);
+          await routerNavigate('/order/$orderId/split-order', { orderId: uuid }, { editOrderId: uuid });
+          await app.waitPath(new RegExp(`/order-history/${uuid}`), 15_000);
+        } finally {
+          // VERIFY: go back to edit mode to finish the re-open cleanly (Pay → Re-Open Done).
+          await routerNavigate('/home', undefined, { editOrderId: uuid }).catch(() => undefined);
+          await app.passcodeIfAsked(2_000);
+          await app.waitPath(/\/home\?editOrderId=/, 15_000).catch(() => undefined);
+          await app
+            .finishReopen()
+            .catch((e: unknown) => console.warn(`[cleanup] Re-Open Done failed: ${(e as Error).message}`));
+        }
+      },
+    );
 
     it(
       title(
